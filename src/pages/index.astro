@@ -1,5 +1,5 @@
 ---
-import Contacts from "@/components/sections/Contacts.astro";
+import Contacts from "@/sections/Contacts/Contacts.astro";
 import Layout from "@/layouts/Layout.astro";
 import Footer from "@/layouts/Footer.astro";
 import Header from "@/layouts/Header/Header.astro";
@@ -160,7 +160,7 @@ const faqEntries = [
     links={sections}
   />
 
-  <main class="grid w-full flex-1 gap-24px">
+  <main class="flex flex-col w-full flex-1">
     <h1 class="sr-only">{companyName}</h1>
     <WhyChooseUs
       title="Почему нас выбирают"
