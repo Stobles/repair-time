@@ -1,0 +1,41 @@
+---
+import { Star } from "lucide-astro";
+import type { Review } from "../types/Review";
+
+interface Props {
+  review: Review;
+}
+
+const avatarColors = {
+  dark: "l:bg-background-inverse",
+  accent: "l:bg-background-accent",
+  muted: "l:bg-text-secondary",
+};
+
+const { author, initials, avatarColor, rating, quote, details } = Astro.props.review;
+---
+
+<article class="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-12px gap-y-[9px] rounded-md border border-border-default bg-background-base p-[15px] shadow-xs sm:flex sm:flex-col sm:items-stretch sm:max-l:min-h-[210px] sm:max-l:gap-8px sm:max-l:rounded-lg sm:max-l:p-16px l:min-h-[300px] l:gap-ui-inset l:rounded-xl l:p-24px">
+  <div class="min-w-0 sm:order-last sm:mt-auto sm:flex sm:items-center sm:border-t sm:max-l:gap-ui-inset sm:max-l:border-border-default sm:max-l:pt-8px l:gap-12px l:border-background-inactive l:pt-16px">
+    <span class:list={[
+      "hidden size-7 shrink-0 place-items-center rounded-full bg-text-primary text-tablet-title-small text-text-inverse sm:grid l:size-40px l:text-desktop-body-medium l:font-bold",
+      avatarColors[avatarColor],
+    ]} aria-hidden="true">{initials}</span>
+    <div class="min-w-0">
+      <p class="text-tablet-title-medium text-background-inverse sm:max-l:text-tablet-title-small sm:max-l:text-text-primary l:text-desktop-title-small">{author}</p>
+      <p class="text-tablet-body-small text-text-secondary sm:text-text-tertiary l:font-golos-text l:text-xs/4.5">
+        {details}
+      </p>
+    </div>
+  </div>
+
+  <div class="flex shrink-0 items-center text-text-accent sm:text-functional-rating sm:max-l:h-4 l:gap-0.5" role="img" aria-label={`Оценка ${rating} из 5`}>
+    {Array.from({ length: rating }, () => (
+      <Star class="size-[13.333px] fill-current sm:max-l:size-3 l:size-[15px]" aria-hidden="true" />
+    ))}
+  </div>
+
+  <blockquote class="col-span-full text-tablet-body-large text-text-tertiary max-sm:pe-3.5 max-sm:pb-px sm:max-l:text-tablet-body-medium l:text-desktop-body-medium">
+    <p>{quote}</p>
+  </blockquote>
+</article>

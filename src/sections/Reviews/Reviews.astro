@@ -1,0 +1,46 @@
+---
+import { ReviewCard, type Review } from "@/features/reviews";
+import Container from "@/shared/components/Container.astro";
+
+interface Props {
+  id?: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+  tabletDescription: string;
+  reviews: readonly Review[];
+}
+
+const { id = "reviews", eyebrow, title, description, tabletDescription, reviews } = Astro.props;
+const titleId = `${id}-title`;
+---
+
+<section
+  {id}
+  aria-labelledby={titleId}
+  class="bg-background-subtle py-32px sm:max-l:border-b sm:max-l:border-border-default sm:max-l:py-24px l:border-t l:border-border-default l:py-20"
+>
+  <Container class="grid gap-16px l:gap-48px">
+    <header class="grid gap-ui-gutter sm:max-l:gap-4px l:max-w-2xl l:gap-8px">
+      <p class="flex items-center gap-8px text-tablet-title-extra-small text-text-accent l:text-desktop-title-extra-small">
+        <span class="hidden size-8px shrink-0 rounded-full bg-background-accent sm:block" aria-hidden="true"></span>
+        {eyebrow}
+      </p>
+      <h2 id={titleId} class="text-tablet-h3 text-text-primary sm:max-l:text-tablet-h2 l:text-desktop-h2">
+        {title}
+      </h2>
+      <p class="hidden text-tablet-body-regular text-text-tertiary sm:block l:text-desktop-body-regular">
+        <span class="l:hidden">{tabletDescription}</span>
+        <span class="hidden l:inline">{description}</span>
+      </p>
+    </header>
+
+    <ul role="list" class="grid gap-16px sm:max-l:grid-cols-2 sm:max-l:gap-12px l:grid-cols-3 l:gap-24px">
+      {reviews.map((review) => (
+        <li class="grid min-w-0">
+          <ReviewCard review={review} />
+        </li>
+      ))}
+    </ul>
+  </Container>
+</section>
