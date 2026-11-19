@@ -1,0 +1,109 @@
+---
+import {
+  AlarmClockCheck,
+  BadgeCheck,
+  Calculator,
+  Clipboard,
+  ClipboardCheck,
+  Clock,
+  FileText,
+  ShieldCheck,
+} from "lucide-astro";
+import Container from "@/shared/components/Container.astro";
+
+const icons = {
+  warranty: { compact: ShieldCheck, desktop: BadgeCheck },
+  schedule: { compact: Clock, desktop: AlarmClockCheck },
+  estimate: { compact: Calculator, desktop: FileText },
+  supervision: { compact: Clipboard, desktop: ClipboardCheck },
+};
+
+interface Advantage {
+  icon: keyof typeof icons;
+  title: string;
+  description: string;
+  caption: string;
+}
+
+interface Props {
+  id?: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+  advantages: readonly Advantage[];
+}
+
+const { id = "why-choose-us", eyebrow, title, description, advantages } = Astro.props;
+const titleId = `${id}-title`;
+---
+
+<section
+  {id}
+  aria-labelledby={titleId}
+  class="bg-background-base py-32px sm:max-l:border-b sm:max-l:border-stone-200 sm:max-l:py-24px l:border-t l:border-border-default l:py-20"
+>
+  <Container class="grid gap-16px sm:max-l:gap-24px l:gap-48px">
+    <header class="grid gap-ui-gutter sm:justify-items-center sm:text-center sm:max-l:gap-4px l:mx-auto l:max-w-2xl l:gap-12px">
+      <p class="text-tablet-title-extra-small text-text-accent l:flex l:items-center l:gap-8px l:text-desktop-title-extra-small">
+        <span aria-hidden="true" class="hidden size-8px shrink-0 rounded-full bg-background-accent l:block"></span>
+        <span>{eyebrow}</span>
+      </p>
+      <h2 id={titleId} class="text-mobile-h2 text-text-primary sm:max-l:text-tablet-h2 l:text-desktop-h2">
+        {title}
+      </h2>
+      <p class="hidden text-tablet-body-regular text-text-tertiary sm:block l:text-desktop-body-regular">
+        {description}<span class="hidden l:inline">.</span>
+      </p>
+    </header>
+
+    <ul role="list" class="grid gap-12px sm:max-l:grid-cols-2 sm:max-l:items-start sm:max-l:gap-y-16px l:mx-auto l:w-full l:max-w-5xl l:grid-cols-4 l:gap-24px">
+      {advantages.map(({ icon, title, description, caption }) => {
+        const { compact: CompactIcon, desktop: DesktopIcon } = icons[icon];
+
+        return (
+          <li
+            class:list={[
+              "flex min-w-0 flex-col items-start rounded-lg border border-border-default bg-background-subtle p-12px sm:max-l:px-16px sm:max-l:pt-16px sm:max-l:pb-[18px] l:min-h-[330px] l:rounded-xl l:p-24px l:shadow-xs",
+              icon === "estimate" && "max-sm:min-h-39 sm:max-l:min-h-[158px]",
+            ]}
+          >
+            <div class="grid size-32px shrink-0 place-items-center rounded-md bg-background-accent-subtle text-text-accent l:size-48px l:rounded-lg l:border l:border-border-accent-subtle">
+              <CompactIcon aria-hidden="true" class="size-16px l:hidden" />
+              <DesktopIcon aria-hidden="true" class="hidden size-[26px] l:block" />
+            </div>
+
+            <div
+              class:list={[
+                "mt-ui-inset grid gap-[3px] l:mt-24px l:gap-[7px]",
+                icon === "warranty" && "l:mt-[26px]",
+                icon === "supervision" && "l:mt-48px",
+              ]}
+            >
+              <h3 class="text-tablet-title-medium text-text-primary l:text-desktop-title-large">
+                {title}
+              </h3>
+              <p
+                class:list={[
+                  "text-tablet-body-regular text-text-tertiary l:text-desktop-body-small",
+                  icon === "warranty" && "max-sm:max-w-[320px]",
+                ]}
+              >
+                {description}
+              </p>
+            </div>
+
+            <p
+              class:list={[
+                "mt-8px text-tablet-title-extra-small tracking-normal text-brand-orange-600 l:mt-auto l:pt-24px l:text-desktop-caption-semi-bold l:text-text-accent",
+                icon === "warranty" && "l:max-w-[152px]",
+                (icon === "estimate" || icon === "supervision") && "max-l:mt-[9px]",
+              ]}
+            >
+              {caption}
+            </p>
+          </li>
+        );
+      })}
+    </ul>
+  </Container>
+</section>
