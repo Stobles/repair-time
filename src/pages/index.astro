@@ -5,6 +5,7 @@ import Footer from "@/layouts/Footer.astro";
 import Header from "@/layouts/Header/Header.astro";
 import WhyChooseUs from "@/sections/WhyChooseUs/WhyChooseUs.astro";
 import WorkProcess from "@/sections/WorkProcess/WorkProcess.astro";
+import Reviews from "@/sections/Reviews/Reviews.astro";
 import Faq from "@/sections/Faq/Faq.astro";
 
 const companyName = "Время ремонта";
@@ -94,6 +95,33 @@ const workSteps = [
   },
 ] as const;
 
+const reviews = [
+  {
+    author: "Алексей Смирнов",
+    initials: "АС",
+    avatarColor: "dark",
+    rating: 5,
+    quote: "«Делали комплексный ремонт офиса 320 м² в БЦ «Белые Сады». Ключевым условием было успеть до заезда команды за 60 дней. Сдали на 4 дня раньше срока! В переговорных идеальная звукоизоляция, сотрудники в восторге от качества света».",
+    details: "Владелец IT-компании (БЦ «Белые Сады»)",
+  },
+  {
+    author: "Екатерина и Дмитрий Васильевы",
+    initials: "ЕВ",
+    avatarColor: "accent",
+    rating: 5,
+    quote: "«Капитальный ремонт в ЖК «Сердце Столицы» (112 м²). Самое главное: смета не выросла ни на копейку относительно договора! Технадзор присылал видеоотчеты скрытых работ в WhatsApp дважды в неделю. Все ровно и аккуратно».",
+    details: "ЖК «Сердце Столицы», 112 м²",
+  },
+  {
+    author: "Роман Казанцев",
+    initials: "РК",
+    avatarColor: "muted",
+    rating: 5,
+    quote: "«Ресторан на Большой Никитской, 190 м². По правилам дома все шумные работы строго регламентированы. Бригада «Время Ремонта» четко держала график, не было ни одной жалобы от жильцов. Заведение открыли ровно к сезону».",
+    details: "Управляющий рестораном (Большая Никитская)",
+  },
+] as const;
+
 const faqEntries = [
   {
     question: "Сколько в среднем длится капитальный ремонт квартиры или офиса?",
@@ -146,6 +174,13 @@ const faqEntries = [
       description="От первого звонка до подписания финального акта приёмки — понятный алгоритм без стресса для заказчика."
       oversight="6 шагов под контролем главного инженера"
       steps={workSteps}
+    />
+    <Reviews
+      eyebrow="РЕАЛЬНЫЙ ОПЫТ ЗАКАЗЧИКОВ"
+      title="Отзывы о строительной компании «ВРЕМЯ РЕМОНТА»"
+      description="Оценки клиентов на основе нашей работы."
+      tabletDescription="Оценки клиентов на основе нашей работы в Москве и МО"
+      {reviews}
     />
     <Faq
       eyebrow="ОТВЕТЫ НА ВОПРОСЫ"
