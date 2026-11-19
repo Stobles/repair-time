@@ -10,7 +10,7 @@ const { title = "Astro Basics", lang = "en" } = Astro.props;
 ---
 
 <!doctype html>
-<html {lang} class="h-full w-full">
+<html {lang} class="h-full w-full scroll-smooth">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -19,7 +19,7 @@ const { title = "Astro Basics", lang = "en" } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body class="flex flex-col m-0 h-full w-full">
+	<body class="flex flex-col m-0 h-full">
 		<slot />
 	</body>
 </html>

@@ -2,6 +2,7 @@
 import Layout from "@/layouts/Layout.astro";
 import Footer from "@/layouts/Footer.astro";
 import Header from "@/layouts/Header/Header.astro";
+import WhyChooseUs from "@/sections/WhyChooseUs/WhyChooseUs.astro";
 
 const companyName = "Время ремонта";
 const phone = "+7 (949) 811 94 21";
@@ -22,6 +23,32 @@ const footerSections = [
   { id: "faq", label: "Ответы на частые вопросы" },
   { id: "contacts", label: "Контакты" },
 ];
+const advantages = [
+  {
+    icon: "warranty",
+    title: "Гарантия 5 лет по договору",
+    description: "Бесплатный оперативный выезд и устранение любых скрытых дефектов в течение 48 часов после обращения.",
+    caption: "ОФИЦИАЛЬНЫЙ ПУНКТ ДОГОВОРА",
+  },
+  {
+    icon: "schedule",
+    title: "Соблюдение сроков до 1 дня",
+    description: "Фиксированный календарный план-график. Выплачиваем финансовую неустойку за каждый день просрочки.",
+    caption: "ШТРАФ ЗА ДЕНЬ ЗАДЕРЖКИ",
+  },
+  {
+    icon: "estimate",
+    title: "Фиксированная смета",
+    description: "Никаких внезапных доплат и скрытых коэффициентов. Финальная сумма утверждается до начала ремонта.",
+    caption: "БЕЗ ДОПЛАТ ВО ВРЕМЯ РАБОТ",
+  },
+  {
+    icon: "supervision",
+    title: "Штатный технадзор",
+    description: "3-ступенчатый контроль качества каждого скрытого узла, составление актов скрытых работ по СНиП.",
+    caption: "ИНЖЕНЕРЫ С ДОПУСКОМ НРС",
+  },
+] as const;
 ---
 
 <Layout title={companyName} lang="ru">
@@ -34,18 +61,15 @@ const footerSections = [
     links={sections}
   />
 
-  <main class="w-full flex-1 mx-auto grid max-w-content-desktop gap-24px px-16px py-32px">
+  <main class="grid w-full flex-1 gap-24px py-32px">
     <h1 class="sr-only">{companyName}</h1>
-    {sections.map(({ id, label }) => (
-      <section {id} tabindex="-1" aria-labelledby={`${id}-title`} class="grid gap-8px">
-        <h2 id={`${id}-title`} class="text-desktop-h4 text-text-primary">{label}</h2>
-        {id === "contacts" && (
-          <a href={`tel:${phoneNumber}`} class="ui-focus w-fit rounded-sm text-desktop-body-regular text-text-secondary hover:text-text-accent-dark">
-            {phone}
-          </a>
-        )}
-      </section>
-    ))}
+    <WhyChooseUs
+      title="Почему нас выбирают"
+      eyebrow={"НАШИ СТАНДАРТЫ"}
+      description="Каждый пункт договора составлен в пользу клиента с прозрачной системой финансовой ответственности"
+      {advantages}
+    />
+    
   </main>
 
   <Footer {companyName} {phone} {email} sections={footerSections} />

@@ -10,7 +10,7 @@ interface Props extends Omit<HTMLAttributes<"input">, "type"> {
 const { id, class: className, ...attributes } = Astro.props;
 ---
 
-<div class={cn("flex min-h-ui-checkbox-row items-center gap-ui-gutter", className)}>
+<div class={cn("flex min-h-ui-checkbox-row items-center gap-ui-gutter cursor-pointer", className)}>
   <span class="relative grid shrink-0 place-items-center">
     <input
       {...attributes}
@@ -24,7 +24,7 @@ const { id, class: className, ...attributes } = Astro.props;
       className="pointer-events-none invisible absolute size-3 text-text-inverse peer-checked:visible forced-colors:hidden"
     />
   </span>
-  <label for={id} class="text-desktop-body-extra-small text-text-tertiary">
+  <label for={id} class="text-desktop-body-extra-small text-text-tertiary cursor-pointer select-none">
     <slot />
   </label>
 </div>
