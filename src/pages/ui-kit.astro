@@ -1,0 +1,278 @@
+---
+import AccordionItem from "@/shared/ui/AccordionItem.astro";
+import Badge from "@/shared/ui/Badge.astro";
+import { Button } from "@/shared/ui/button";
+import Checkbox from "@/shared/ui/Checkbox.astro";
+import { Dropdown } from "@/shared/ui/Dropdown";
+import { Icon, type IconName } from "@/shared/ui/Icon";
+import Input from "@/shared/ui/Input.astro";
+import { Tabs, type TabItem } from "@/shared/ui/Tabs";
+import Textfield from "@/shared/ui/Textfield.astro";
+import Layout from "@/layouts/Layout.astro";
+import { EstimateButton } from "@/layouts/Header/EstimateButton";
+
+const catalogWidth = "mx-auto w-[min(var(--container-content-desktop),calc(100%-2*clamp(var(--spacing-16px),4vw,var(--spacing-48px))))]";
+const catalogPanel = "grid min-w-0 gap-16px rounded-xl border border-border-default bg-background-base p-[clamp(var(--spacing-16px),3vw,var(--spacing-24px))]";
+const exampleGrid = "grid min-w-0 grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))] gap-16px";
+
+const sections = [
+  { id: "buttons", label: "Кнопки" },
+  { id: "fields", label: "Форма" },
+  { id: "badges", label: "Метки" },
+  { id: "tabs", label: "Вкладки" },
+  { id: "icons", label: "Иконки" },
+  { id: "accordion", label: "Аккордеон" },
+  { id: "dialog", label: "Диалог" },
+];
+
+const buttonVariants = ["primary", "outline", "dark"] as const;
+const buttonSizes = ["large", "medium", "small"] as const;
+const badgeExamples = [
+  { variant: "dark", label: "Срок: 3 месяца" },
+  { variant: "brand", label: "Официальный договор" },
+  { variant: "green", label: "Смета согласована" },
+  { variant: "light", label: "Гарантия 5 лет" },
+] as const;
+
+const icons = [
+  { name: "arrow-right", label: "Arrow Right", dimensions: "16 × 16" },
+  { name: "calculator", label: "Calculator", dimensions: "12 × 12" },
+  { name: "phone", label: "Phone", dimensions: "12 × 12" },
+  { name: "send", label: "Send", dimensions: "15 × 12" },
+] as const satisfies readonly { name: IconName; label: string; dimensions: string }[];
+
+const propertyTypes = [
+  { value: "apartment", label: "Квартира или апартаменты" },
+  { value: "house", label: "Загородный дом" },
+  { value: "commercial", label: "Коммерческое помещение" },
+];
+
+const projectTabs = [
+  { value: "all", label: "Все проекты", panel: "panelAll" },
+  { value: "apartment", label: "Квартиры и апартаменты", panel: "panelApartment" },
+  { value: "commercial", label: "Коммерческие помещения", panel: "panelCommercial" },
+] satisfies readonly TabItem[];
+
+const questions = [
+  {
+    number: "01",
+    question: "Как проходит замер?",
+    answer: "Инженер осматривает помещение, снимает размеры и уточняет, какие работы нужны.",
+  },
+  {
+    number: "02",
+    question: "Когда будет готова смета?",
+    answer: "Смету составляют после замера и согласования перечня работ.",
+  },
+  {
+    number: "03",
+    question: "Что входит в договор?",
+    answer: "В договоре фиксируют перечень работ, стоимость, сроки и условия гарантии.",
+  },
+];
+---
+
+<Layout title="UI Kit · Время ремонта" lang="ru">
+  <header class="border-t-4 border-border-accent bg-background-inverse text-text-inverse">
+    <div class:list={[catalogWidth, "grid gap-24px py-32px"]}>
+      <a href="/" class="ui-focus w-fit rounded-sm text-desktop-title-medium">Время ремонта</a>
+      <div class="grid gap-8px">
+        <h1 class="text-desktop-h1 [font-size:clamp(var(--text-mobile-h1),6vw,var(--text-desktop-h1))] [line-height:clamp(var(--text-mobile-h1--line-height),7vw,var(--text-desktop-h1--line-height))]">UI Kit</h1>
+        <p class="text-desktop-body-regular text-text-disabled">
+          Компоненты дизайн-системы с рабочими примерами состояний.
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <nav aria-label="Разделы UI Kit" class="border-b border-border-default bg-background-base">
+    <ul class:list={[catalogWidth, "flex flex-wrap items-center gap-x-24px gap-y-8px py-12px"]}>
+      {sections.map(({ id, label }) => (
+        <li>
+          <a href={`#${id}`} class="ui-focus inline-block rounded-sm py-4px text-desktop-navigation text-text-secondary hover:text-text-accent-dark">
+            {label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+
+  <main class="bg-background-subtle">
+    <div class:list={[catalogWidth, "grid min-w-0 gap-24px py-32px"]}>
+      <section id="buttons" aria-labelledby="buttons-title" class={catalogPanel}>
+        <div class="grid gap-4px">
+          <h2 id="buttons-title" class="text-desktop-h4 text-text-primary">Кнопки</h2>
+          <p class="text-desktop-body-medium text-text-tertiary">
+            Наведите курсор, нажмите кнопку или перейдите к ней клавишей Tab.
+          </p>
+        </div>
+        <div class={exampleGrid}>
+          {buttonVariants.map((variant) => (
+            <div class="grid min-w-0 gap-16px rounded-lg border border-border-default bg-background-subtle p-16px">
+              <h3 class="text-desktop-title-large text-text-primary capitalize">{variant}</h3>
+              {buttonSizes.map((size) => (
+                <div class="grid gap-4px">
+                  <p class="text-desktop-caption-medium text-text-tertiary capitalize">{size}</p>
+                  <div class="flex flex-wrap items-center gap-8px">
+                    <Button {variant} {size} leftIcon={false} data-demo-button={`${variant} · ${size}`}>
+                      Нажать
+                    </Button>
+                    <Button {variant} {size} leftIcon={false} rightIcon={false} disabled>
+                      Недоступна
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+        <div class="flex flex-wrap items-center gap-8px">
+          <Button size="medium" variant="outline" leftIcon="calculator" rightIcon={false} data-demo-button="Иконка слева">
+            Слева
+          </Button>
+          <Button size="medium" variant="outline" leftIcon={false} rightIcon="phone" data-demo-button="Иконка справа">
+            Справа
+          </Button>
+          <Button size="medium" variant="outline" data-demo-button="Иконки с обеих сторон">
+            С двух сторон
+          </Button>
+          <Button size="medium" variant="outline" leftIcon={false} rightIcon={false} data-demo-button="Кнопка без иконок">
+            Без иконок
+          </Button>
+        </div>
+        <output data-button-feedback class="empty:hidden text-desktop-body-small text-text-success"></output>
+      </section>
+
+      <section id="fields" aria-labelledby="fields-title" class={catalogPanel}>
+        <h2 id="fields-title" class="text-desktop-h4 text-text-primary">Элементы формы</h2>
+        <form data-demo-form method="post" class="grid min-w-0 gap-16px">
+          <div class={exampleGrid}>
+            <Input id="demo-name" name="name" label="ИМЯ" placeholder="Константин" autocomplete="name" required />
+            <Input id="demo-phone" name="phone" label="ТЕЛЕФОН" type="tel" placeholder="+7 (___) ___-__-__" autocomplete="tel" />
+          </div>
+          <Dropdown
+            client:load
+            id="demo-property"
+            name="property"
+            label="ТИП ОБЪЕКТА"
+            options={propertyTypes}
+            placeholder="Выберите тип объекта"
+            required
+          />
+          <Textfield id="demo-message" name="message" label="СООБЩЕНИЕ" placeholder="Укажите площадь или опишите нужные работы" />
+          <fieldset class="grid gap-4px">
+            <legend class="ui-field-label">ФЛАЖКИ</legend>
+            <Checkbox id="demo-consent" name="consent" required>Согласие на обработку данных *</Checkbox>
+            <Checkbox id="demo-checked" checked>Выбранный флажок</Checkbox>
+            <Checkbox id="demo-disabled" disabled>Недоступный флажок</Checkbox>
+          </fieldset>
+          <div class="flex flex-wrap items-center gap-8px">
+            <Button type="submit" size="medium" leftIcon={false} rightIcon={false}>Проверить поля</Button>
+            <Button type="reset" size="medium" variant="outline" leftIcon={false} rightIcon={false}>Сбросить</Button>
+          </div>
+          <output class="empty:hidden text-desktop-body-small text-text-success"></output>
+        </form>
+      </section>
+
+      <div class={exampleGrid}>
+        <section id="badges" aria-labelledby="badges-title" class:list={[catalogPanel, "content-start"]}>
+          <h2 id="badges-title" class="text-desktop-h4 text-text-primary">Метки</h2>
+          <ul class="flex flex-wrap gap-16px">
+            {badgeExamples.map(({ variant, label }) => (
+              <li class="grid justify-items-start gap-4px">
+                <Badge {variant}>{label}</Badge>
+                <span class="text-desktop-caption-medium text-text-tertiary capitalize">{variant}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section id="tabs" aria-labelledby="tabs-title" class:list={[catalogPanel, "content-start"]}>
+          <h2 id="tabs-title" class="text-desktop-h4 text-text-primary">Вкладки</h2>
+          <Tabs client:load label="Категории проектов" items={projectTabs} className="grid gap-12px">
+            <p slot="panelAll" class="text-desktop-body-medium text-text-secondary">Жилые и коммерческие проекты.</p>
+            <p slot="panelApartment" class="text-desktop-body-medium text-text-secondary">Ремонт квартир и апартаментов.</p>
+            <p slot="panelCommercial" class="text-desktop-body-medium text-text-secondary">Ремонт офисов и торговых помещений.</p>
+          </Tabs>
+        </section>
+      </div>
+
+      <section id="icons" aria-labelledby="icons-title" class={catalogPanel}>
+        <h2 id="icons-title" class="text-desktop-h4 text-text-primary">Иконки</h2>
+        <ul class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,11rem),1fr))] gap-8px">
+          {icons.map(({ name, label, dimensions }) => (
+            <li class="flex items-center gap-12px rounded-lg border border-border-default bg-background-subtle p-12px">
+              <span class="grid size-48px shrink-0 place-items-center rounded-md bg-background-base text-text-primary">
+                <Icon {name} />
+              </span>
+              <div>
+                <p class="text-desktop-title-small text-text-primary">{label}</p>
+                <p class="text-desktop-caption-medium text-text-tertiary">{dimensions} px</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section id="accordion" aria-labelledby="accordion-title" class={catalogPanel}>
+        <h2 id="accordion-title" class="text-desktop-h4 text-text-primary">Аккордеон</h2>
+        <div class="grid gap-12px">
+          {questions.map(({ number, question, answer }, index) => (
+            <AccordionItem {number} {question} name="ui-kit-faq" open={index === 0}>
+              <p>{answer}</p>
+            </AccordionItem>
+          ))}
+        </div>
+      </section>
+
+      <section id="dialog" aria-labelledby="dialog-title" class={catalogPanel}>
+        <h2 id="dialog-title" class="text-desktop-h4 text-text-primary">Диалог</h2>
+        <div>
+          <EstimateButton
+            client:load
+            label="Открыть заявку на замер"
+            title="Заявка на замер"
+            description="Демонстрация диалога с полем и выпадающим списком."
+            size="large"
+          >
+            <form data-demo-form method="post" class="grid min-w-0 gap-16px">
+              <Input id="dialog-phone" name="phone" label="ТЕЛЕФОН" type="tel" autocomplete="tel" required />
+              <Dropdown client:load id="dialog-property" name="property" label="ТИП ОБЪЕКТА" options={propertyTypes} defaultValue="apartment" />
+              <div>
+                <Button type="submit" size="medium" leftIcon="send" rightIcon={false}>Проверить поля</Button>
+              </div>
+              <output class="empty:hidden text-desktop-body-small text-text-success"></output>
+            </form>
+          </EstimateButton>
+        </div>
+      </section>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  const buttonFeedback = document.querySelector<HTMLOutputElement>("[data-button-feedback]");
+
+  document.querySelectorAll<HTMLButtonElement>("[data-demo-button]").forEach((button) => {
+    button.addEventListener("click", () => {
+      if (buttonFeedback) buttonFeedback.value = `Нажатие: ${button.dataset.demoButton}`;
+    });
+  });
+
+  document.addEventListener("submit", (event) => {
+    const form = event.target;
+    if (!(form instanceof HTMLFormElement) || !form.hasAttribute("data-demo-form")) return;
+
+    event.preventDefault();
+    const feedback = form.querySelector("output");
+    if (feedback) feedback.value = "Поля прошли проверку.";
+  });
+
+  document.addEventListener("reset", (event) => {
+    const form = event.target;
+    if (!(form instanceof HTMLFormElement) || !form.hasAttribute("data-demo-form")) return;
+
+    const feedback = form.querySelector("output");
+    if (feedback) feedback.value = "";
+  });
+</script>

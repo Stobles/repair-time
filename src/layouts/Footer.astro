@@ -1,0 +1,88 @@
+---
+import licenseIcon from "@/assets/FooterLicense.svg?url";
+import Container from "@/shared/components/Container.astro";
+import Logo from "@/shared/ui/Logo.astro";
+
+interface Props {
+  companyName: string;
+  phone: string;
+  email: string;
+  sections: readonly { label: string; id: string }[];
+  privacyHref?: string;
+  sitemapHref?: string;
+}
+
+const { companyName, phone, email, sections, privacyHref, sitemapHref } = Astro.props;
+const brand = companyName.toLocaleUpperCase("ru");
+const phoneHref = `tel:${phone.replace(/[^+\d]/g, "")}`;
+const linkClass = "ui-focus rounded-sm transition-colors [&[href]]:hover:text-text-accent-dark";
+---
+
+<footer class="bg-background-subtle sm:border-t sm:border-border-default">
+  <Container class="pt-24px pb-[15px] sm:max-l:pb-[17px] l:py-32px">
+    <div class="grid gap-12px sm:max-l:grid-cols-2 sm:max-l:gap-x-24px l:grid-cols-4 l:gap-x-32px">
+      <div class="l:col-span-2">
+        <Logo {companyName} />
+
+        <p class="mt-12px min-h-[50px] max-w-md text-text-tertiary l:mt-[11.125px] text-desktop-body-small l:text-text-secondary">
+          Генеральный подрядчик по капитальному ремонту,<br class="l:hidden" />{" "}
+          реконструкции и<br class="hidden l:block" />{" "}
+          Fit-Out отделке коммерческой и элитной жилой<span class="max-l:hidden"> недвижимости в</span><br />{" "}
+          <span class="l:hidden">недвижимости в </span>Москве<span class="hidden l:inline"> и Московской области</span> с 2012 года.
+        </p>
+
+        <p class="mt-12px hidden text-tablet-body-small text-text-tertiary sm:max-l:block">
+          Лицензия СРО • ИНН 7724881234 • ОГРН 1127746123021
+        </p>
+        <ul id="company-details" tabindex="-1" class="mt-[21.25px] hidden flex-wrap items-center gap-x-16px gap-y-4px text-text-tertiary l:flex">
+          <li class="flex items-center gap-4px text-desktop-caption-medium">
+            <img src={licenseIcon} alt="" width="12.5" height="12.5" class="size-[12.5px] shrink-0" />
+            Лицензия СРО
+          </li>
+          <li class="flex items-center gap-16px text-desktop-body-extra-small">
+            <span aria-hidden="true" class="font-golos-text">•</span> ИНН 7728491024
+          </li>
+          <li class="flex items-center gap-16px text-desktop-body-extra-small">
+            <span aria-hidden="true" class="font-golos-text">•</span> ОГРН 1187746928101
+          </li>
+        </ul>
+      </div>
+
+      <div class="max-sm:mx-px flex flex-col l:col-span-2 l:grid l:grid-cols-subgrid ">
+        <nav aria-labelledby="footer-sections">
+          <h2 id="footer-sections" class=" text-text-primary text-desktop-title-small">Разделы</h2>
+          <ul class="mt-8px grid gap-ui-gutter text-text-tertiary text-desktop-body-small l:mt-[9px] l:gap-[9px]  l:text-text-secondary">
+            {sections.map(({ label, id }, index) => (
+              <li class="min-h-[17px]">
+                <a href={`#${id}`} class:list={[linkClass, index === 1 && "max-sm:underline max-sm:decoration-[6%]"]}>{label}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div class="mt-16px l:mt-0">
+          <h2 class="text-tablet-title-small text-text-primary l:text-desktop-title-small">КОНТАКТЫ</h2>
+          <address class="mt-4px flex flex-col items-start not-italic l:mt-ui-inset l:gap-ui-inset">
+            <a href={phoneHref} class:list={[linkClass, "text-tablet-title-medium text-text-primary l:text-desktop-title-medium"]}>{phone}</a>
+            <p class="hidden text-desktop-body-extra-small text-text-tertiary l:block">
+              г. Москва, Пресненская наб., 12 (ММДЦ<br />{" "}«Москва-Сити»)
+            </p>
+            <a href={`mailto:${email}`} class:list={[linkClass, "min-h-[17px] wrap-break-word text-text-tertiary text-desktop-body-extra-small"]}>{email}</a>
+          </address>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-12px flex flex-col gap-x-24px gap-y-[5.5px] pt-[6.5px] text-desktop-body-extra-small text-text-tertiary sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:border-t sm:max-l:mt-24px sm:max-l:border-[#e7e5e4] sm:max-l:pt-16px sm:max-l:text-[10px]/4 l:mt-10 l:border-border-default l:pt-32px ">
+      <ul class="flex flex-wrap gap-x-24px gap-y-8px">
+        <li>
+          <a href={privacyHref} class:list={[linkClass, "max-sm:text-[#545f73]"]}><span class="sm:max-l:text-[#78716c]">Политика</span> конфиденциальности</a>
+        </li>
+      </ul>
+      <p class="text-[#545f73]/70 sm:-order-1 sm:text-text-tertiary">
+        <span class="sm:hidden">© 2012–2024 ООО «Время Ремонта». Все права защищены.</span>
+        <span class="hidden sm:inline">© 2012–2025 «{brand}». Все права защищены.</span>
+      </p>
+    </div>
+  </Container>
+</footer>

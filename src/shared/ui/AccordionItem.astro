@@ -1,0 +1,38 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { ChevronDown } from "lucide-react";
+import { cn } from "@/shared/lib/utils";
+
+interface Props extends HTMLAttributes<"details"> {
+  number: string;
+  question: string;
+}
+
+const { number, question, class: className, ...attributes } = Astro.props;
+---
+
+<details
+  {...attributes}
+  class={cn(
+    "group/accordion rounded-xl border border-ui-accordion-border/80 bg-background-base open:border-border-accent/35 open:shadow-ui-accordion-open",
+    "motion-safe:supports-[interpolate-size:allow-keywords]:[interpolate-size:allow-keywords] motion-safe:supports-[interpolate-size:allow-keywords]:[&::details-content]:overflow-clip motion-safe:supports-[interpolate-size:allow-keywords]:[&::details-content]:[block-size:0] motion-safe:supports-[interpolate-size:allow-keywords]:open:[&::details-content]:[block-size:auto] motion-safe:supports-[interpolate-size:allow-keywords]:[&::details-content]:[transition:block-size_200ms_ease-out,content-visibility_200ms_allow-discrete]",
+    className,
+  )}
+>
+  <summary class="ui-focus flex cursor-pointer list-none items-center gap-[clamp(0.5rem,2vw,1.25rem)] rounded-xl p-[clamp(1rem,3vw,var(--spacing-ui-wide-inset))] text-mobile-h2 text-ui-accordion-heading [&::-webkit-details-marker]:hidden">
+    <span class="grid size-10 shrink-0 place-items-center rounded-lg border border-border-accent-subtle bg-background-accent-subtle text-mobile-title-large text-text-accent">
+      {number}
+    </span>
+    <span class="min-w-0 grow wrap-anywhere">{question}</span>
+    <span class="grid size-10 shrink-0 place-items-center rounded-full bg-ui-accordion-divider text-text-tertiary group-open/accordion:bg-background-accent group-open/accordion:text-text-inverse">
+      <ChevronDown
+        aria-hidden="true"
+        focusable="false"
+        className="size-4 motion-safe:transition-transform motion-safe:duration-200 group-open/accordion:rotate-180"
+      />
+    </span>
+  </summary>
+  <div class="mt-4px border-t border-ui-accordion-divider px-[clamp(1rem,3vw,var(--spacing-ui-wide-inset))] pt-8px pb-[clamp(1rem,3vw,var(--spacing-ui-wide-inset))] text-desktop-body-regular text-text-secondary motion-safe:not-supports-[interpolate-size:allow-keywords]:group-open/accordion:animate-in motion-safe:fade-in-0 motion-safe:duration-200">
+    <slot />
+  </div>
+</details>

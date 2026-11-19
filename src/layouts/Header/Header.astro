@@ -1,0 +1,76 @@
+---
+import { BadgeCheck, Clock3, MessageSquareText, Phone } from "lucide-react";
+import Container from "@/shared/components/Container.astro";
+import Logo from "@/shared/ui/Logo.astro";
+import CallbackForm from "./CallbackForm.astro";
+import { EstimateButton } from "./EstimateButton";
+import { HeaderMenu, type HeaderLink } from "./HeaderMenu";
+
+interface Props {
+  companyName: string;
+  phone: string;
+  telegramUrl: string;
+  schedule: string;
+  license: string;
+  links: readonly HeaderLink[];
+}
+
+const { companyName, phone, telegramUrl, schedule, license, links } = Astro.props;
+const phoneHref = `tel:${phone.replace(/[^+\d]/g, "")}`;
+---
+
+<header class="border-b border-border-default bg-background-base/95 shadow-xs backdrop-blur-md">
+  <div class="hidden border-b border-border-default bg-background-subtle sm:block">
+    <Container class="flex flex-wrap items-center justify-between gap-x-24px gap-y-4px py-8px">
+      <ul class="flex flex-wrap items-center gap-x-24px gap-y-4px text-desktop-caption-medium text-text-tertiary">
+        <li class="flex items-center gap-ui-gutter">
+          <Clock3 aria-hidden="true" className="size-3 shrink-0 text-text-accent" />
+          {schedule}
+        </li>
+        <li class="flex items-center gap-ui-gutter">
+          <BadgeCheck aria-hidden="true" className="size-3.5 shrink-0 text-text-accent" />
+          {license}
+        </li>
+      </ul>
+      <a href={telegramUrl} class="ui-focus flex shrink-0 items-center gap-4px border-s border-border-default ps-5 text-desktop-title-extra-small text-functional-telegram hover:underline">
+        <MessageSquareText aria-hidden="true" className="size-3 shrink-0" />
+        Написать в Telegram
+      </a>
+    </Container>
+  </div>
+
+  <Container class="flex min-h-[63px] items-center gap-4px sm:min-h-[66px] sm:gap-12px l:min-h-20 l:gap-32px">
+    <a href="/" class="ui-focus me-auto shrink-0 rounded-ui-control whitespace-nowrap l:me-0">
+      <Logo {companyName} />
+    </a>
+
+    <nav aria-label="Разделы сайта" class="hidden h-32px shrink-0 items-center border-s border-border-default ps-32px l:flex l:max-xl:ps-16px">
+      <ul class="flex items-center gap-24px l:max-xl:gap-8px">
+        {links.map(({ id, label }) => (
+          <li>
+            <a href={`#${id}`} class="ui-focus inline-flex rounded-sm py-8px text-desktop-navigation whitespace-nowrap text-text-secondary uppercase transition-colors hover:text-text-accent-dark">
+              {label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="flex shrink-0 items-center gap-4px sm:gap-12px l:ms-auto l:gap-24px">
+      <a href={phoneHref} aria-label={`Позвонить по номеру ${phone}`} class="ui-focus grid size-11 place-items-center rounded-sm whitespace-nowrap text-text-primary transition-colors hover:text-text-accent-dark sm:size-auto">
+        <Phone aria-hidden="true" className="size-[18px] text-text-accent sm:hidden" />
+        <span class="hidden text-tablet-title-medium l:inline l:text-desktop-title-medium">{phone}</span>
+      </a>
+      <EstimateButton
+        client:load
+        label="ОБРАТНЫЙ ЗВОНОК"
+        className="hidden sm:inline-flex sm:max-xl:min-h-9 sm:max-xl:rounded-md sm:max-xl:px-[14px] sm:max-xl:text-button-medium sm:max-xl:leading-4"
+      >
+        <CallbackForm id="callback-dialog" {phone} {telegramUrl} />
+      </EstimateButton>
+      <HeaderMenu client:load {links} {phone} {telegramUrl} {schedule} {license}>
+        <CallbackForm id="mobile-callback-dialog" {phone} {telegramUrl} />
+      </HeaderMenu>
+    </div>
+  </Container>
+</header>
