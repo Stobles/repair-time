@@ -1,0 +1,20 @@
+---
+import buildingCompact from "@/assets/FooterBuildingCompact.svg?url";
+import buildingDesktop from "@/assets/FooterBuildingDesktop.svg?url";
+
+interface Props {
+  companyName: string;
+}
+
+const { companyName } = Astro.props;
+---
+
+<span class="flex items-center gap-8px l:gap-12px">
+  <span class="grid h-[35px] w-9 shrink-0 place-items-center rounded-md bg-background-accent pb-px sm:max-l:h-9 l:size-32px l:rounded-sm l:pb-0">
+    <img src={buildingCompact} alt="" width="18" height="18" class="l:hidden" />
+    <img src={buildingDesktop} alt="" width="15" height="15" class="hidden l:block" />
+  </span>
+  <span class="text-tablet-title-medium text-[#131b2e] sm:max-l:text-[#1c1917] l:text-desktop-title-large l:text-slate-900">
+    {companyName.toLocaleUpperCase("ru")}
+  </span>
+</span>

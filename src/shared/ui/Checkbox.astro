@@ -1,0 +1,30 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { Check } from "lucide-react";
+import { cn } from "@/shared/lib/utils";
+
+interface Props extends Omit<HTMLAttributes<"input">, "type"> {
+  id: string;
+}
+
+const { id, class: className, ...attributes } = Astro.props;
+---
+
+<div class={cn("flex min-h-ui-checkbox-row items-center gap-ui-gutter", className)}>
+  <span class="relative grid shrink-0 place-items-center">
+    <input
+      {...attributes}
+      {id}
+      type="checkbox"
+      class="peer ui-focus size-ui-checkbox cursor-pointer appearance-none rounded-sm border border-border-default bg-background-base checked:border-transparent checked:bg-background-accent disabled:cursor-not-allowed forced-colors:appearance-auto"
+    />
+    <Check
+      aria-hidden="true"
+      focusable="false"
+      className="pointer-events-none invisible absolute size-3 text-text-inverse peer-checked:visible forced-colors:hidden"
+    />
+  </span>
+  <label for={id} class="text-desktop-body-extra-small text-text-tertiary">
+    <slot />
+  </label>
+</div>

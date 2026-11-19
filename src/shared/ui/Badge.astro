@@ -1,0 +1,28 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "@/shared/lib/utils";
+
+const badgeVariants = {
+  dark: "bg-background-inverse text-text-inverse",
+  brand: "bg-background-accent text-text-inverse",
+  green: "border border-border-success bg-ui-badge-green text-text-success",
+  light: "border border-border-accent-subtle bg-background-accent-subtle text-text-accent-dark",
+};
+
+interface Props extends HTMLAttributes<"span"> {
+  variant?: keyof typeof badgeVariants;
+}
+
+const { variant = "dark", class: className, ...attributes } = Astro.props;
+---
+
+<span
+  {...attributes}
+  class={cn(
+    "inline-flex items-center rounded-ui-control px-ui-inset py-4px text-badge-tab",
+    badgeVariants[variant],
+    className,
+  )}
+>
+  <slot />
+</span>

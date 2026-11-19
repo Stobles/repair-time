@@ -1,0 +1,26 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "@/shared/lib/utils";
+
+interface Props extends HTMLAttributes<"textarea"> {
+  id: string;
+  label: string;
+  value?: string;
+}
+
+const { id, label, value, class: className, ...attributes } = Astro.props;
+---
+
+<div class="grid min-w-0 gap-ui-gutter">
+  <label for={id} class="ui-field-label">
+    {label}{attributes.required && <span class="text-text-accent" aria-hidden="true"> *</span>}
+  </label>
+  <textarea
+    {...attributes}
+    {id}
+    class={cn(
+      "ui-field-surface min-h-ui-textfield resize-y px-16px py-12px text-placeholder placeholder:text-text-tertiary",
+      className,
+    )}
+  >{value}</textarea>
+</div>

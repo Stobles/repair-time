@@ -1,11 +1,52 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from "@/layouts/Layout.astro";
+import Footer from "@/layouts/Footer.astro";
+import Header from "@/layouts/Header/Header.astro";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const companyName = "Время ремонта";
+const phone = "+7 (949) 811 94 21";
+const phoneNumber = phone.replace(/[^+\d]/g, "");
+const telegramUrl = `https://t.me/${phoneNumber}`;
+const email = "info@vremyaremonta.ru";
+const sections = [
+  { id: "portfolio", label: "Портфолио" },
+  { id: "about", label: "О компании" },
+  { id: "reviews", label: "Отзывы" },
+  { id: "faq", label: "FAQ" },
+  { id: "contacts", label: "Контакты" },
+];
+const footerSections = [
+  { id: "portfolio", label: "Портфолио" },
+  { id: "about", label: "О компании" },
+  { id: "reviews", label: "Отзывы" },
+  { id: "faq", label: "Ответы на частые вопросы" },
+  { id: "contacts", label: "Контакты" },
+];
 ---
 
-<Layout>
-	<Welcome />
+<Layout title={companyName} lang="ru">
+  <Header
+    {companyName}
+    {phone}
+    {telegramUrl}
+    schedule="Ежедневно с 9:00 до 21:00"
+    license="Член СРО • Допуск № Г-0419"
+    links={sections}
+  />
+
+  <main class="w-full flex-1 mx-auto grid max-w-content-desktop gap-24px px-16px py-32px">
+    <h1 class="sr-only">{companyName}</h1>
+    {sections.map(({ id, label }) => (
+      <section {id} tabindex="-1" aria-labelledby={`${id}-title`} class="grid gap-8px">
+        <h2 id={`${id}-title`} class="text-desktop-h4 text-text-primary">{label}</h2>
+        {id === "contacts" && (
+          <a href={`tel:${phoneNumber}`} class="ui-focus w-fit rounded-sm text-desktop-body-regular text-text-secondary hover:text-text-accent-dark">
+            {phone}
+          </a>
+        )}
+      </section>
+    ))}
+  </main>
+
+  <Footer {companyName} {phone} {email} sections={footerSections} />
 </Layout>
