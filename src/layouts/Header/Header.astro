@@ -2,7 +2,6 @@
 import { BadgeCheck, Clock3, MessageSquareText, Phone } from "lucide-react";
 import Container from "@/shared/components/Container.astro";
 import Logo from "@/shared/ui/Logo.astro";
-import CallbackForm from "./CallbackForm.astro";
 import { EstimateButton } from "./EstimateButton";
 import { HeaderMenu, type HeaderLink } from "./HeaderMenu";
 
@@ -64,13 +63,10 @@ const phoneHref = `tel:${phone.replace(/[^+\d]/g, "")}`;
       <EstimateButton
         client:load
         label="ОБРАТНЫЙ ЗВОНОК"
+        contact={{ phone, telegramUrl }}
         className="hidden sm:inline-flex sm:max-xl:min-h-9 sm:max-xl:rounded-md sm:max-xl:px-[14px] sm:max-xl:text-button-medium sm:max-xl:leading-4"
-      >
-        <CallbackForm id="callback-dialog" {phone} {telegramUrl} />
-      </EstimateButton>
-      <HeaderMenu client:load {links} {phone} {telegramUrl} {schedule} {license}>
-        <CallbackForm id="mobile-callback-dialog" {phone} {telegramUrl} />
-      </HeaderMenu>
+      />
+      <HeaderMenu client:load {links} {phone} {telegramUrl} {schedule} {license} />
     </div>
   </Container>
 </header>

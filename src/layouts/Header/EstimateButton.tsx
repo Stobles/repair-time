@@ -1,5 +1,7 @@
+import { MessageSquareText } from "lucide-react";
 import type { ReactNode } from "react";
-import { Button, type ButtonProps } from "@/shared/ui/button";
+import { CallbackForm } from "@/features/contacts";
+import { Button, type ButtonProps } from "@/shared/ui/Button";
 import {
   Dialog,
   DialogContent,
@@ -9,7 +11,7 @@ import {
   DialogTrigger,
 } from "@/shared/ui/Dialog";
 
-interface EstimateButtonProps {
+type EstimateButtonProps = {
   label?: string;
   wideLabel?: string;
   title?: string;
@@ -18,8 +20,10 @@ interface EstimateButtonProps {
   leftIcon?: ButtonProps["leftIcon"];
   rightIcon?: ButtonProps["rightIcon"];
   className?: string;
-  children: ReactNode;
-}
+} & (
+  | { contact: { phone: string; telegramUrl: string }; children?: never }
+  | { contact?: never; children: ReactNode }
+);
 
 function EstimateButton({
   label = "ОБРАТНЫЙ ЗВОНОК",
@@ -29,6 +33,7 @@ function EstimateButton({
   leftIcon = "calculator",
   rightIcon = false,
   className,
+  contact,
   children,
 }: EstimateButtonProps) {
   return (
@@ -48,7 +53,20 @@ function EstimateButton({
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
-        {children}
+        {contact ? (
+          <>
+            <CallbackForm />
+            <div className="flex flex-wrap items-center justify-between gap-8px border-t border-border-default pt-16px">
+              <a href={contact.telegramUrl} className="ui-focus flex items-center gap-8px rounded-sm text-desktop-title-extra-small text-functional-telegram hover:underline">
+                <MessageSquareText aria-hidden="true" className="size-3 shrink-0" />
+                Написать в Telegram
+              </a>
+              <a href={`tel:${contact.phone.replace(/[^+\d]/g, "")}`} className="ui-focus rounded-sm text-desktop-title-small text-text-primary hover:text-text-accent-dark">
+                {contact.phone}
+              </a>
+            </div>
+          </>
+        ) : children}
       </DialogContent>
     </Dialog>
   );

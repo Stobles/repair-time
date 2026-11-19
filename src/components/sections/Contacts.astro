@@ -1,0 +1,110 @@
+---
+import { Mail, MapPin, MessageSquareText, Phone, SendHorizontal } from "lucide-astro";
+import { CallbackForm } from "@/features/contacts";
+import Container from "@/shared/components/Container.astro";
+import { Button } from "@/shared/ui/Button";
+
+interface Props {
+  phone: string;
+  email: string;
+  whatsappUrl: string;
+  telegramUrl: string;
+  address: string;
+  shortAddress: string;
+  schedule: string;
+}
+
+const { phone, email, whatsappUrl, telegramUrl, address, shortAddress, schedule } = Astro.props;
+const phoneHref = `tel:${phone.replace(/[^+\d]/g, "")}`;
+const titleId = "contacts-title";
+const estimateDescription = "Специалист приедет с лазерным оборудованием, проведет аудит объекта и составит смету с точностью до";
+const contactIconClass =
+  "grid shrink-0 place-items-center text-text-accent l:size-40px l:rounded-ui-control l:border l:border-text-secondary l:bg-ui-accordion-heading";
+const contactLinkClass = "ui-focus rounded-sm text-text-inverse hover:underline";
+const messengerClass = "gap-8px px-ui-inset sm:max-l:h-[38px] sm:max-l:flex-1 sm:max-l:rounded-md sm:max-l:text-tablet-title-small l:h-10 l:px-16px l:text-desktop-title-extra-small l:uppercase";
+---
+
+<section
+  id="contacts"
+  aria-labelledby={titleId}
+  class="bg-background-inverse py-5 text-text-inverse sm:max-l:py-24px l:py-20"
+>
+  <Container class="grid gap-16px sm:max-l:gap-24px l:min-h-[652.5px] l:grid-cols-12 l:gap-x-48px l:gap-y-40px">
+    <header class="grid gap-8px sm:max-l:gap-4px l:col-span-5 l:col-start-1 l:row-start-1 l:self-end l:gap-12px">
+      <p class="hidden items-center gap-8px text-tablet-title-extra-small text-text-accent sm:flex l:text-desktop-title-extra-small">
+        <span class="size-8px shrink-0 rounded-full bg-background-accent" aria-hidden="true"></span>
+        <span class="l:hidden">ОБРАТНАЯ СВЯЗЬ</span>
+        <span class="hidden l:inline">ЦЕНТРАЛЬНЫЙ ОФИС И ИНЖЕНЕРИНГ</span>
+      </p>
+      <h2 id={titleId} class="text-mobile-h2 sm:max-l:text-tablet-h2 l:max-w-[386px] l:text-desktop-h2">
+        Свяжитесь с нами для детального расчета сметы
+      </h2>
+      <p class="text-tablet-body-regular text-text-disabled sm:hidden">
+        {estimateDescription} 1%.
+      </p>
+      <p class="hidden text-tablet-body-medium text-text-disabled sm:block l:max-w-96 l:text-desktop-title-small l:text-text-muted">
+        Готовы приехать к вам на объект в течение 2 часов со специализированным лазерным измерительным оборудованием и составить предварительную смету.
+      </p>
+    </header>
+
+    <div class="grid min-w-0 rounded-xl border border-border-default bg-background-base p-16px sm:max-l:gap-16px sm:max-l:p-5 sm:max-l:shadow-lg l:col-span-7 l:col-start-6 l:row-span-2 l:row-start-1 l:self-center l:gap-24px l:border-transparent l:p-40px l:shadow-ui-dialog">
+      <header class="hidden gap-4px sm:grid l:gap-8px">
+        <h3 class="text-tablet-h4 text-text-primary l:text-desktop-h3">
+          Вызовите главного инженера на бесплатный замер и расчет сметы
+        </h3>
+        <p class="text-tablet-body-regular text-text-tertiary l:text-desktop-body-medium">
+          {estimateDescription} <span class="l:hidden">3%.</span><span class="hidden l:inline">1%.</span>
+        </p>
+      </header>
+      <CallbackForm client:visible={{ rootMargin: "200px" }} />
+    </div>
+
+    <address class="grid min-w-0 grid-cols-[auto_1fr] items-center gap-x-8px gap-y-ui-inset pt-16px not-italic sm:grid-cols-1 sm:max-l:gap-12px sm:max-l:rounded-xl sm:max-l:border sm:max-l:border-text-secondary sm:max-l:p-16px l:col-span-5 l:col-start-1 l:row-start-2 l:self-start l:gap-16px l:pt-0">
+      <div class="col-span-full flex items-center gap-8px sm:items-start sm:max-l:gap-ui-inset l:gap-16px">
+        <span class={contactIconClass}>
+          <MapPin class="size-4 sm:max-l:mt-0.5 l:size-5" aria-hidden="true" />
+        </span>
+        <div class="min-w-0">
+          <p class="hidden text-tablet-title-small sm:block l:text-desktop-caption-medium l:text-text-muted">Адрес офиса:</p>
+          <p class="text-tablet-body-small text-text-disabled sm:text-text-inverse sm:max-l:text-tablet-body-regular l:text-desktop-body-medium l:font-semibold">
+            <span class="sm:hidden">{shortAddress}</span>
+            <span class="hidden sm:inline">{address}</span>
+          </p>
+          <p class="mt-px hidden text-desktop-body-extra-small text-text-muted l:block">Бесплатная парковка для клиентов компании</p>
+        </div>
+      </div>
+
+      <div class="flex items-start sm:max-l:gap-ui-inset l:gap-16px">
+        <span class:list={[contactIconClass, "max-sm:hidden"]}>
+          <Phone class="size-4 sm:max-l:mt-0.5" aria-hidden="true" />
+        </span>
+        <div>
+          <p class="hidden text-desktop-caption-medium text-text-muted l:block">Телефон:</p>
+          <a href={phoneHref} class:list={[contactLinkClass, "inline-block whitespace-nowrap text-mobile-title-large sm:max-l:text-tablet-title-medium l:text-desktop-title-large"]}>{phone}</a>
+          <p class="hidden text-tablet-body-regular sm:block l:text-desktop-body-extra-small l:text-text-muted">{schedule}</p>
+        </div>
+      </div>
+
+      <div class="hidden items-start gap-16px l:flex">
+        <span class={contactIconClass}>
+          <Mail class="size-5" aria-hidden="true" />
+        </span>
+        <div class="min-w-0">
+          <p class="text-desktop-caption-medium text-text-muted">Электронная почта:</p>
+          <a href={`mailto:${email}`} class:list={[contactLinkClass, "wrap-break-word text-desktop-body-medium font-medium"]}>{email}</a>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap justify-end gap-8px sm:justify-start sm:max-l:pt-4px l:gap-12px l:pt-24px">
+        <Button href={whatsappUrl} variant="primary" size="small" leftIcon={false} rightIcon={false} className={messengerClass}>
+          <MessageSquareText class="hidden size-4 shrink-0 sm:block l:size-3.5" aria-hidden="true" />
+          WhatsApp
+        </Button>
+        <Button href={telegramUrl} variant="outline" size="small" leftIcon={false} rightIcon={false} className={messengerClass}>
+          <SendHorizontal class="hidden size-4 shrink-0 sm:block l:size-3.5" aria-hidden="true" />
+          Telegram
+        </Button>
+      </div>
+    </address>
+  </Container>
+</section>
