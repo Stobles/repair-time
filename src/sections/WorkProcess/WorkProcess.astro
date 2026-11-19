@@ -1,0 +1,123 @@
+---
+import {
+  BadgeCheck,
+  ClipboardList,
+  KeyRound,
+  PaintbrushVertical,
+  PhoneCall,
+  TriangleRight,
+  Truck,
+} from "lucide-astro";
+import Container from "@/shared/components/Container.astro";
+import Badge from "@/shared/ui/Badge.astro";
+
+const icons = {
+  consultation: PhoneCall,
+  measurement: TriangleRight,
+  estimate: ClipboardList,
+  delivery: Truck,
+  finishing: PaintbrushVertical,
+  handover: KeyRound,
+};
+
+interface WorkStep {
+  icon: keyof typeof icons;
+  title: string;
+  description: string;
+  note: string;
+  success?: boolean;
+}
+
+interface Props {
+  id?: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+  oversight: string;
+  steps: readonly WorkStep[];
+}
+
+const { id = "work-process", eyebrow, title, description, oversight, steps } = Astro.props;
+const titleId = `${id}-title`;
+const noteClass =
+  "hidden max-w-full rounded-sm border px-8px py-px font-manrope text-[0.625rem]/[0.875rem] font-semibold sm:block l:w-full l:px-12px l:py-1.5 l:text-desktop-caption-semi-bold";
+---
+
+<section
+  {id}
+  aria-labelledby={titleId}
+  class="bg-background-subtle py-32px max-sm:inset-ring max-sm:inset-ring-border-default sm:max-l:border-b sm:max-l:border-border-default sm:max-l:pt-24px sm:max-l:pb-15 l:border-t l:border-border-default l:py-20"
+>
+  <Container class="grid gap-5 l:gap-48px">
+    <header class="flex flex-col items-start gap-8px l:flex-row l:items-end l:justify-between l:gap-24px l:border-b l:border-border-default l:pb-24px">
+      <div class="grid min-w-0 gap-ui-gutter sm:max-l:gap-4px l:gap-8px">
+        <p class="flex items-center gap-8px text-tablet-title-extra-small text-text-accent l:text-desktop-title-extra-small">
+          <span aria-hidden="true" class="hidden size-8px shrink-0 rounded-full bg-background-accent sm:block"></span>
+          {eyebrow}
+        </p>
+        <h2 id={titleId} class="text-mobile-h2 text-text-primary sm:max-l:text-tablet-h2 l:max-w-xl l:text-desktop-h2">
+          {title}
+        </h2>
+        <p class="hidden max-w-[643px] text-desktop-body-regular text-text-tertiary l:block">
+          {description}
+        </p>
+      </div>
+
+      <p class="hidden max-w-full items-center gap-8px rounded-ui-control border border-border-default bg-background-base px-12px py-1.5 text-tablet-caption-semi-bold text-text-primary sm:flex l:shrink-0 l:px-16px l:py-8px l:text-desktop-caption-semi-bold">
+        <BadgeCheck aria-hidden="true" class="size-16px shrink-0 text-text-accent" />
+        {oversight}
+      </p>
+    </header>
+
+    <ol role="list" class="grid gap-12px sm:max-l:grid-cols-2 sm:max-l:gap-y-2.5 l:grid-cols-3 l:gap-x-24px l:gap-y-[25px]">
+      {steps.map(({ icon, title, description, note, success }, index) => {
+        const Icon = icons[icon];
+
+        return (
+          <li class="flex min-w-0 items-start gap-12px rounded-md border border-border-default bg-background-base p-[13px] sm:flex-col sm:items-stretch sm:max-l:gap-4px sm:max-l:rounded-lg sm:max-l:p-3.5 l:justify-between l:gap-16px l:rounded-xl l:p-24px l:shadow-xs">
+            <div class="flex shrink-0 items-center justify-between">
+              <span aria-hidden="true" class:list={[
+                "text-mobile-h2 sm:max-l:text-tablet-h2 l:text-desktop-h3",
+                success ? "text-text-accent" : "text-text-muted",
+              ]}>
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span class:list={[
+                "hidden size-9 place-items-center rounded-ui-control l:grid",
+                success ? "bg-background-success text-text-success" : "bg-background-accent-subtle text-text-accent",
+              ]}>
+                <Icon aria-hidden="true" class:list={[
+                  "size-4.5",
+                  icon === "measurement" && "-scale-x-100",
+                  icon === "handover" && "-rotate-135",
+                ]} />
+              </span>
+            </div>
+
+            <div class="grid min-w-0 gap-0.5 sm:max-l:gap-4px l:gap-2">
+              <h3 class:list={[
+                "text-tablet-title-medium text-text-primary sm:max-l:text-tablet-title-small l:text-desktop-title-medium",
+                success && "l:max-w-[19rem]",
+              ]}>
+                {title}
+              </h3>
+              <p class="text-tablet-body-small text-text-tertiary sm:max-l:min-h-[42px] sm:max-l:text-text-secondary l:text-desktop-body-small">
+                {description}
+              </p>
+            </div>
+
+            {success ? (
+              <Badge variant="green" class={`${noteClass} bg-background-success sm:self-start`}>
+                {note}
+              </Badge>
+            ) : (
+              <p class:list={[noteClass, "self-start border-border-default bg-background-subtle text-text-tertiary l:border-background-subtle l:text-text-primary"]}>
+                {note}
+              </p>
+            )}
+          </li>
+        );
+      })}
+    </ol>
+  </Container>
+</section>
