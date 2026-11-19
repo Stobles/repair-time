@@ -1,7 +1,7 @@
 import { ChevronRight, Menu, X } from "lucide-react";
 import { Popover } from "radix-ui";
-import { useRef, type ReactNode } from "react";
-import { Button } from "@/shared/ui/button";
+import { useRef } from "react";
+import { Button } from "@/shared/ui/Button";
 import { EstimateButton } from "./EstimateButton";
 
 interface HeaderLink {
@@ -15,7 +15,6 @@ interface HeaderMenuProps {
   telegramUrl: string;
   schedule: string;
   license: string;
-  children: ReactNode;
 }
 
 function HeaderMenu({
@@ -24,7 +23,6 @@ function HeaderMenu({
   telegramUrl,
   schedule,
   license,
-  children,
 }: HeaderMenuProps) {
   const phoneHref = `tel:${phone.replace(/[^+\d]/g, "")}`;
   const firstLink = useRef<HTMLAnchorElement>(null);
@@ -84,10 +82,9 @@ function HeaderMenu({
                 size="medium"
                 leftIcon={false}
                 rightIcon
+                contact={{ phone, telegramUrl }}
                 className="min-h-48px w-full"
-              >
-                {children}
-              </EstimateButton>
+              />
               <div className="grid justify-items-center gap-4px">
                 <a
                   href={phoneHref}

@@ -46,7 +46,7 @@ Enabled Primary labels use background/base and their icons use text/inverse (bot
 ## Web behavior and gaps
 
 - Buttons use browser hover, press and disabled behavior. Hover colors transition over 300 ms. Controls have visible keyboard focus. The telephone input uses the accent stroke and ring from the focused reference at the UI Kit master size. The reference’s 44 px field, leading icon and separate caption belong to that composition.
-- Dropdown uses the shadcn Radix Dropdown Menu pattern with radio items and non-modal behavior, so the page remains scrollable. The list fades, scales and slides in from the trigger. A native form field supplies submission and required validation. Tabs use Radix and overflow follows available width.
+- The dropdown design is implemented with shadcn Radix Select. Its list matches the trigger width, and a background highlight marks the active option. Radix supplies keyboard navigation and the native form field for submission, required validation and reset. Tabs use Radix and overflow follows available width.
 - Checkbox starts unchecked for user consent. Accordion grouping is caller-controlled. Accordion expands over 200 ms using the content’s intrinsic height where supported, with a fade fallback. The shadcn Radix Dialog manages modality, focus and Escape dismissal. The desktop pattern shells use content-driven sizing. Animations respect reduced-motion settings.
 - Formal validation styling, input states beyond the separate phone focus example, alternate dialog layouts, responsive variant mappings and exact icon paths remain unavailable.
 
@@ -54,11 +54,12 @@ Enabled Primary labels use background/base and their icons use text/inverse (bot
 
 ```astro
 ---
-import { Button } from "@/shared/ui/button";
-import { Dropdown } from "@/shared/ui/Dropdown";
-import Input from "@/shared/ui/Input.astro";
+import { Button } from "@/shared/ui/Button";
+import { Field, FieldLabel } from "@/shared/ui/Field";
+import { Input } from "@/shared/ui/Input";
+import { SelectField } from "@/shared/ui/SelectField";
 import { Tabs } from "@/shared/ui/Tabs";
-import { EstimateButton } from "@/widgets/EstimateButton";
+import { EstimateButton } from "@/layouts/Header/EstimateButton";
 
 const options = [
   { value: "flat", label: "Квартира или апартаменты" },
@@ -75,8 +76,11 @@ const categories = [
 </Button>
 
 <EstimateButton client:load label="Вызвать инженера" title="Заявка на замер">
-  <Input id="phone" label="Телефон" name="phone" type="tel" autocomplete="tel" required />
-  <Dropdown client:load id="property" label="Тип объекта" name="property" {options} defaultValue="flat" />
+  <Field>
+    <FieldLabel htmlFor="phone">Телефон</FieldLabel>
+    <Input id="phone" name="phone" type="tel" autoComplete="tel" required />
+  </Field>
+  <SelectField client:load id="property" label="Тип объекта" name="property" {options} defaultValue="flat" />
 </EstimateButton>
 
 <Tabs client:load label="Категории проектов" items={categories}>
@@ -85,6 +89,6 @@ const categories = [
 </Tabs>
 ```
 
-Use unique IDs for fields. Pass a stable, non-empty value for each dropdown option and tab. Hydrate `Dropdown`, `Tabs` and `EstimateButton`. Compose the shared `Dialog`, `DialogTrigger` and `DialogContent` inside the same React island. Set `leftIcon` or `rightIcon` to `false` to remove it or to an icon name to swap it. In React trees, `Button` also accepts a custom icon element and supports shadcn’s `asChild` with a React child.
+Use `Field` with `FieldLabel` to label `Input`, `Textarea` and `Checkbox`. Match each label’s `htmlFor` to the control’s unique `id`. Pass a stable, non-empty value for each select option and tab. Hydrate standalone `Checkbox`, `SelectField`, `Tabs` and `EstimateButton` instances rendered from Astro. Set `contact={{ phone, telegramUrl }}` on `EstimateButton` to render the shared callback form in the dialog. Compose the shared `Dialog`, `DialogTrigger` and `DialogContent` inside the same React island. Set `leftIcon` or `rightIcon` to `false` to remove it or to an icon name to swap it. In React trees, `Button` also accepts a custom icon element and supports shadcn’s `asChild` with a React child.
 
 The stylesheet loads all three design fonts locally through Fontsource, including Cyrillic subsets.

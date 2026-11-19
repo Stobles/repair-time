@@ -36,6 +36,7 @@
 
   --color-functional-rating: #f59e0b;
   --color-functional-success: #10b981;
+  --color-error: #d80000;
   --color-functional-telegram: #229ed9;
   --color-functional-whatsapp: #047857;
 
@@ -464,7 +465,7 @@
 }
 
 @utility ui-field-surface {
-  @apply ui-focus w-full min-w-0 rounded-ui-control border border-border-strong bg-background-base text-text-primary disabled:cursor-not-allowed;
+  @apply ui-focus w-full min-w-0 rounded-ui-control border border-border-strong bg-background-base text-text-primary aria-invalid:border-error aria-invalid:focus-visible:outline-error disabled:cursor-not-allowed;
 }
 
 :root {

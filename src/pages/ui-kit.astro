@@ -2,18 +2,20 @@
 import AccordionItem from "@/shared/ui/AccordionItem.astro";
 import Badge from "@/shared/ui/Badge.astro";
 import { Button } from "@/shared/ui/Button";
-import Checkbox from "@/shared/ui/Checkbox.astro";
-import { Dropdown } from "@/shared/ui/Dropdown";
+import { Checkbox } from "@/shared/ui/Checkbox";
+import { Field, FieldLabel } from "@/shared/ui/Field";
 import { Icon, type IconName } from "@/shared/ui/Icon";
-import Input from "@/shared/ui/Input.astro";
+import { Input } from "@/shared/ui/Input";
+import { SelectField } from "@/shared/ui/SelectField";
 import { Tabs, type TabItem } from "@/shared/ui/Tabs";
-import Textfield from "@/shared/ui/Textfield.astro";
+import { Textarea } from "@/shared/ui/Textarea";
 import Layout from "@/layouts/Layout.astro";
 import { EstimateButton } from "@/layouts/Header/EstimateButton";
 
 const catalogWidth = "mx-auto w-[min(var(--container-content-desktop),calc(100%-2*clamp(var(--spacing-16px),4vw,var(--spacing-48px))))]";
 const catalogPanel = "grid min-w-0 gap-16px rounded-xl border border-border-default bg-background-base p-[clamp(var(--spacing-16px),3vw,var(--spacing-24px))]";
 const exampleGrid = "grid min-w-0 grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))] gap-16px";
+const checkboxLabel = "cursor-pointer text-desktop-body-extra-small text-text-tertiary";
 
 const sections = [
   { id: "buttons", label: "Кнопки" },
@@ -147,10 +149,16 @@ const questions = [
         <h2 id="fields-title" class="text-desktop-h4 text-text-primary">Элементы формы</h2>
         <form data-demo-form method="post" class="grid min-w-0 gap-16px">
           <div class={exampleGrid}>
-            <Input id="demo-name" name="name" label="ИМЯ" placeholder="Константин" autocomplete="name" required />
-            <Input id="demo-phone" name="phone" label="ТЕЛЕФОН" type="tel" placeholder="+7 (___) ___-__-__" autocomplete="tel" />
+            <Field>
+              <FieldLabel htmlFor="demo-name">ИМЯ <span class="text-text-accent" aria-hidden="true">*</span></FieldLabel>
+              <Input id="demo-name" name="name" placeholder="Константин" autoComplete="name" required />
+            </Field>
+            <Field>
+              <FieldLabel htmlFor="demo-phone">ТЕЛЕФОН</FieldLabel>
+              <Input id="demo-phone" name="phone" type="tel" placeholder="+7 (___) ___-__-__" autoComplete="tel" />
+            </Field>
           </div>
-          <Dropdown
+          <SelectField
             client:load
             id="demo-property"
             name="property"
@@ -159,12 +167,24 @@ const questions = [
             placeholder="Выберите тип объекта"
             required
           />
-          <Textfield id="demo-message" name="message" label="СООБЩЕНИЕ" placeholder="Укажите площадь или опишите нужные работы" />
+          <Field>
+            <FieldLabel htmlFor="demo-message">СООБЩЕНИЕ</FieldLabel>
+            <Textarea id="demo-message" name="message" placeholder="Укажите площадь или опишите нужные работы" />
+          </Field>
           <fieldset class="grid gap-4px">
             <legend class="ui-field-label">ФЛАЖКИ</legend>
-            <Checkbox id="demo-consent" name="consent" required>Согласие на обработку данных *</Checkbox>
-            <Checkbox id="demo-checked" checked>Выбранный флажок</Checkbox>
-            <Checkbox id="demo-disabled" disabled>Недоступный флажок</Checkbox>
+            <Field orientation="horizontal" className="min-h-ui-checkbox-row">
+              <Checkbox client:load id="demo-consent" name="consent" required />
+              <FieldLabel htmlFor="demo-consent" className={checkboxLabel}>Согласие на обработку данных <span aria-hidden="true">*</span></FieldLabel>
+            </Field>
+            <Field orientation="horizontal" className="min-h-ui-checkbox-row">
+              <Checkbox client:load id="demo-checked" defaultChecked />
+              <FieldLabel htmlFor="demo-checked" className={checkboxLabel}>Выбранный флажок</FieldLabel>
+            </Field>
+            <Field orientation="horizontal" className="min-h-ui-checkbox-row">
+              <Checkbox client:load id="demo-disabled" disabled />
+              <FieldLabel htmlFor="demo-disabled" className={checkboxLabel}>Недоступный флажок</FieldLabel>
+            </Field>
           </fieldset>
           <div class="flex flex-wrap items-center gap-8px">
             <Button type="submit" size="medium" leftIcon={false} rightIcon={false}>Проверить поля</Button>
@@ -236,8 +256,11 @@ const questions = [
             size="large"
           >
             <form data-demo-form method="post" class="grid min-w-0 gap-16px">
-              <Input id="dialog-phone" name="phone" label="ТЕЛЕФОН" type="tel" autocomplete="tel" required />
-              <Dropdown client:load id="dialog-property" name="property" label="ТИП ОБЪЕКТА" options={propertyTypes} defaultValue="apartment" />
+              <Field>
+                <FieldLabel htmlFor="dialog-phone">ТЕЛЕФОН <span class="text-text-accent" aria-hidden="true">*</span></FieldLabel>
+                <Input id="dialog-phone" name="phone" type="tel" autoComplete="tel" required />
+              </Field>
+              <SelectField client:load id="dialog-property" name="property" label="ТИП ОБЪЕКТА" options={propertyTypes} defaultValue="apartment" />
               <div>
                 <Button type="submit" size="medium" leftIcon="send" rightIcon={false}>Проверить поля</Button>
               </div>
