@@ -36,8 +36,8 @@ function ReviewQuote({ author, details, quote }: ReviewQuoteProps) {
   }, []);
 
   return (
-    <div className="col-span-full min-w-0 max-sm:pb-px">
-      <blockquote className="text-tablet-body-large text-text-tertiary max-sm:pe-3.5 sm:max-l:text-tablet-body-medium l:text-desktop-body-medium">
+    <div className="min-w-0">
+      <blockquote className="text-tablet-body-medium text-text-tertiary l:text-desktop-body-medium">
         <div className="relative overflow-clip">
           <p
             ref={excerptRef}
