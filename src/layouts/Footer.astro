@@ -52,9 +52,9 @@ const linkClass = "ui-focus rounded-sm transition-colors [&[href]]:hover:text-te
         <nav aria-labelledby="footer-sections">
           <h2 id="footer-sections" class=" text-text-primary text-desktop-title-small">Разделы</h2>
           <ul class="mt-8px grid gap-ui-gutter text-text-tertiary text-desktop-body-small l:mt-[9px] l:gap-[9px]  l:text-text-secondary">
-            {sections.map(({ label, id }, index) => (
+            {sections.map(({ label, id }) => (
               <li class="min-h-[17px]">
-                <a href={`#${id}`} class:list={[linkClass, index === 1 && "max-sm:underline max-sm:decoration-[6%]"]}>{label}</a>
+                <a href={`#${id}`} class:list={[linkClass]}>{label}</a>
               </li>
             ))}
           </ul>

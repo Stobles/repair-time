@@ -7,6 +7,7 @@ import WhyChooseUs from "@/sections/WhyChooseUs/WhyChooseUs.astro";
 import WorkProcess from "@/sections/WorkProcess/WorkProcess.astro";
 import Reviews from "@/sections/Reviews/Reviews.astro";
 import Faq from "@/sections/Faq/Faq.astro";
+import Hero from "@/sections/Hero/Hero.astro";
 
 const companyName = "Время ремонта";
 const phone = "+7 (949) 811 94 21";
@@ -161,7 +162,7 @@ const faqEntries = [
   />
 
   <main class="flex flex-col w-full flex-1">
-    <h1 class="sr-only">{companyName}</h1>
+    <Hero />
     <WhyChooseUs
       title="Почему нас выбирают"
       eyebrow={"НАШИ СТАНДАРТЫ"}
