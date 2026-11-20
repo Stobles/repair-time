@@ -8,6 +8,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   integrations: [react()],
   site: "https://stobles.github.io",
+  base: "/repair-time",
 
   vite: {
     plugins: [tailwindcss()],

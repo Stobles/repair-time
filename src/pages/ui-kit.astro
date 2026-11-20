@@ -1,4 +1,5 @@
 ---
+import { baseHref } from "@/shared/lib/BasePath";
 import AccordionItem from "@/shared/ui/AccordionItem.astro";
 import Badge from "@/shared/ui/Badge.astro";
 import { Button } from "@/shared/ui/Button";
@@ -77,7 +78,7 @@ const questions = [
 <Layout title="UI Kit · Время ремонта" lang="ru">
   <header class="border-t-4 border-border-accent bg-background-inverse text-text-inverse">
     <div class:list={[catalogWidth, "grid gap-24px py-32px"]}>
-      <a href="/" class="ui-focus w-fit rounded-sm text-desktop-title-medium">Время ремонта</a>
+      <a href={baseHref} class="ui-focus w-fit rounded-sm text-desktop-title-medium">Время ремонта</a>
       <div class="grid gap-8px">
         <h1 class="text-desktop-h1 [font-size:clamp(var(--text-mobile-h1),6vw,var(--text-desktop-h1))] [line-height:clamp(var(--text-mobile-h1--line-height),7vw,var(--text-desktop-h1--line-height))]">UI Kit</h1>
         <p class="text-desktop-body-regular text-text-disabled">

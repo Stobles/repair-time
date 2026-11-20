@@ -1,6 +1,7 @@
 ---
 import { BadgeCheck, Clock3, MessageSquareText, Phone } from "lucide-react";
 import Container from "@/shared/components/Container.astro";
+import { baseHref } from "@/shared/lib/BasePath";
 import Logo from "@/shared/ui/Logo.astro";
 import { EstimateButton } from "./EstimateButton";
 import { HeaderMenu, type HeaderLink } from "./HeaderMenu";
@@ -39,7 +40,7 @@ const phoneHref = `tel:${phone.replace(/[^+\d]/g, "")}`;
   </div>
 
   <Container class="flex min-h-[63px] items-center gap-4px sm:min-h-[66px] sm:gap-12px l:min-h-20 l:gap-32px">
-    <a href="/" class="ui-focus me-auto shrink-0 rounded-ui-control whitespace-nowrap l:me-0">
+    <a href={baseHref} class="ui-focus me-auto shrink-0 rounded-ui-control whitespace-nowrap l:me-0">
       <Logo {companyName} />
     </a>
 
