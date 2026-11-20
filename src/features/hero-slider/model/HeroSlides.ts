@@ -1,9 +1,9 @@
 import type { ImageMetadata } from "astro";
-import apartmentsDesktop from "../assets/apartments-desktop.webp";
+import apartmentsDesktop from "@/shared/assets/projects/apartments-desktop.webp";
+import livingRoom from "@/shared/assets/projects/living-room.webp";
+import office from "@/shared/assets/projects/office.webp";
 import apartmentsMobile from "../assets/apartments-mobile.webp";
 import cityApartment from "../assets/city-apartment.webp";
-import livingRoom from "../assets/living-room.webp";
-import office from "../assets/office.webp";
 
 export interface HeroSlide {
   title: string;
@@ -15,9 +15,9 @@ export interface HeroSlide {
 export const heroSlides: readonly HeroSlide[] = [
   {
     title: "Скидка 15% на капитальный ремонт офисов и квартир",
-    image: apartmentsDesktop,
-    mobileImage: apartmentsMobile,
-    alt: "Гостиная с панорамным видом на Кремль",
+    image: office,
+    mobileImage: livingRoom,
+    alt: "Гостиная с панорамным видом на город",
   },
   {
     title: "Скидка 15% на капитальный ремонт офисов",
@@ -31,7 +31,7 @@ export const heroSlides: readonly HeroSlide[] = [
   },
   {
     title: "Скидка 15% на капитальный ремонт квартир",
-    image: cityApartment,
-    alt: "Кухня-гостиная с видом на Москва-Сити",
+    image: office,
+    alt: "Кухня-гостиная с видом на небоскрёбы",
   },
 ];

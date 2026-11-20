@@ -1,0 +1,44 @@
+---
+import { BadgeCheck } from "lucide-astro";
+import { ProjectShowcase, type PortfolioProject } from "@/features/portfolio";
+import Container from "@/shared/components/Container.astro";
+
+interface Props {
+  projects: readonly PortfolioProject[];
+  contactHref: string;
+  whatsappUrl: string;
+}
+
+const { projects, contactHref, whatsappUrl } = Astro.props;
+---
+
+{projects.length > 0 && (
+  <section
+    id="portfolio"
+    aria-labelledby="portfolio-title"
+    class="bg-background-base py-32px text-text-primary sm:max-l:border-b sm:max-l:border-border-default sm:max-l:py-24px l:border-t l:border-border-default l:pt-20 l:pb-30"
+  >
+    <Container class="grid gap-16px l:gap-32px">
+      <header class="flex flex-wrap items-end justify-between gap-12px l:gap-16px">
+        <div class="grid gap-ui-gutter sm:max-l:gap-4px l:gap-8px">
+          <p class="flex items-center gap-8px text-tablet-title-extra-small text-text-accent l:text-desktop-title-extra-small">
+            <span aria-hidden="true" class="hidden size-8px shrink-0 rounded-full bg-background-accent sm:block"></span>
+            ПОРТФОЛИО
+          </p>
+          <h2 id="portfolio-title" class="text-mobile-h2 sm:max-l:text-tablet-h2 l:text-desktop-h2">
+            Наши реализованные проекты
+          </h2>
+          <p class="text-tablet-body-medium text-text-tertiary l:text-desktop-body-regular">
+            Посмотрите примеры выполненных работ и оцените качество нашего ремонта
+          </p>
+        </div>
+        <p class="inline-flex items-center gap-8px rounded-ui-control border border-border-default bg-background-subtle px-12px py-ui-gutter text-desktop-caption-semi-bold l:px-16px l:py-8px">
+          <BadgeCheck aria-hidden="true" class="size-16px shrink-0 text-text-accent" />
+          100% реальные фото
+        </p>
+      </header>
+
+      <ProjectShowcase client:load {projects} {contactHref} {whatsappUrl} />
+    </Container>
+  </section>
+)}
