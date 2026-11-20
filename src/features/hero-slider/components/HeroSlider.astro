@@ -1,0 +1,105 @@
+---
+import { ChevronLeft, ChevronRight } from "lucide-astro";
+import { Button } from "@/shared/ui/Button";
+import { heroSlides } from "../model/HeroSlides";
+import HeroSlide from "./HeroSlide.astro";
+
+const controls = [
+  { direction: "previous", label: "Предыдущий слайд", Icon: ChevronLeft },
+  { direction: "next", label: "Следующий слайд", Icon: ChevronRight },
+];
+---
+
+<div
+  data-hero-slider
+  role="region"
+  aria-roledescription="карусель"
+  aria-label="Примеры ремонта"
+  class="swiper group relative touch-pan-y overflow-x-clip l:overflow-hidden l:rounded-xl l:border l:border-background-subtle l:bg-background-base l:shadow-lg"
+>
+  <div
+    class="absolute right-3 bottom-3 z-10 hidden items-center gap-8px group-[.swiper-initialized]:flex l:right-6 l:bottom-6 l:gap-12px"
+  >
+    <span
+      data-hero-pagination
+      role="status"
+      class="flex h-7 min-w-14 shrink-0 items-center justify-center gap-1 rounded-ui-control border border-background-subtle bg-background-base/90 px-2 text-desktop-caption-semi-bold whitespace-nowrap text-text-primary tabular-nums shadow-xs backdrop-blur-md sm:h-8 l:min-w-[67px]"
+    ></span>
+    {controls.map(({ direction, label, Icon }) => (
+      <Button
+        data-hero-nav={direction}
+        aria-label={label}
+        variant="outline"
+        size="small"
+        leftIcon={false}
+        rightIcon={false}
+        className="h-9! w-9 shrink-0 bg-button-outline/95 p-0! shadow-md inset-ring-background-subtle sm:max-l:h-10! sm:max-l:w-10 l:h-11! l:w-11"
+      >
+        <Icon class="size-4" aria-hidden="true" />
+      </Button>
+    ))}
+  </div>
+
+  <div class="swiper-wrapper flex transition-transform">
+    {heroSlides.map((slide, index) => (
+      <HeroSlide {slide} initial={index === 0} />
+    ))}
+  </div>
+</div>
+
+<script>
+  import Swiper from "swiper";
+  import { A11y, Navigation, Pagination } from "swiper/modules";
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const formatSlideNumber = (number: number) => String(number).padStart(2, "0");
+
+  for (const slider of document.querySelectorAll<HTMLElement>("[data-hero-slider]")) {
+    const nextButton = slider.querySelector<HTMLButtonElement>('[data-hero-nav="next"]');
+
+    function updateSlideInteractivity(swiper: Swiper) {
+      const activeSlide = swiper.slides[swiper.activeIndex];
+
+      for (const slide of swiper.slides) {
+        const inactive = slide !== activeSlide;
+        if (inactive && slide.contains(document.activeElement)) {
+          nextButton?.focus({ preventScroll: true });
+        }
+        slide.inert = inactive;
+      }
+    }
+
+    new Swiper(slider, {
+      modules: [A11y, Navigation, Pagination],
+      loop: true,
+      speed: reducedMotion.matches ? 0 : 300,
+      spaceBetween: 16,
+      breakpoints: {
+        640: { spaceBetween: 24 },
+      },
+      navigation: {
+        prevEl: slider.querySelector<HTMLButtonElement>('[data-hero-nav="previous"]'),
+        nextEl: nextButton,
+        addIcons: false,
+      },
+      pagination: {
+        el: slider.querySelector<HTMLElement>("[data-hero-pagination]"),
+        type: "fraction",
+        formatFractionCurrent: formatSlideNumber,
+        formatFractionTotal: formatSlideNumber,
+      },
+      a11y: {
+        notificationClass: "sr-only",
+        prevSlideMessage: "Предыдущий слайд",
+        nextSlideMessage: "Следующий слайд",
+        itemRoleDescriptionMessage: "слайд",
+        slideLabelMessage: "{{index}} из {{slidesLength}}",
+        wrapperLiveRegion: false,
+      },
+      on: {
+        init: updateSlideInteractivity,
+        slideChange: updateSlideInteractivity,
+      },
+    });
+  }
+</script>

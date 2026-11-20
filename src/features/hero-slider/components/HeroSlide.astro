@@ -1,0 +1,66 @@
+---
+import Badge from "@/shared/ui/Badge.astro";
+import { Button } from "@/shared/ui/Button";
+import type { HeroSlide } from "../model/HeroSlides";
+
+interface Props {
+  slide: HeroSlide;
+  initial: boolean;
+}
+
+const { slide: { title, image, mobileImage, alt }, initial } = Astro.props;
+---
+
+<div
+  class="swiper-slide grid w-full shrink-0 grid-rows-[1fr_auto] gap-5 backface-hidden sm:max-l:gap-[11px] l:grid-cols-12 l:grid-rows-1 l:gap-0"
+  inert={!initial}
+>
+  <div class="flex min-w-0 flex-col items-start gap-12px sm:max-l:gap-[11px] l:col-span-5 l:gap-24px l:px-32px l:pt-48px l:pb-13 xl:px-48px">
+    <Badge variant="light" class="max-w-full pl-3.5 text-desktop-caption-semi-bold">
+      СЕЗОННАЯ АКЦИЯ ДО 31 ДЕКАБРЯ
+    </Badge>
+
+    <div class="grid w-full gap-12px sm:max-l:gap-[11px] sm:max-l:pt-[5px] l:gap-16px">
+      <h2 class="text-mobile-h1 text-text-primary sm:max-l:text-tablet-h1 l:text-desktop-h1">
+        {title}
+      </h2>
+      <p class="text-tablet-body-large text-text-tertiary l:text-desktop-body-large">
+        Фиксируем смету в договоре без доплат.{" "}<br class="sm:hidden" />
+        Оплата поэтапно по факту приёмки.{" "}<br class="l:hidden" />
+        Подарок: страховка объекта на{" "}<br class="sm:hidden" />
+        50&nbsp;000&nbsp;000&nbsp;₽ и рабочий дизайн-проект.
+      </p>
+    </div>
+
+    <div class="mt-auto w-full pt-2 sm:max-l:pt-[9px] l:pt-0">
+      <Button
+        href="#contacts"
+        size="large"
+        leftIcon='phone'
+        
+        className="min-h-13 w-full gap-8px px-5 py-16px text-center font-manrope text-sm/5 font-bold whitespace-normal shadow-md max-sm:rounded-md max-sm:tracking-[0.01em] max-l:h-auto! sm:max-l:min-h-12 sm:max-l:w-auto sm:max-l:rounded-lg sm:max-l:px-24px sm:max-l:py-3.5 sm:max-l:shadow-background-accent/20 sm:max-l:[&>span]:size-4 l:h-ui-button-large l:min-h-ui-button-large l:w-fit l:max-w-full l:rounded-ui-control l:gap-ui-inset l:px-16px l:text-button-large l:shadow-none xl:px-ui-wide-inset"
+      >
+        ЗАКАЗАТЬ ЗВОНОК
+      </Button>
+    </div>
+  </div>
+
+  <div class="relative min-w-0 overflow-hidden bg-background-inverse max-sm:aspect-[4/3] max-sm:rounded-md sm:max-l:h-[337px] sm:max-l:rounded-xl sm:max-l:border sm:max-l:border-border-default sm:max-l:shadow-lg l:col-span-7 l:min-h-[640px]">
+    <picture>
+      {mobileImage && <source media="(width < 40rem)" srcset={mobileImage.src} />}
+      <img
+        src={image.src}
+        width={image.width}
+        height={image.height}
+        alt={alt}
+        class="absolute inset-0 size-full object-cover"
+        draggable="false"
+        loading={initial ? "eager" : "lazy"}
+        fetchpriority={initial ? "high" : "low"}
+      />
+    </picture>
+    <div
+      class="pointer-events-none absolute inset-0 hidden bg-linear-to-t from-background-inverse/40 via-transparent to-black/10 l:block"
+    ></div>
+  </div>
+</div>

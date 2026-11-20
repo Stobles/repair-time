@@ -58,8 +58,8 @@ function Button(props: ButtonProps) {
   const {
     variant = "primary",
     size = "large",
-    leftIcon = true,
-    rightIcon = true,
+    leftIcon = false,
+    rightIcon = false,
     className,
     ...elementProps
   } = props;
