@@ -1,7 +1,6 @@
 ---
 import { BadgeCheck, CircleCheck, Hammer, ShieldCheck, Users, Video } from "lucide-astro";
 import engineerDesktop from "@/assets/AboutCompany/EngineerDesktop.jpg";
-import engineerMobile from "@/assets/AboutCompany/EngineerMobile.jpg";
 import Container from "@/shared/components/Container.astro";
 import { Button } from "@/shared/ui/Button";
 
@@ -14,97 +13,115 @@ const { contactHref } = Astro.props;
 const competencies = [
   {
     icon: CircleCheck,
+    mobileIcon: BadgeCheck,
+    iconSize: "w-[16.5px] l:w-[18.333px]",
     title: "Собственный ОТК",
     description: "3-уровневый технический контроль скрытых работ",
+    descriptionWidth: "l:max-w-[214px]",
   },
   {
     icon: Hammer,
+    iconSize: "w-[15px] l:w-[18.288px]",
     title: "Оборудование Hilti & Festool",
     description: "Лазерное нивелирование с точностью до 0.5 мм",
+    descriptionWidth: "l:max-w-[247px]",
   },
   {
     icon: Users,
+    iconSize: "w-[18px] [&>svg]:scale-y-[0.65] l:w-5.5 l:[&>svg]:origin-top",
     title: "65+ мастеров в штате",
     description: "Славянские бригады, граждане РФ со стажем",
+    descriptionWidth: "l:max-w-[227px]",
   },
   {
     icon: Video,
+    iconSize: "w-[15px] [&>svg]:scale-115 l:w-[18.333px] l:[&>svg]:origin-top",
     title: "Видеоотчеты в WhatsApp",
     description: "Персональный менеджер на связи ежедневно",
+    descriptionWidth: "l:max-w-[207px]",
   },
 ];
 ---
 
-<section id="about" aria-labelledby="about-title" class="border-y border-border-default bg-background-subtle py-32px text-text-primary sm:max-l:border-t-0 sm:max-l:py-24px l:border-b-0 l:py-20">
-  <Container class="grid gap-16px sm:max-l:gap-8px l:grid-cols-12 l:gap-x-48px l:gap-y-24px l:pt-ui-inset">
-    <header class="grid gap-ui-gutter sm:gap-8px l:col-span-7 l:col-start-6 l:row-start-1 l:gap-24px">
-      <p class="flex items-center gap-8px text-tablet-caption-semi-bold text-text-accent l:text-desktop-title-extra-small">
-        <span class="hidden size-8px rounded-full bg-background-accent sm:block" aria-hidden="true"></span>
+<section id="about" aria-labelledby="about-title" class="border-border-default bg-background-subtle py-32px text-text-primary max-sm:inset-ring-1 max-sm:inset-ring-border-default sm:max-l:border-b sm:max-l:py-24px l:border-t l:py-20">
+  <Container class="grid gap-16px sm:max-l:gap-8px l:grid-cols-12 l:gap-x-48px l:gap-y-24px l:pt-[11.1875px]">
+    <header class="grid gap-ui-gutter sm:max-l:gap-8px l:col-span-7 l:col-start-6 l:row-start-1 l:gap-24px">
+      <p class="flex items-center gap-8px text-text-accent max-l:text-tablet-title-extra-small l:text-desktop-title-extra-small">
+        <span class="hidden size-8px shrink-0 rounded-full bg-background-accent sm:block" aria-hidden="true"></span>
         О КОМПАНИИ «ВРЕМЯ РЕМОНТА»
       </p>
-      <h2 id="about-title" class="text-mobile-h2 sm:text-tablet-h2 l:text-desktop-h2">
+      <h2 id="about-title" class="text-mobile-h2 sm:max-l:max-w-[620px] sm:max-l:text-tablet-h2 sm:max-l:text-balance l:text-desktop-h2">
         12 лет безупречной репутации на строительном рынке
       </h2>
     </header>
 
-    <div class="grid min-w-0 gap-12px rounded-lg bg-background-base p-16px shadow-md sm:contents">
+    <div class="grid min-w-0 gap-12px rounded-md bg-background-base p-16px shadow-md sm:contents">
       <div class="relative l:col-span-5 l:col-start-1 l:row-span-2 l:row-start-1 l:self-center">
-        <figure class="flex min-w-0 items-center gap-12px sm:gap-16px sm:max-l:rounded-2xl sm:max-l:border sm:max-l:border-border-default sm:max-l:bg-background-base sm:max-l:px-16px sm:max-l:py-12px sm:max-l:shadow-xs l:relative l:block l:overflow-hidden l:rounded-2xl l:border l:border-background-base l:shadow-ui-dialog">
-          <picture class="block size-20 shrink-0 overflow-hidden rounded-lg sm:max-l:h-36 sm:max-l:w-28 sm:max-l:rounded-xl sm:max-l:border sm:max-l:border-border-default l:aspect-square l:size-auto l:rounded-none">
-            <source media="(min-width: 1024px)" srcset={engineerDesktop.src} />
-            <img src={engineerMobile.src} alt="" width={engineerMobile.width} height={engineerMobile.height} loading="lazy" decoding="async" class="size-full object-cover sm:max-l:hidden" />
-          </picture>
-          <div class="pointer-events-none absolute inset-0 hidden bg-linear-to-t from-background-inverse/80 via-transparent via-50% to-transparent l:block" aria-hidden="true"></div>
-          <figcaption class="min-w-0 l:absolute l:inset-x-24px l:bottom-24px l:rounded-xl l:border l:border-background-base/40 l:bg-background-base/95 l:p-16px l:shadow-lg l:backdrop-blur-md">
-            <p class="text-mobile-title-large sm:text-tablet-title-large l:text-desktop-title-medium">Михаил Воронов</p>
-            <p class="text-tablet-title-small text-text-accent l:text-desktop-body-small-bold">Главный инженер проектов, стаж 18 лет</p>
-            <p class="mt-4px flex items-center gap-8px text-tablet-body-small text-text-tertiary l:mt-0.5 l:text-desktop-caption-medium">
-              <BadgeCheck class="hidden size-3 shrink-0 text-text-success l:block" aria-hidden="true" />
+        <figure class="flex min-w-0 items-center gap-12px sm:max-l:gap-16px sm:max-l:rounded-xl sm:max-l:border sm:max-l:border-border-default sm:max-l:bg-background-base sm:max-l:px-16px sm:max-l:py-12px sm:max-l:drop-shadow-xs l:relative l:block l:overflow-hidden l:rounded-xl l:border l:border-background-base l:shadow-ui-dialog">
+          <img
+            src={engineerDesktop.src}
+            alt=""
+            width={engineerDesktop.width}
+            height={engineerDesktop.height}
+            loading="lazy"
+            decoding="async"
+            class="block size-20 shrink-0 rounded-md object-cover sm:max-l:h-36 sm:max-l:w-28 sm:max-l:rounded-lg sm:max-l:border sm:max-l:border-stone-300 sm:max-l:object-[65%_center] l:aspect-square l:h-auto l:w-full l:rounded-none"
+          />
+          <div class="pointer-events-none absolute inset-0 hidden bg-linear-to-t/srgb from-[#020617]/80 via-[#020617]/0 via-50% to-[#020617]/0 l:block" aria-hidden="true"></div>
+          <figcaption class="min-w-0 sm:max-l:pt-[7.5px] l:absolute l:inset-x-24px l:bottom-24px l:rounded-lg l:border l:border-background-base/40 l:bg-background-base/95 l:p-16px l:pb-[16.5px] l:shadow-lg l:backdrop-blur-md">
+            <p class="max-sm:text-mobile-title-large sm:text-desktop-title-medium">Михаил Воронов</p>
+            <p class="text-tablet-title-small text-text-accent l:-mt-px l:text-desktop-body-small-bold">Главный инженер проектов, стаж 18 лет</p>
+            <p class="mt-4px flex items-center gap-8px text-tablet-body-small text-text-tertiary max-sm:text-text-secondary sm:max-l:mt-8px l:mt-0.5 l:text-desktop-caption-medium">
+              <BadgeCheck class="hidden size-[12.5px] shrink-0 text-text-success l:block" aria-hidden="true" />
               Член ассоциации строителей, допуск СРО № Г-0419
             </p>
           </figcaption>
         </figure>
-        <div class="absolute -top-5 -right-5 hidden items-center gap-12px rounded-xl border border-border-default bg-background-base p-16px shadow-xl l:flex">
+        <div class="absolute -top-5 -right-5 hidden items-center gap-12px rounded-lg border border-border-default bg-background-base p-16px shadow-xl l:flex">
           <span class="grid size-40px shrink-0 place-items-center rounded-ui-control bg-background-accent-subtle text-text-accent">
-            <ShieldCheck class="size-5" aria-hidden="true" />
+            <ShieldCheck class="size-[22px]" aria-hidden="true" />
           </span>
           <div>
             <p class="text-desktop-title-small">Официальная гарантия</p>
-            <p class="text-desktop-body-extra-small text-text-tertiary">5 лет по договору с юрлицом</p>
+            <p class="-mt-px text-desktop-body-extra-small text-text-tertiary">5 лет по договору с юрлицом</p>
           </div>
         </div>
       </div>
 
-      <div class="grid min-w-0 gap-12px sm:gap-8px l:col-span-7 l:col-start-6 l:row-start-2 l:gap-24px">
+      <div class="grid min-w-0 gap-12px max-sm:text-[#131b2e] sm:max-l:gap-8px l:col-span-7 l:col-start-6 l:row-start-2 l:gap-24px">
         <p class="hidden text-desktop-body-regular text-text-secondary l:block">
           Строительная компания «ВРЕМЯ РЕМОНТА» основана в 2012 году группой дипломированных инженеров МГСУ. Мы сознательно отказались от посредничества и субподрядчиков: каждый этап — от демонтажа и проектирования до ювелирной чистовой отделки — выполняют постоянные штатные бригады с гражданством РФ и опытом от 7 лет.
         </p>
 
-        <blockquote class="rounded-sm bg-background-subtle p-12px text-tablet-title-small sm:rounded-xl sm:border-l-4 sm:border-border-accent sm:bg-background-base sm:shadow-xs l:py-5 l:pr-5 l:pl-24px l:text-desktop-title-small">
-          «Мы берем на себя полную юридическую и финансовую ответственность за объект — от первой черновой стяжки до клининга и вручения ключей».
+        <blockquote class="rounded-sm bg-background-subtle p-12px text-tablet-title-small sm:rounded-lg sm:border-l-4 sm:border-border-accent sm:bg-background-base sm:drop-shadow-xs sm:max-l:pb-[12.565px] l:pt-[19.185px] l:pr-5 l:pb-[20.565px] l:pl-5 l:text-desktop-title-small">
+          <p class="max-sm:max-w-[252px]">
+            «Мы берем на себя полную юридическую и финансовую ответственность за объект
+            <br class="hidden sm:max-l:block xl:block" />— от первой черновой стяжки до клининга и вручения ключей».
+          </p>
         </blockquote>
 
-        <ul class="grid grid-cols-2 gap-8px pt-4px sm:gap-ui-inset sm:pt-0 l:gap-16px l:pt-8px">
-          {competencies.map(({ icon: Icon, title, description }, index) => (
-            <li class="grid content-center rounded-sm bg-background-subtle p-ui-inset sm:content-start sm:gap-4px sm:rounded-xl sm:border sm:border-border-default sm:bg-background-base sm:p-12px l:grid-cols-[auto_minmax(0,1fr)] l:gap-x-12px l:gap-y-0 l:p-3.5">
-              <div class="flex items-center gap-8px sm:contents">
-                <span class="grid shrink-0 place-items-center text-text-accent sm:max-l:hidden l:row-span-2">
-                  <Icon class="size-4 l:size-[18px]" aria-hidden="true" />
+        <ul class="grid grid-cols-2 gap-8px pt-4px sm:max-l:gap-x-ui-inset sm:max-l:gap-y-[10.5px] sm:max-l:pt-0 l:gap-16px l:pt-8px">
+          {competencies.map(({ icon: Icon, mobileIcon: MobileIcon, iconSize, title, description, descriptionWidth }, index) => (
+            <li class="grid min-w-0 content-center rounded-sm bg-background-subtle p-ui-inset max-sm:min-h-[38px] max-sm:nth-[n+3]:min-h-12 sm:content-start sm:rounded-lg sm:border sm:border-border-default sm:bg-background-base sm:max-l:min-h-[70px] sm:max-l:gap-[3px] sm:max-l:p-12px l:min-h-[87px] l:grid-cols-[auto_minmax(0,1fr)] l:gap-x-12px l:p-3.5">
+              <div class="flex items-center gap-8px l:contents">
+                <span class:list={["grid shrink-0 place-items-center text-text-accent sm:max-l:hidden l:row-span-2 l:self-start", iconSize]}>
+                  {MobileIcon && <MobileIcon class="size-4 sm:hidden" aria-hidden="true" />}
+                  <Icon class:list={["size-full", { "max-sm:hidden": MobileIcon }]} aria-hidden="true" />
                 </span>
-                <h3 class="text-tablet-title-small l:text-desktop-title-small">
-                  <span class="mr-8px hidden size-24px place-items-center rounded-lg bg-background-accent-subtle text-text-accent sm:max-l:inline-grid" aria-hidden="true">{index + 1}</span>
+                <span class="hidden size-24px shrink-0 place-items-center rounded-md bg-background-accent-subtle text-tablet-title-small text-text-accent sm:max-l:grid" aria-hidden="true">{index + 1}</span>
+                <h3 class="min-w-0 wrap-break-word max-sm:font-golos-text max-sm:text-[11px]/[14px] max-sm:font-semibold max-sm:tracking-[0.22px] sm:max-l:text-tablet-title-small l:text-desktop-title-small">
                   {title}
                 </h3>
               </div>
-              <p class="hidden text-tablet-body-small text-text-tertiary sm:block l:col-start-2 l:text-desktop-body-extra-small">
+              <p class:list={["hidden text-tablet-body-small text-text-tertiary sm:block l:col-start-2 l:text-desktop-body-extra-small", descriptionWidth]}>
                 {description}
               </p>
             </li>
           ))}
         </ul>
 
-        <div class="hidden l:block">
-          <Button href={contactHref} variant="primary" size="medium" rightIcon="arrow-right">
+        <div class="hidden l:flex l:h-[41px] l:items-center">
+          <Button href={contactHref} variant="primary" size="medium" rightIcon="arrow-right" className="[&_svg]:scale-150">
             ОБСУДИТЬ ЗАДАЧУ С ИНЖЕНЕРОМ
           </Button>
         </div>
