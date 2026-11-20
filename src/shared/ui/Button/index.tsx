@@ -2,7 +2,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { Slot } from "radix-ui";
 import type { ComponentProps, ReactElement, ReactNode } from "react";
 import { cn } from "@/shared/lib/utils";
-import { Icon, type IconName } from "./Icon";
+import { Icon, type IconName } from "../Icon";
 
 const buttonVariants = cva(
   "ui-focus inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-ui-control select-none motion-safe:transition-colors motion-safe:duration-300 disabled:cursor-not-allowed disabled:bg-button-disabled disabled:text-text-muted",

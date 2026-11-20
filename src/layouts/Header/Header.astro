@@ -31,7 +31,7 @@ const phoneHref = `tel:${phone.replace(/[^+\d]/g, "")}`;
           {license}
         </li>
       </ul>
-      <a href={telegramUrl} class="ui-focus flex shrink-0 items-center gap-4px border-s border-border-default ps-5 text-desktop-title-extra-small text-functional-telegram hover:underline">
+      <a href={telegramUrl} target="_blank" rel="noopener" class="ui-focus flex shrink-0 items-center gap-4px border-s border-border-default ps-5 text-desktop-title-extra-small text-functional-telegram hover:underline">
         <MessageSquareText aria-hidden="true" className="size-3 shrink-0" />
         Написать в Telegram
       </a>

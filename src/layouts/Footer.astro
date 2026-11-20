@@ -7,12 +7,13 @@ interface Props {
   companyName: string;
   phone: string;
   email: string;
+  city: string;
   sections: readonly { label: string; id: string }[];
   privacyHref?: string;
   sitemapHref?: string;
 }
 
-const { companyName, phone, email, sections, privacyHref, sitemapHref } = Astro.props;
+const { companyName, phone, email, city, sections, privacyHref, sitemapHref } = Astro.props;
 const brand = companyName.toLocaleUpperCase("ru");
 const phoneHref = `tel:${phone.replace(/[^+\d]/g, "")}`;
 const linkClass = "ui-focus rounded-sm transition-colors [&[href]]:hover:text-text-accent-dark";
@@ -28,7 +29,7 @@ const linkClass = "ui-focus rounded-sm transition-colors [&[href]]:hover:text-te
           Генеральный подрядчик по капитальному ремонту,<br class="l:hidden" />{" "}
           реконструкции и<br class="hidden l:block" />{" "}
           Fit-Out отделке коммерческой и элитной жилой<span class="max-l:hidden"> недвижимости в</span><br />{" "}
-          <span class="l:hidden">недвижимости в </span>Москве<span class="hidden l:inline"> и Московской области</span> с 2012 года.
+          <span class="l:hidden">недвижимости в </span>Донецке и Мариуполе с 2012 года.
         </p>
 
         <p class="mt-12px hidden text-tablet-body-small text-text-tertiary sm:max-l:block">
@@ -65,7 +66,7 @@ const linkClass = "ui-focus rounded-sm transition-colors [&[href]]:hover:text-te
           <address class="mt-4px flex flex-col items-start not-italic l:mt-ui-inset l:gap-ui-inset">
             <a href={phoneHref} class:list={[linkClass, "text-tablet-title-medium text-text-primary l:text-desktop-title-medium"]}>{phone}</a>
             <p class="hidden text-desktop-body-extra-small text-text-tertiary l:block">
-              г. Москва, Пресненская наб., 12 (ММДЦ<br />{" "}«Москва-Сити»)
+              {city}
             </p>
             <a href={`mailto:${email}`} class:list={[linkClass, "min-h-[17px] wrap-break-word text-text-tertiary text-desktop-body-extra-small"]}>{email}</a>
           </address>

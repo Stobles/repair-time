@@ -9,9 +9,12 @@ import WorkProcess from "@/sections/WorkProcess/WorkProcess.astro";
 import Reviews from "@/sections/Reviews/Reviews.astro";
 import Faq from "@/sections/Faq/Faq.astro";
 import Hero from "@/sections/Hero/Hero.astro";
+import Portfolio from "@/sections/Portfolio/Portfolio.astro";
 import Pricing from "@/sections/Pricing/Pricing.astro";
+import { portfolioProjects } from "@/features/portfolio";
 
 const companyName = "Время ремонта";
+const companyCity = "г. Донецк";
 const phone = "+7 (949) 811 94 21";
 const phoneNumber = phone.replace(/[^+\d]/g, "");
 const whatsappUrl = `https://wa.me/${phoneNumber.replace(/\D/g, "")}`;
@@ -69,7 +72,7 @@ const workSteps = [
     icon: "measurement",
     title: "Выезд инженера и лазерный замер",
     description: "Точный замер лазерным нивелиром, составление дефектной ведомости и осмотр состояния коммуникаций.",
-    note: "Срок: выезд за 2 часа (Москва и МО)",
+    note: "Выезд за 2 часа в Донецке и Мариуполе",
   },
   {
     icon: "estimate",
@@ -157,24 +160,24 @@ const reviews = [
     initials: "АС",
     avatarColor: "dark",
     rating: 5,
-    quote: "«Делали комплексный ремонт офиса 320 м² в БЦ «Белые Сады». Ключевым условием было успеть до заезда команды за 60 дней. Сдали на 4 дня раньше срока! В переговорных идеальная звукоизоляция, сотрудники в восторге от качества света».",
-    details: "Владелец IT-компании (БЦ «Белые Сады»)",
+    quote: "«Делали комплексный ремонт офиса площадью 320 м². Ключевым условием было успеть до заезда команды за 60 дней. Сдали на 4 дня раньше срока! В переговорных идеальная звукоизоляция, сотрудники в восторге от качества света».",
+    details: "Владелец IT-компании",
   },
   {
     author: "Екатерина и Дмитрий Васильевы",
     initials: "ЕВ",
     avatarColor: "accent",
     rating: 5,
-    quote: "«Капитальный ремонт в ЖК «Сердце Столицы» (112 м²). Самое главное: смета не выросла ни на копейку относительно договора! Технадзор присылал видеоотчеты скрытых работ в WhatsApp дважды в неделю. Все ровно и аккуратно».",
-    details: "ЖК «Сердце Столицы», 112 м²",
+    quote: "«Капитальный ремонт квартиры площадью 112 м². Самое главное: смета не выросла ни на копейку относительно договора! Технадзор присылал видеоотчеты скрытых работ в WhatsApp дважды в неделю. Все ровно и аккуратно».",
+    details: "Квартира, 112 м²",
   },
   {
     author: "Роман Казанцев",
     initials: "РК",
     avatarColor: "muted",
     rating: 5,
-    quote: "«Ресторан на Большой Никитской, 190 м². По правилам дома все шумные работы строго регламентированы. Бригада «Время Ремонта» четко держала график, не было ни одной жалобы от жильцов. Заведение открыли ровно к сезону».",
-    details: "Управляющий рестораном (Большая Никитская)",
+    quote: "«Ремонтировали ресторан площадью 190 м². По правилам дома все шумные работы строго регламентированы. Бригада «Время Ремонта» четко держала график, не было ни одной жалобы от жильцов. Заведение открыли ровно к сезону».",
+    details: "Управляющий рестораном",
   },
 ] as const;
 
@@ -218,6 +221,7 @@ const faqEntries = [
 
   <main class="flex flex-col w-full flex-1">
     <Hero />
+    <Portfolio projects={portfolioProjects} contactHref="#contacts" {whatsappUrl} />
     <AboutCompany contactHref="#contacts" />
     <WhyChooseUs
       title="Почему нас выбирают"
@@ -236,8 +240,7 @@ const faqEntries = [
     <Reviews
       eyebrow="РЕАЛЬНЫЙ ОПЫТ ЗАКАЗЧИКОВ"
       title="Отзывы о строительной компании «ВРЕМЯ РЕМОНТА»"
-      description="Оценки клиентов на основе нашей работы."
-      tabletDescription="Оценки клиентов на основе нашей работы в Москве и МО"
+      description="Оценки нашей работы в Донецке и Мариуполе."
       {reviews}
     />
     <Faq
@@ -251,11 +254,10 @@ const faqEntries = [
       {email}
       {whatsappUrl}
       {telegramUrl}
-      address="г. Москва, Пресненская наб., 12 (ММДЦ «Москва-Сити», Башня Федерация Восток, 34 этаж)"
-      shortAddress="Москва, Пресненская наб., 12, ММДЦ «Москва-Сити»"
+      city={companyCity}
       schedule="Ежедневно с 09:00 до 21:00 без выходных"
     />
   </main>
 
-  <Footer {companyName} {phone} {email} sections={footerSections} />
+  <Footer {companyName} {phone} {email} city={companyCity} sections={footerSections} />
 </Layout>

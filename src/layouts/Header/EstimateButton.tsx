@@ -57,7 +57,7 @@ function EstimateButton({
           <>
             <CallbackForm />
             <div className="flex flex-wrap items-center justify-between gap-8px border-t border-border-default pt-16px">
-              <a href={contact.telegramUrl} className="ui-focus flex items-center gap-8px rounded-sm text-desktop-title-extra-small text-functional-telegram hover:underline">
+              <a href={contact.telegramUrl} target="_blank" rel="noopener" className="ui-focus flex items-center gap-8px rounded-sm text-desktop-title-extra-small text-functional-telegram hover:underline">
                 <MessageSquareText aria-hidden="true" className="size-3 shrink-0" />
                 Написать в Telegram
               </a>

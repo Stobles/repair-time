@@ -7,11 +7,10 @@ interface Props {
   eyebrow: string;
   title: string;
   description: string;
-  tabletDescription: string;
   reviews: readonly Review[];
 }
 
-const { id = "reviews", eyebrow, title, description, tabletDescription, reviews } = Astro.props;
+const { id = "reviews", eyebrow, title, description, reviews } = Astro.props;
 const titleId = `${id}-title`;
 ---
 
@@ -30,8 +29,7 @@ const titleId = `${id}-title`;
         {title}
       </h2>
       <p class="hidden text-tablet-body-regular text-text-tertiary sm:block l:text-desktop-body-regular">
-        <span class="l:hidden">{tabletDescription}</span>
-        <span class="hidden l:inline">{description}</span>
+        {description}
       </p>
     </header>
 

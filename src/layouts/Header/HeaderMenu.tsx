@@ -101,6 +101,8 @@ function HeaderMenu({
               </div>
               <Button
                 href={telegramUrl}
+                target="_blank"
+                rel="noopener"
                 size="medium"
                 variant="outline"
                 leftIcon="send"
