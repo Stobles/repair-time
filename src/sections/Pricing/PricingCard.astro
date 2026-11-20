@@ -1,0 +1,151 @@
+---
+import { Check, X } from "lucide-astro";
+import Badge from "@/shared/ui/Badge.astro";
+import { Button } from "@/shared/ui/Button";
+
+interface PricingFeature {
+  label: string;
+  desktopContinuation?: string;
+  tabletLabel?: string;
+  desktopOnly?: boolean;
+  unavailable?: boolean;
+}
+
+export interface PricingPlan {
+  tariff: string;
+  mobileTariff: string;
+  title: string;
+  price: string;
+  description: string;
+  mobileDescription: string;
+  variant?: "popular" | "premium";
+  features: readonly PricingFeature[];
+}
+
+interface Props {
+  plan: PricingPlan;
+  titleId: string;
+  contactHref: string;
+}
+
+const { plan, titleId, contactHref } = Astro.props;
+const popular = plan.variant === "popular";
+const premium = plan.variant === "premium";
+const mobileCaption = "font-golos-text text-[11px]/[14px] tracking-[0.55px]";
+const mobileBody = "font-golos-text text-[11px]/[14px] font-medium tracking-[0.22px] text-[#545f73]";
+---
+
+<article
+  aria-labelledby={titleId}
+  class:list={[
+    "relative flex min-w-0 flex-col gap-8px rounded-md bg-background-base p-16px sm:max-l:grid sm:max-l:grid-cols-[minmax(0,1fr)_auto] sm:max-l:gap-x-16px sm:max-l:gap-y-4px sm:rounded-xl l:min-h-[544.5px] l:gap-0 l:p-32px",
+    popular
+      ? "max-sm:shadow-md max-[370px]:pt-24px sm:border-2 sm:border-border-accent sm:max-l:shadow-xs l:-mb-0.5 l:-translate-y-2 l:shadow-xl"
+      : "max-sm:drop-shadow-[0_1px_1px_rgba(0,0,0,0.05)] sm:border sm:border-border-default sm:bg-background-subtle l:drop-shadow-[0_1px_1px_rgba(0,0,0,0.05)]",
+  ]}
+>
+  {popular && (
+    <Badge
+      variant="brand"
+      class:list={[
+        "absolute whitespace-nowrap max-sm:end-0 max-sm:top-0 max-sm:rounded-none max-sm:rounded-bl-sm max-sm:rounded-tr-md max-sm:px-12px sm:max-l:start-16px sm:max-l:-top-3 sm:max-l:rounded-full sm:max-l:px-12px sm:max-l:py-0.5 sm:max-l:text-tablet-caption-semi-bold l:start-1/2 l:-top-[14px] l:-ms-0.5 l:-translate-x-1/2",
+        "max-sm:font-golos-text max-sm:text-[11px]/[14px] max-sm:tracking-[0.55px]",
+      ]}
+    >
+      <span class="sm:hidden">ХИТ • ПОПУЛЯРНЫЙ</span>
+      <span class="hidden sm:inline">ПОПУЛЯРНЫЙ ВЫБОР<span class="l:hidden"> • ХИТ</span></span>
+    </Badge>
+  )}
+
+  <header class:list={[
+    "grid gap-8px sm:max-l:col-start-1 sm:max-l:gap-[5px] l:gap-0.5 l:pt-[5px]",
+    popular ? "sm:max-l:pt-[9px]" : "sm:max-l:pt-[5px]",
+  ]}>
+    <p class:list={[
+      "hidden sm:block l:text-desktop-caption-semi-bold",
+      popular ? "text-text-accent sm:max-l:text-tablet-caption-semi-bold" : "text-text-tertiary sm:max-l:font-manrope sm:max-l:text-[10px]/[15px] sm:max-l:font-extrabold sm:max-l:tracking-[0.5px]",
+    ]}>{plan.tariff}</p>
+    <p class:list={["font-bold sm:hidden", mobileCaption, popular ? "text-[#b02f00]" : "text-[#545f73]"]}>
+      {plan.mobileTariff}
+    </p>
+    <h3 id={titleId} class:list={[
+      "text-mobile-h2 max-sm:translate-y-px max-sm:text-[#131b2e] sm:max-l:text-tablet-h4 l:translate-y-px l:text-desktop-h4",
+      premium && "sm:max-l:text-[#1c1917]",
+    ]}>
+      {plan.title}
+    </h3>
+  </header>
+
+  <p class="order-2 hidden text-text-tertiary sm:block sm:max-l:order-none sm:max-l:col-start-1 sm:max-l:text-tablet-body-regular l:mt-[15px] l:min-h-[63px] l:max-w-[261px] l:text-desktop-body-small">
+    {plan.description}
+  </p>
+  <p class:list={["order-2 sm:hidden", mobileBody]}>{plan.mobileDescription}</p>
+
+  <ul role="list" class:list={[
+    "order-3 hidden flex-col gap-4px sm:flex sm:max-l:order-none sm:max-l:col-start-1 sm:max-l:pt-4px l:mt-[12.5px] l:gap-ui-inset l:border-t l:border-border-default l:pt-16px",
+    popular && "l:mb-24px",
+  ]}>
+    {plan.features.map(({ label, desktopContinuation, tabletLabel, desktopOnly, unavailable }) => (
+      <li class:list={[
+        "flex min-w-0 items-center gap-ui-gutter sm:max-l:min-h-[16.5px] sm:max-l:text-tablet-body-regular l:gap-ui-inset l:text-desktop-body-small",
+        desktopOnly && "max-l:hidden",
+        unavailable ? "text-text-muted" : "text-text-tertiary l:text-text-secondary",
+      ]}>
+        <span class="flex w-[9px] shrink-0 items-center l:w-3.5" aria-hidden="true">
+          {unavailable
+            ? <X class="size-3.5 -translate-x-[3px]" strokeWidth={2.25} />
+            : <Check class="size-3 shrink-0 -translate-x-0.5 text-functional-success l:size-3.5 l:text-[#059669]" strokeWidth={3} />}
+        </span>
+        <span class:list={[
+          "l:leading-[19.5px]",
+          desktopContinuation && "xl:-my-[1.5px] xl:-translate-y-px xl:leading-[21px]",
+        ]}>
+          {unavailable && <span class="sr-only">Не входит в тариф. </span>}
+          {tabletLabel && <span class="l:hidden">{tabletLabel}</span>}
+          <span class:list={[tabletLabel && "max-l:hidden"]}>
+            {label}{desktopContinuation && <> <br class="hidden xl:block" />{desktopContinuation}</>}
+          </span>
+        </span>
+      </li>
+    ))}
+  </ul>
+
+  <div class="contents sm:max-l:col-start-2 sm:max-l:row-span-3 sm:max-l:row-start-1 sm:max-l:flex sm:max-l:flex-col sm:max-l:self-center sm:max-l:text-end">
+    <p class="order-1 flex items-baseline gap-4px whitespace-nowrap max-sm:py-4px sm:max-l:order-none sm:max-l:block sm:max-l:h-14 l:mt-[15px]">
+      <span class:list={["sm:hidden", mobileBody]}>от</span>
+      <span class:list={[
+        "hidden text-tablet-body-regular sm:max-l:block",
+        premium ? "text-[#57534e]" : "text-text-secondary",
+      ]}>цена от</span>
+      <span class:list={[
+        "sm:max-l:flex sm:max-l:items-baseline sm:max-l:justify-end",
+        premium ? "sm:max-l:gap-4px" : popular ? "sm:max-l:gap-0.5" : "sm:max-l:gap-px",
+      ]}>
+        <span class:list={[
+          "text-mobile-h1 max-sm:tracking-[-0.28px] sm:max-l:text-tablet-h2 l:text-desktop-h3",
+          popular ? "text-text-accent" : "max-sm:text-[#131b2e]",
+          premium && "sm:max-l:text-[#1c1917]",
+        ]}><span class="hidden l:inline">от </span>{plan.price} ₽</span><span class:list={[
+          "hidden text-tablet-body-regular sm:max-l:inline",
+          premium ? "text-[#78716c]" : "text-text-secondary",
+        ]}>/ м²</span>
+      </span>
+      <span class="font-golos-text text-sm/5 text-[#545f73] sm:max-l:hidden l:text-desktop-body-small l:text-text-tertiary">/ м²</span>
+    </p>
+    <Button
+      href={contactHref}
+      aria-describedby={titleId}
+      variant={popular ? "primary" : "outline"}
+      size="medium"
+      className={[
+        "order-4 sm:max-l:order-none sm:max-l:h-8 sm:max-l:rounded-md sm:max-l:px-16px sm:max-l:py-8px sm:max-l:text-tablet-title-small l:mt-auto",
+        popular
+          ? "max-sm:mt-8px max-sm:h-[46px] max-sm:rounded-sm max-sm:text-desktop-title-small max-sm:tracking-[0.14px] max-sm:shadow-sm"
+          : "max-sm:hidden sm:max-l:bg-[#f5f5f4] sm:max-l:text-[#292524] sm:max-l:inset-ring-0",
+      ].join(" ")}
+    >
+      <span class="hidden l:inline">ВЫБРАТЬ ТАРИФ</span>
+      <span class="l:hidden">{popular ? "Рассчитать со скидкой 15%" : "Выбрать тариф"}</span>
+    </Button>
+  </div>
+</article>

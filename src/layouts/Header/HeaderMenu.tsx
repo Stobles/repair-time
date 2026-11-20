@@ -31,7 +31,7 @@ function HeaderMenu({
     <Popover.Root>
       <Popover.Trigger
         aria-label="Меню"
-        className="group ui-focus grid size-11 shrink-0 cursor-pointer place-items-center rounded-md text-background-inverse sm:border sm:border-border-default l:hidden"
+        className="group ui-focus grid size-11 shrink-0 cursor-pointer place-items-center rounded-md border border-border-default text-background-inverse l:hidden"
       >
         <Menu
           aria-hidden="true"
