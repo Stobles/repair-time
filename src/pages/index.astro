@@ -1,4 +1,5 @@
 ---
+import AboutCompany from "@/sections/About/AboutCompany.astro";
 import Contacts from "@/sections/Contacts/Contacts.astro";
 import Layout from "@/layouts/Layout.astro";
 import Footer from "@/layouts/Footer.astro";
@@ -163,6 +164,7 @@ const faqEntries = [
 
   <main class="flex flex-col w-full flex-1">
     <Hero />
+    <AboutCompany contactHref="#contacts" />
     <WhyChooseUs
       title="Почему нас выбирают"
       eyebrow={"НАШИ СТАНДАРТЫ"}
