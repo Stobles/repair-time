@@ -1,6 +1,6 @@
 import { Tabs as RadixTabs } from "radix-ui";
 import type { ComponentProps, ReactNode } from "react";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/lib/utils/cn";
 
 type PanelSlot = `panel${string}`;
 

@@ -1,6 +1,6 @@
 import { Keyboard, Zoom } from "swiper/modules";
 import { Swiper, SwiperSlide, type SwiperClass } from "swiper/react";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/lib/utils/cn";
 import type { ProjectPhoto } from "../model/PortfolioProjects";
 
 interface ProjectPhotoSliderProps {
@@ -31,7 +31,8 @@ export function ProjectPhotoSlider({
       id={id}
       className={cn(
         "min-w-0 touch-pan-y overflow-hidden [&>.swiper-wrapper]:flex [&>.swiper-wrapper]:items-center [&>.swiper-wrapper]:transition-transform",
-        expanded && "h-[min(74dvh,110vw,calc(100dvh-12rem),44rem)] min-h-24 rounded-lg bg-background-inverse [&>.swiper-wrapper]:h-full",
+        expanded &&
+          "h-[min(74dvh,110vw,calc(100dvh-12rem),44rem)] min-h-24 rounded-lg bg-background-inverse [&>.swiper-wrapper]:h-full",
       )}
       modules={expanded ? [Keyboard, Zoom] : undefined}
       keyboard={expanded && { enabled: true, pageUpDown: false }}
@@ -77,7 +78,9 @@ export function ProjectPhotoSlider({
             draggable={false}
             className={cn(
               "block w-full object-center",
-              expanded ? "h-auto max-h-full object-contain motion-reduce:transition-none" : "h-full object-cover",
+              expanded
+                ? "h-auto max-h-full object-contain motion-reduce:transition-none"
+                : "h-full object-cover",
             )}
           />
         </SwiperSlide>

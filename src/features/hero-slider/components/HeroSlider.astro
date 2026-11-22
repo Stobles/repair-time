@@ -1,9 +1,15 @@
 ---
 import { ChevronLeft, ChevronRight } from "lucide-astro";
 import { Button } from "@/shared/ui/Button";
-import { heroSlides } from "../model/HeroSlides";
+import type { HeroSlide as HeroSlideData } from "../types/heroSlide";
 import HeroSlide from "./HeroSlide.astro";
 
+interface Props {
+  slides: readonly HeroSlideData[];
+}
+
+const { slides } = Astro.props;
+const isCarousel = slides.length > 1;
 const controls = [
   { direction: "previous", label: "Предыдущий слайд", Icon: ChevronLeft },
   { direction: "next", label: "Следующий слайд", Icon: ChevronRight },
@@ -11,37 +17,39 @@ const controls = [
 ---
 
 <div
-  data-hero-slider
-  role="region"
-  aria-roledescription="карусель"
-  aria-label="Примеры ремонта"
+  data-hero-slider={isCarousel ? "" : undefined}
+  role={isCarousel ? "region" : undefined}
+  aria-roledescription={isCarousel ? "карусель" : undefined}
+  aria-label={isCarousel ? "Примеры ремонта" : undefined}
   class="swiper group relative touch-pan-y overflow-x-clip l:overflow-hidden l:rounded-xl l:border l:border-background-subtle l:bg-background-base l:shadow-lg"
 >
-  <div
-    class="absolute right-3 bottom-3 z-10 hidden items-center gap-8px group-[.swiper-initialized]:flex l:right-6 l:bottom-6 l:gap-12px"
-  >
-    <span
-      data-hero-pagination
-      role="status"
-      class="flex h-7 min-w-14 shrink-0 items-center justify-center gap-1 rounded-ui-control border border-background-subtle bg-background-base/90 px-2 text-desktop-caption-semi-bold whitespace-nowrap text-text-primary tabular-nums shadow-xs backdrop-blur-md sm:h-8 l:min-w-[67px]"
-    ></span>
-    {controls.map(({ direction, label, Icon }) => (
-      <Button
-        data-hero-nav={direction}
-        aria-label={label}
-        variant="outline"
-        size="small"
-        leftIcon={false}
-        rightIcon={false}
-        className="h-9! w-9 shrink-0 bg-button-outline/95 p-0! shadow-md inset-ring-background-subtle sm:max-l:h-10! sm:max-l:w-10 l:h-11! l:w-11"
-      >
-        <Icon class="size-4" aria-hidden="true" />
-      </Button>
-    ))}
-  </div>
+  {isCarousel && (
+    <div
+      class="absolute right-3 bottom-3 z-10 hidden items-center gap-8px group-[.swiper-initialized]:flex l:right-6 l:bottom-6 l:gap-12px"
+    >
+      <span
+        data-hero-pagination
+        role="status"
+        class="flex h-7 min-w-14 shrink-0 items-center justify-center gap-1 rounded-ui-control border border-background-subtle bg-background-base/90 px-2 text-desktop-caption-semi-bold whitespace-nowrap text-text-primary tabular-nums shadow-xs backdrop-blur-md sm:h-8 l:min-w-[67px]"
+      ></span>
+      {controls.map(({ direction, label, Icon }) => (
+        <Button
+          data-hero-nav={direction}
+          aria-label={label}
+          variant="outline"
+          size="small"
+          leftIcon={false}
+          rightIcon={false}
+          className="h-9! w-9 shrink-0 bg-button-outline/95 p-0! shadow-md inset-ring-background-subtle sm:max-l:h-10! sm:max-l:w-10 l:h-11! l:w-11"
+        >
+          <Icon class="size-4" aria-hidden="true" />
+        </Button>
+      ))}
+    </div>
+  )}
 
   <div class="swiper-wrapper flex transition-transform">
-    {heroSlides.map((slide, index) => (
+    {slides.map((slide, index) => (
       <HeroSlide {slide} initial={index === 0} />
     ))}
   </div>
@@ -71,7 +79,7 @@ const controls = [
 
     new Swiper(slider, {
       modules: [A11y, Navigation, Pagination],
-      loop: true,
+      loop: slider.querySelectorAll(".swiper-slide").length >= 3,
       speed: reducedMotion.matches ? 0 : 300,
       spaceBetween: 16,
       breakpoints: {

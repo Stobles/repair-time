@@ -1,14 +1,14 @@
 ---
 import Badge from "@/shared/ui/Badge.astro";
 import { Button } from "@/shared/ui/Button";
-import type { HeroSlide } from "../model/HeroSlides";
+import type { HeroSlide } from "../types/heroSlide";
 
 interface Props {
   slide: HeroSlide;
   initial: boolean;
 }
 
-const { slide: { title, image, mobileImage, alt }, initial } = Astro.props;
+const { slide: { badge, title, description, image, mobileImageSrc, alt }, initial } = Astro.props;
 ---
 
 <div
@@ -16,19 +16,18 @@ const { slide: { title, image, mobileImage, alt }, initial } = Astro.props;
   inert={!initial}
 >
   <div class="flex min-w-0 flex-col items-start gap-12px sm:max-l:gap-[11px] l:col-span-5 l:gap-24px l:px-32px l:pt-48px l:pb-13 xl:px-48px">
-    <Badge variant="light" class="max-w-full pl-3.5 text-desktop-caption-semi-bold">
-      СЕЗОННАЯ АКЦИЯ ДО 31 ДЕКАБРЯ
-    </Badge>
+    {badge && (
+      <Badge variant="light" class="max-w-full pl-3.5 text-desktop-caption-semi-bold">
+        {badge}
+      </Badge>
+    )}
 
     <div class="grid w-full gap-12px sm:max-l:gap-[11px] sm:max-l:pt-[5px] l:gap-16px">
       <h2 class="text-mobile-h1 text-text-primary sm:max-l:text-tablet-h1 l:text-desktop-h1">
         {title}
       </h2>
-      <p class="text-tablet-body-large text-text-tertiary l:text-desktop-body-large">
-        Фиксируем смету в договоре без доплат.{" "}<br class="sm:hidden" />
-        Оплата поэтапно по факту приёмки.{" "}<br class="l:hidden" />
-        Подарок: страховка объекта на{" "}<br class="sm:hidden" />
-        50&nbsp;000&nbsp;000&nbsp;₽ и рабочий дизайн-проект.
+      <p class="text-tablet-body-large whitespace-pre-line text-text-tertiary l:text-desktop-body-large">
+        {description}
       </p>
     </div>
 
@@ -46,7 +45,7 @@ const { slide: { title, image, mobileImage, alt }, initial } = Astro.props;
 
   <div class="relative min-w-0 overflow-hidden bg-background-inverse max-sm:aspect-[4/3] max-sm:rounded-md sm:max-l:h-[337px] sm:max-l:rounded-xl sm:max-l:border sm:max-l:border-border-default sm:max-l:shadow-lg l:col-span-7 l:min-h-[640px]">
     <picture>
-      {mobileImage && <source media="(width < 40rem)" srcset={mobileImage.src} />}
+      {mobileImageSrc && <source media="(width < 40rem)" srcset={mobileImageSrc} />}
       <img
         src={image.src}
         width={image.width}

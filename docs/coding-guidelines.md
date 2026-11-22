@@ -9,10 +9,10 @@
 
 ## 2. Naming & File Conventions
 
-- **Files and folders:** Use PascalCase for file and folder names. Separate words by capitalization without spaces or separators (e.g. `UserProfile.tsx`, `ContactForm/`).
+- **Files and folders:** Use camelCase for modules with functions, utilities, data, or types (e.g. `getHeroSlides.ts`, `heroSlide.ts`). Use PascalCase for component files and folders (e.g. `UserProfile.tsx`, `ContactForm/`).
 - **Components:** Use PascalCase, following the same convention as file names. Choose names that clearly describe the component's purpose (e.g. `Header`, `ServiceCard`, `ContactForm`).
 - **Functions:** Use camelCase (e.g. `getUserData`, `formatPrice`).
-- **Types and interfaces:** Use PascalCase, following the same naming convention as files and components (e.g. `UserProfile`, `ContactFormProps`).
+- **Types and interfaces:** Use PascalCase (e.g. `UserProfile`, `ContactFormProps`).
 - **Variables:** Use camelCase (e.g. `userData`, `isLoading`).
 - **Imports:** Place all imports at the top of the file.
 

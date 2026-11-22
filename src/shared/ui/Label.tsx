@@ -1,5 +1,5 @@
 import type { ComponentProps } from "react";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/lib/utils/cn";
 import { Label as LabelPrimitive } from "radix-ui";
 
 function Label({
@@ -11,7 +11,7 @@ function Label({
       data-slot="label"
       className={cn(
         "flex items-center gap-1 select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
-        className
+        className,
       )}
       {...props}
     />
