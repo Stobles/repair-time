@@ -61,7 +61,7 @@ Contains:
 - Composition of Features and Shared components.
 - Section-specific layout and presentation.
 
-Sections should be independent of specific pages and receive external data through props. They should not implement feature logic or directly access Directus.
+Sections should be independent of specific pages. A section can receive data through props or load its content in Astro frontmatter by calling a feature API function. Feature API functions own the Directus requests and pass presentation data to UI components through props.
 
 ### 2.3. Features
 
@@ -132,12 +132,15 @@ Rules:
 
 Directus is the primary CMS and source of website content.
 
-- The Directus client and common configuration belong in `shared/lib/`.
+- Server-side application code reads environment variables from `shared/lib/env.ts`. It validates the configuration with Zod and reads Directus secrets through Astro's server-only environment API.
+- The shared server-only client lives in `shared/lib/directus/Directus.ts` and uses the schema in `DirectusSchema.ts`. Feature API functions reuse this client.
 - Feature-specific API requests belong in the corresponding feature's `api/` directory.
 - Page-specific requests may be handled directly in Astro pages when they do not belong to a reusable feature.
 - Data should be fetched on the server or at build time whenever possible.
 - Transform external data before passing it to presentation components when necessary.
 - Pass data through props rather than making UI components directly dependent on Directus.
+
+Hero reads published slides at build time. Set both `DIRECTUS_URL` and the read-only `DIRECTUS_TOKEN` to enable CMS content. The build uses the local slides when both values are empty and fails when only one is set or a configured Directus request fails. The GitHub Pages build reads the URL from an Actions variable and the token from an Actions secret. It needs a reachable Directus instance and public HTTPS asset URLs for the Hero media folder. Run a new build to publish CMS edits.
 
 ## 5. Rendering Strategy
 

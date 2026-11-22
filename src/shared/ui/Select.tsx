@@ -1,12 +1,10 @@
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { Select as SelectPrimitive } from "radix-ui";
 import type { ComponentProps } from "react";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/lib/utils/cn";
 
-function Select({
-  ...props
-}: ComponentProps<typeof SelectPrimitive.Root>) {
-  return <SelectPrimitive.Root data-slot="select" {...props} />
+function Select({ ...props }: ComponentProps<typeof SelectPrimitive.Root>) {
+  return <SelectPrimitive.Root data-slot="select" {...props} />;
 }
 
 function SelectGroup({
@@ -19,13 +17,13 @@ function SelectGroup({
       className={cn("scroll-my-1 p-1", className)}
       {...props}
     />
-  )
+  );
 }
 
 function SelectValue({
   ...props
 }: ComponentProps<typeof SelectPrimitive.Value>) {
-  return <SelectPrimitive.Value data-slot="select-value" {...props} />
+  return <SelectPrimitive.Value data-slot="select-value" {...props} />;
 }
 
 function SelectTrigger({
@@ -34,7 +32,7 @@ function SelectTrigger({
   children,
   ...props
 }: ComponentProps<typeof SelectPrimitive.Trigger> & {
-  size?: "sm" | "default"
+  size?: "sm" | "default";
 }) {
   return (
     <SelectPrimitive.Trigger
@@ -42,16 +40,19 @@ function SelectTrigger({
       data-size={size}
       className={cn(
         "ui-field-surface flex h-ui-field cursor-pointer items-center justify-between gap-8px ps-16px pe-8px text-desktop-body-medium select-none data-placeholder:text-text-tertiary data-[size=sm]:h-8 *:data-[slot=select-value]:truncate",
-        className
+        className,
       )}
       {...props}
     >
       {children}
       <SelectPrimitive.Icon asChild>
-        <ChevronDownIcon aria-hidden="true" className="pointer-events-none size-ui-dropdown-icon shrink-0" />
+        <ChevronDownIcon
+          aria-hidden="true"
+          className="pointer-events-none size-ui-dropdown-icon shrink-0"
+        />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
-  )
+  );
 }
 
 function SelectContent({
@@ -80,7 +81,7 @@ function SelectContent({
         <SelectScrollDownButton />
       </SelectPrimitive.Content>
     </SelectPrimitive.Portal>
-  )
+  );
 }
 
 function SelectLabel({
@@ -93,7 +94,7 @@ function SelectLabel({
       className={cn("px-1.5 py-1 text-xs text-muted-foreground", className)}
       {...props}
     />
-  )
+  );
 }
 
 function SelectItem({
@@ -106,13 +107,13 @@ function SelectItem({
       data-slot="select-item"
       className={cn(
         "flex min-h-ui-dropdown-option cursor-pointer items-center px-16px py-12px text-desktop-body-medium leading-(--text-desktop-body-regular--line-height) text-text-primary outline-hidden select-none not-last:border-b not-last:border-border-strong hover:bg-background-inactive data-highlighted:bg-background-inactive data-disabled:pointer-events-none data-disabled:opacity-50 motion-safe:transition-colors motion-safe:duration-150 forced-colors:data-highlighted:outline",
-        className
+        className,
       )}
       {...props}
     >
       <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
     </SelectPrimitive.Item>
-  )
+  );
 }
 
 function SelectSeparator({
@@ -125,7 +126,7 @@ function SelectSeparator({
       className={cn("pointer-events-none -mx-1 my-1 h-px bg-border", className)}
       {...props}
     />
-  )
+  );
 }
 
 function SelectScrollUpButton({
@@ -137,14 +138,13 @@ function SelectScrollUpButton({
       data-slot="select-scroll-up-button"
       className={cn(
         "z-10 flex cursor-default items-center justify-center bg-popover py-1 [&_svg:not([class*='size-'])]:size-4",
-        className
+        className,
       )}
       {...props}
     >
-      <ChevronUpIcon
-      />
+      <ChevronUpIcon />
     </SelectPrimitive.ScrollUpButton>
-  )
+  );
 }
 
 function SelectScrollDownButton({
@@ -156,14 +156,13 @@ function SelectScrollDownButton({
       data-slot="select-scroll-down-button"
       className={cn(
         "z-10 flex cursor-default items-center justify-center bg-popover py-1 [&_svg:not([class*='size-'])]:size-4",
-        className
+        className,
       )}
       {...props}
     >
-      <ChevronDownIcon
-      />
+      <ChevronDownIcon />
     </SelectPrimitive.ScrollDownButton>
-  )
+  );
 }
 
 export {
@@ -177,4 +176,4 @@ export {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-}
+};

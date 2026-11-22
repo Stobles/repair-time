@@ -1,7 +1,7 @@
 import { X } from "lucide-react";
 import { Dialog as DialogPrimitive } from "radix-ui";
 import type { ComponentProps } from "react";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/lib/utils/cn";
 
 function Dialog(props: ComponentProps<typeof DialogPrimitive.Root>) {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />;
@@ -67,10 +67,14 @@ function DialogContent({
           aria-hidden="true"
           className="h-8px bg-linear-to-r from-background-accent via-ui-dialog-accent-middle to-ui-dialog-accent-end"
         />
-        <div className={cn(
-          "grid",
-          size === "wide" ? "gap-12px p-12px sm:p-16px" : "gap-24px p-[clamp(1rem,7vw,var(--spacing-48px))]",
-        )}>
+        <div
+          className={cn(
+            "grid",
+            size === "wide"
+              ? "gap-12px p-12px sm:p-16px"
+              : "gap-24px p-[clamp(1rem,7vw,var(--spacing-48px))]",
+          )}
+        >
           {children}
         </div>
         {showCloseButton && (

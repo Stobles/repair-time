@@ -121,3 +121,5 @@ Manage the background server with `astro dev stop`, `astro dev status`, and `ast
 - Verify that no unnecessary custom implementations of existing library components were introduced.
 - Verify that all component styling and responsive behavior use Tailwind CSS.
 - Verify that the implementation follows the project documentation.
+
+**IMPORTANT**: Always follow SOLID rules

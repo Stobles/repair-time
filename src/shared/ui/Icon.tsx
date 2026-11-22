@@ -5,7 +5,7 @@ import {
   SendHorizontal,
   type LucideProps,
 } from "lucide-react";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/lib/utils/cn";
 
 const icons = {
   "arrow-right": { component: ArrowRight, width: 16, height: 16 },
