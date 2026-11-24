@@ -3,10 +3,10 @@ import { appendFile, readFile } from "node:fs/promises";
 import { parseEnv } from "node:util";
 import {
   authentication, createCollection, createDirectus, createField, createItem,
-  createPermission, createPolicy, createPreset, createRelation, createUser, deleteField, readCollections,
-  readFieldsByCollection, readItems, readMe, readPermissions, readPolicies, readPresets,
-  readRelationByCollection, readUser, readUsers, rest, staticToken, updateUser,
+  createPreset, createRelation, createUser, deleteField, readCollections,
+  readFieldsByCollection, readItems, readMe, readPresets, readRelationByCollection, readUsers, rest, staticToken,
 } from "@directus/sdk";
+import { ensurePolicy, grantUserPolicy } from "./directusAccess.mjs";
 
 const group = "requests";
 const propertyTypes = "property_types";
@@ -137,27 +137,6 @@ async function setupSchema(admin, removeConsent) {
   }
 }
 
-async function ensurePolicy(admin, name, permission) {
-  const policies = await admin.request(readPolicies({ filter: { name: { _eq: name } } }));
-  if (policies.length > 1 || policies[0]?.admin_access || policies[0]?.app_access) {
-    throw new Error(`Incompatible policy ${name}.`);
-  }
-  const policy = policies[0] ?? await admin.request(createPolicy({ name, admin_access: false, app_access: false }));
-  const permissions = await admin.request(readPermissions({ filter: { policy: { _eq: policy.id } } }));
-  if (permissions.length === 0) {
-    await admin.request(createPermission({ policy: policy.id, ...permission }));
-  } else {
-    const [current] = permissions;
-    if (
-      permissions.length !== 1 || current.collection !== permission.collection ||
-      current.action !== permission.action || current.fields?.length !== permission.fields.length ||
-      !permission.fields.every((name) => current.fields.includes(name)) ||
-      JSON.stringify(current.permissions ?? {}) !== JSON.stringify(permission.permissions ?? {})
-    ) throw new Error(`Incompatible permission on policy ${name}.`);
-  }
-  return policy.id;
-}
-
 async function setupAccess(admin, url, config) {
   const reader = createDirectus(url).with(staticToken(config.DIRECTUS_TOKEN.trim())).with(rest());
   const { id: readerId } = await reader.request(readMe({ fields: ["id"] }));
@@ -165,10 +144,7 @@ async function setupAccess(admin, url, config) {
     collection: propertyTypes, action: "read", fields: ["id", "name", "sort", "is_active"],
     permissions: { is_active: { _eq: true } },
   });
-  const { policies: readerPolicies } = await admin.request(readUser(readerId, { fields: ["policies.policy"] }));
-  if (!readerPolicies.some(({ policy }) => policy === readPolicy)) {
-    await admin.request(updateUser(readerId, { policies: { create: [{ policy: readPolicy }] } }));
-  }
+  await grantUserPolicy(admin, readerId, readPolicy);
 
   const writePolicy = await ensurePolicy(admin, "Website callback request writer", {
     collection: callbackRequests, action: "create", fields: callbackFields,
