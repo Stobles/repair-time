@@ -3,7 +3,7 @@ import { Field, FieldError, FieldLabel } from "@/shared/ui/Field";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/ui/Select";
 
 type SelectFieldProps = Pick<ComponentProps<typeof Select>,
-  "name" | "value" | "defaultValue" | "onValueChange" | "required"
+  "name" | "value" | "defaultValue" | "onValueChange" | "required" | "disabled"
 > & {
   id: string;
   label: string;

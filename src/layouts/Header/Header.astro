@@ -1,5 +1,6 @@
 ---
 import { BadgeCheck, Clock3, MessageSquareText, Phone } from "lucide-react";
+import type { CallbackFormProps } from "@/features/contacts";
 import Container from "@/shared/components/Container.astro";
 import { baseHref } from "@/shared/lib/BasePath";
 import Logo from "@/shared/ui/Logo.astro";
@@ -7,6 +8,7 @@ import { EstimateButton } from "./EstimateButton";
 import { HeaderMenu, type HeaderLink } from "./HeaderMenu";
 
 interface Props {
+  callbackForm: CallbackFormProps;
   companyName: string;
   phone: string;
   telegramUrl: string;
@@ -15,7 +17,7 @@ interface Props {
   links: readonly HeaderLink[];
 }
 
-const { companyName, phone, telegramUrl, schedule, license, links } = Astro.props;
+const { callbackForm, companyName, phone, telegramUrl, schedule, license, links } = Astro.props;
 const phoneHref = `tel:${phone.replace(/[^+\d]/g, "")}`;
 ---
 
@@ -64,10 +66,10 @@ const phoneHref = `tel:${phone.replace(/[^+\d]/g, "")}`;
       <EstimateButton
         client:load
         label="ОБРАТНЫЙ ЗВОНОК"
-        contact={{ phone, telegramUrl }}
+        contact={{ phone, telegramUrl, callbackForm }}
         className="hidden sm:inline-flex sm:max-xl:min-h-9 sm:max-xl:rounded-md sm:max-xl:px-[14px] sm:max-xl:text-button-medium sm:max-xl:leading-4"
       />
-      <HeaderMenu client:load {links} {phone} {telegramUrl} {schedule} {license} />
+      <HeaderMenu client:load {callbackForm} {links} {phone} {telegramUrl} {schedule} {license} />
     </div>
   </Container>
 </header>
