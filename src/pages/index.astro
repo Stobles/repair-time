@@ -15,9 +15,12 @@ import { portfolioProjects } from "@/features/portfolio";
 import { getPropertyTypes } from "@/features/contacts/server";
 import { getFaqEntries } from "@/features/faq";
 import { getReviews } from "@/features/reviews";
+import { getPricingItems } from "@/features/pricing";
 import { baseHref } from "@/shared/lib/BasePath";
 
-const [propertyTypes, faqEntries, reviews] = await Promise.all([getPropertyTypes(), getFaqEntries(), getReviews()]);
+const [propertyTypes, faqEntries, reviews, pricingItems] = await Promise.all([
+  getPropertyTypes(), getFaqEntries(), getReviews(), getPricingItems(),
+]);
 const callbackForm = {
   propertyTypes,
   submitUrl: `${baseHref}api/callback-requests`,
@@ -119,59 +122,6 @@ const workSteps = [
   },
 ] as const;
 
-const pricingPlans = [
-  {
-    tariff: "ТАРИФ «БАЗОВЫЙ»",
-    mobileTariff: "БЫСТРОЕ ОБНОВЛЕНИЕ",
-    title: "Косметический ремонт",
-    price: "8 500",
-    description: "Быстрое обновление интерьера перед переездом или арендой коммерческого помещения.",
-    mobileDescription: "Покраска, обои, замена напольных покрытий и сантехники без переноса перегородок.",
-    features: [
-      { label: "Демонтаж старых покрытий" },
-      {
-        label: "Шпаклевка и локальное выравнивание",
-        tabletLabel: "Шпаклевка и покраска стен / поклейка обоев",
-      },
-      { label: "Покраска стен / поклейка обоев", desktopOnly: true },
-      { label: "Укладка ламината, кварцвинила" },
-      { label: "Замена труб и электрощитка", desktopOnly: true, unavailable: true },
-    ],
-  },
-  {
-    tariff: "ТАРИФ «ОПТИМАЛЬНЫЙ»",
-    mobileTariff: "ПОЛНЫЙ ЦИКЛ ПОД КЛЮЧ",
-    title: "Капитальный ремонт",
-    price: "14 900",
-    description: "Полный цикл реновации с заменой всех инженерных сетей и выравниванием геометрии 90°.",
-    mobileDescription: "Выравнивание стен по маякам, полная замена инженерных сетей, чистовая отделка по дизайн-проекту.",
-    variant: "popular",
-    features: [
-      { label: "Полный демонтаж и возведение стен" },
-      { label: "Стяжка пола и штукатурка по маякам" },
-      { label: "Разводка сантехники Rehau и", desktopContinuation: "электромонтаж" },
-      { label: "Укладка плитки и чистовые работы под", desktopContinuation: "ключ", desktopOnly: true },
-      { label: "3-уровневый технадзор и акты скрытых", desktopContinuation: "работ" },
-    ],
-  },
-  {
-    tariff: "ТАРИФ «ПРЕМИУМ & FIT-OUT»",
-    mobileTariff: "ИНДИВИДУАЛЬНЫЙ ПРОЕКТ",
-    title: "Дизайнерский Fit-Out",
-    price: "21 000",
-    variant: "premium",
-    description: "Сложные архитектурные узлы, теневые профили, крупноформатный мрамор и индивидуальная интеграция.",
-    mobileDescription: "Сложные архитектурные узлы, теневые плинтуса, скрытые двери, умный дом и премиум-материалы.",
-    features: [
-      { label: "Авторский надзор ведущего архитектора" },
-      { label: "Теневые плинтусы и двери скрытого", desktopContinuation: "монтажа" },
-      { label: "Приточно-вытяжная вентиляция и", desktopContinuation: "кондиционирование" },
-      { label: "Умный дом и электрокарнизы", desktopOnly: true },
-      { label: "Премиальный клининг перед сдачей", desktopOnly: true },
-    ],
-  },
-] as const;
-
 ---
 
 <Layout title={companyName} lang="ru">
@@ -197,12 +147,12 @@ const pricingPlans = [
     />
     <WorkProcess
       eyebrow="ПРОЗРАЧНЫЙ ПРОЦЕСС"
-      title="Поэтапный процесс реализации проекта"
+      title="Поэтапный процесс реализации проектов"
       description="От первого звонка до подписания финального акта приёмки — понятный алгоритм без стресса для заказчика."
       oversight="6 шагов под контролем главного инженера"
       steps={workSteps}
     />
-    <Pricing plans={pricingPlans} contactHref="#contacts" />
+    {pricingItems.length > 0 && <Pricing items={pricingItems} contactHref="#contacts" />}
     {hasReviews && (
       <Reviews
         eyebrow="РЕАЛЬНЫЙ ОПЫТ ЗАКАЗЧИКОВ"

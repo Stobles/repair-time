@@ -1,15 +1,17 @@
 ---
-import { CircleHelp, Lightbulb } from "lucide-astro";
+import { CircleHelp } from "lucide-astro";
 import Container from "@/shared/components/Container.astro";
 import { Button } from "@/shared/ui/Button";
-import PricingCard, { type PricingPlan } from "./PricingCard.astro";
+import CardSlider from "@/shared/ui/CardSlider.astro";
+import type { PricingItem } from "@/features/pricing";
+import PricingCard from "./PricingCard.astro";
 
 interface Props {
-  plans: readonly PricingPlan[];
+  items: readonly PricingItem[];
   contactHref: string;
 }
 
-const { plans, contactHref } = Astro.props;
+const { items, contactHref } = Astro.props;
 ---
 
 <section
@@ -17,52 +19,49 @@ const { plans, contactHref } = Astro.props;
   aria-labelledby="pricing-title"
   class="bg-background-base py-32px text-text-primary sm:max-l:border-b sm:max-l:border-border-default sm:max-l:py-24px l:border-t l:border-border-default l:py-20"
 >
-  <Container class="grid gap-16px l:gap-48px">
-    <header class="grid gap-ui-gutter sm:justify-items-center sm:text-center sm:max-l:gap-4px l:gap-12px">
-      <p class="flex items-center gap-8px text-text-accent max-sm:font-golos-text max-sm:text-[11px]/[14px] max-sm:font-bold max-sm:tracking-[0.55px] max-sm:text-[#b02f00] sm:max-l:text-tablet-title-extra-small l:text-desktop-title-extra-small">
-        <span aria-hidden="true" class="hidden size-8px shrink-0 rounded-full bg-background-accent sm:block"></span>
-        ПРОЗРАЧНОЕ ЦЕНООБРАЗОВАНИЕ
-      </p>
-      <h2 id="pricing-title" class="text-mobile-h2 max-sm:translate-y-px max-sm:text-[#131b2e] sm:max-l:text-tablet-h2 l:translate-y-px l:text-desktop-h2">
-        Стоимость и базовые тарифы на <span class="l:block l:text-background-inverse">работы</span>
-      </h2>
-      <p class="hidden text-text-tertiary sm:block sm:max-l:max-w-lg sm:max-l:text-tablet-body-regular l:max-w-2xl l:text-desktop-body-regular">
-        Все тарифы включают работу штатных мастеров, вывоз мусора, организацию контроля качества и гарантию.
+  <Container class="grid gap-16px sm:max-l:gap-24px l:gap-48px">
+    <header class="grid gap-ui-gutter sm:justify-items-center sm:text-center l:gap-12px">
+      <h2 id="pricing-title" class="text-mobile-h2 sm:max-l:text-tablet-h2 l:text-desktop-h2">Стоимость работ</h2>
+      <p class="max-w-2xl text-tablet-body-regular text-text-tertiary l:text-desktop-body-regular">
+        Указаны начальные цены. Точную стоимость уточним после оценки объёма работ.
       </p>
     </header>
 
-    <div class="grid gap-16px sm:max-l:pt-8px l:grid-cols-3 l:gap-32px l:pb-1.5">
-      {plans.map((plan, index) => (
-        <PricingCard {plan} {contactHref} titleId={`pricing-plan-${index + 1}`} />
+    <CardSlider
+      count={items.length}
+      listClass={items.some(({ isFeatured }) => isFeatured) ? "pt-16px" : undefined}
+      labels={{
+        previous: "Предыдущая карточка",
+        next: "Следующая карточка",
+        item: "карточка",
+        single: "Карточка",
+        multiple: "Карточки",
+      }}
+    >
+      {items.map((item, index) => (
+        <li class="swiper-slide grid min-w-0 shrink-0">
+          <PricingCard {item} {contactHref} titleId={`pricing-item-${index + 1}`} />
+        </li>
       ))}
-    </div>
+    </CardSlider>
 
-    <div class="hidden items-center justify-between gap-12px bg-background-subtle sm:flex sm:max-l:rounded-lg sm:max-l:p-12px l:rounded-xl l:border l:border-border-default l:p-24px">
-      <div class="flex min-w-0 items-center gap-[7px] l:block">
-        <Lightbulb class="size-3 shrink-0 text-text-secondary l:hidden" aria-hidden="true" />
-        <p class="max-w-[500px] text-tablet-body-regular text-[#44403c] l:hidden">
-          Что влияет на финальную стоимость ремонта? Площадь, состояние стен, трассировка вентиляции и слаботочных сетей.
+    <div class="flex flex-wrap items-center justify-between gap-16px rounded-lg border border-border-default bg-background-subtle p-16px l:rounded-xl l:p-24px">
+      <div class="grid min-w-0 flex-1 basis-md gap-4px">
+        <h3 class="flex items-start gap-8px text-tablet-title-medium l:text-desktop-title-medium">
+          <CircleHelp class="mt-0.5 size-4 shrink-0 text-text-accent" aria-hidden="true" />
+          Что влияет на итоговую стоимость?
+        </h3>
+        <p class="text-tablet-body-regular text-text-tertiary l:text-desktop-body-small">
+          Цена зависит от объёма и сложности работ, состояния объекта и выбранных материалов.
         </p>
-        <div class="hidden max-w-3xl flex-col gap-[3px] l:flex">
-          <h3 class="flex items-center gap-8px text-desktop-title-medium">
-            <span class="grid w-[16.667px] shrink-0 place-content-center text-text-accent" aria-hidden="true">
-              <CircleHelp class="size-4.5" />
-            </span>
-            <span class="translate-y-px">Что влияет на финальную стоимость ремонта?</span>
-          </h3>
-          <p class="text-desktop-body-small text-text-tertiary">
-            Исходное состояние стяжки и стен, высота потолков, сложность трассировки вентиляции и слаботочных сетей, класс чистовых материалов. Пригласите инженера для точного расчета за 2 часа.
-          </p>
-        </div>
       </div>
       <Button
         href={contactHref}
         variant="dark"
         size="medium"
-        className="shrink-0 sm:max-l:h-7 sm:max-l:rounded-md sm:max-l:bg-[#1c1917] sm:max-l:px-12px sm:max-l:py-1.5 sm:max-l:text-tablet-title-small"
+        className="h-auto min-h-ui-button-medium w-full whitespace-normal text-center sm:w-auto"
       >
-        <span class="l:hidden">Узнать точнее</span>
-        <span class="hidden l:inline">ПОЛУЧИТЬ РАССЧЕТ СМЕТЫ</span>
+        Рассчитать стоимость
       </Button>
     </div>
   </Container>

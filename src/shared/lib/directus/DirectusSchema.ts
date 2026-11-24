@@ -48,11 +48,23 @@ interface DirectusCallbackRequest {
   message: string;
 }
 
+interface DirectusPricingItem {
+  id: string;
+  sort: number | null;
+  title: string;
+  description: string;
+  price_from: number;
+  price_unit: string;
+  is_featured: boolean;
+  features: unknown;
+}
+
 export interface DirectusSchema {
   directus_files: DirectusFile[];
   hero_slides: DirectusHeroSlide[];
   faq_items: DirectusFaqItem[];
   reviews: DirectusReview[];
+  pricing_items: DirectusPricingItem[];
   property_types: DirectusPropertyType[];
   callback_requests: DirectusCallbackRequest[];
 }
