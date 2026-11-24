@@ -15,6 +15,13 @@ import { portfolioProjects } from "@/features/portfolio";
 
 const companyName = "Время ремонта";
 const companyCity = "г. Донецк";
+const companyRequisites = {
+  proprietorName: "Иванов Иван Иванович",
+  inn: "XXXXXXXXXXXX",
+  ogrnip: "XXXXXXXXXXXXXXX",
+  registrationAuthority: "Межрайонная ИФНС России № XX",
+  isExample: true,
+};
 const phone = "+7 (949) 811 94 21";
 const phoneNumber = phone.replace(/[^+\d]/g, "");
 const whatsappUrl = `https://wa.me/${phoneNumber.replace(/\D/g, "")}`;
@@ -259,5 +266,5 @@ const faqEntries = [
     />
   </main>
 
-  <Footer {companyName} {phone} {email} city={companyCity} sections={footerSections} />
+  <Footer {companyName} {phone} {email} city={companyCity} sections={footerSections} requisites={companyRequisites} />
 </Layout>
