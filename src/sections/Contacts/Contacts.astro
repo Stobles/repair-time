@@ -1,10 +1,11 @@
 ---
 import { Mail, MapPin, MessageSquareText, Phone, SendHorizontal } from "lucide-astro";
-import { CallbackForm } from "@/features/contacts";
+import { CallbackForm, type CallbackFormProps } from "@/features/contacts";
 import Container from "@/shared/components/Container.astro";
 import { Button } from "@/shared/ui/Button";
 
 interface Props {
+  callbackForm: CallbackFormProps;
   phone: string;
   email: string;
   whatsappUrl: string;
@@ -13,7 +14,7 @@ interface Props {
   schedule: string;
 }
 
-const { phone, email, whatsappUrl, telegramUrl, city, schedule } = Astro.props;
+const { callbackForm, phone, email, whatsappUrl, telegramUrl, city, schedule } = Astro.props;
 const phoneHref = `tel:${phone.replace(/[^+\d]/g, "")}`;
 const titleId = "contacts-title";
 const estimateDescription = "Специалист приедет с лазерным оборудованием, проведет аудит объекта и составит смету с точностью до";
@@ -55,7 +56,7 @@ const messengerClass = "gap-8px px-ui-inset sm:max-l:h-[38px] sm:max-l:flex-1 sm
           {estimateDescription} <span class="l:hidden">3%.</span><span class="hidden l:inline">1%.</span>
         </p>
       </header>
-      <CallbackForm client:visible={{ rootMargin: "200px" }} />
+      <CallbackForm client:visible={{ rootMargin: "200px" }} {...callbackForm} />
     </div>
 
     <address class="grid min-w-0 grid-cols-[auto_1fr] items-center gap-x-8px gap-y-ui-inset pt-16px not-italic sm:grid-cols-1 sm:max-l:gap-12px sm:max-l:rounded-xl sm:max-l:border sm:max-l:border-text-secondary sm:max-l:p-16px l:col-span-5 l:col-start-1 l:row-start-2 l:self-start l:gap-16px l:pt-0">

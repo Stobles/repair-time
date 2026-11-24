@@ -12,7 +12,13 @@ import Hero from "@/sections/Hero/Hero.astro";
 import Portfolio from "@/sections/Portfolio/Portfolio.astro";
 import Pricing from "@/sections/Pricing/Pricing.astro";
 import { portfolioProjects } from "@/features/portfolio";
+import { getPropertyTypes } from "@/features/contacts/server";
+import { baseHref } from "@/shared/lib/BasePath";
 
+const callbackForm = {
+  propertyTypes: await getPropertyTypes(),
+  submitUrl: `${baseHref}api/callback-requests`,
+};
 const companyName = "Время ремонта";
 const companyCity = "г. Донецк";
 const phone = "+7 (949) 811 94 21";
@@ -211,6 +217,7 @@ const faqEntries = [
 
 <Layout title={companyName} lang="ru">
   <Header
+    {callbackForm}
     {companyName}
     {phone}
     {telegramUrl}
@@ -250,6 +257,7 @@ const faqEntries = [
       entries={faqEntries}
     />
     <Contacts
+      {callbackForm}
       {phone}
       {email}
       {whatsappUrl}

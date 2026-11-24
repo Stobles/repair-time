@@ -140,7 +140,26 @@ Directus is the primary CMS and source of website content.
 - Transform external data before passing it to presentation components when necessary.
 - Pass data through props rather than making UI components directly dependent on Directus.
 
-Hero reads published slides at build time. Set both `DIRECTUS_URL` and the read-only `DIRECTUS_TOKEN` to enable CMS content. The build uses the local slides when both values are empty and fails when only one is set or a configured Directus request fails. The GitHub Pages build reads the URL from an Actions variable and the token from an Actions secret. It needs a reachable Directus instance and public HTTPS asset URLs for the Hero media folder. Run a new build to publish CMS edits.
+Hero reads published slides at build time. Set both `DIRECTUS_URL` and the read-only `DIRECTUS_TOKEN` to enable CMS content. The build uses local slides when both values are empty and fails when only one is set or a configured read fails. The deployed site needs public HTTPS asset URLs for the Hero media folder. Run a new build to publish CMS edits.
+
+The home page also reads active `property_types` at build time and passes the choices to the contact form and both callback dialogs. Rebuild to publish changes to the choices. With no configured Directus or no active choices, the site offers the existing phone and messenger contacts.
+
+The contact form POSTs to `api/callback-requests` under the site's base path. The on-demand Astro route validates the fields with Zod, checks the selected property type against current Directus data, and creates a record using the optional server-only `DIRECTUS_CALLBACK_TOKEN`. The browser receives a confirmation or error code. Collection access stays private.
+
+### 4.1. Set up callback requests in Directus
+
+1. Run `docker compose up -d` for the local CMS. Set `DIRECTUS_URL`, `DIRECTUS_TOKEN`, and the existing `ADMIN_EMAIL` and `ADMIN_PASSWORD` in the ignored `.env`.
+2. Run `npm run directus:setup:callbacks`. The setup creates **Заявки → Заявки с сайта** and **Заявки → Типы объектов**, adds missing initial choices, configures privileges, and saves the write token to `.env`. Rerunning preserves existing choices, requests, and the service token.
+3. In Directus Studio, use an administrator account or a staff policy with read access to both collections to open requests. Grant staff update access to `property_types` if they manage the choices. Deactivate a used type to hide it from the form. Existing requests retain their relation.
+4. The setup accepts an alternative env file as its first argument. Use `--schema-only` to provision collections and seed records without configuring accounts or writing a token. For manual setup, give the read token `Read` access to active types and the write token `Create` access to `name`, `phone`, `property`, and `message` on `callback_requests`. Keep both collections closed to the public role.
+5. When upgrading a collection that still has `consent`, run `npm run directus:setup:callbacks -- --remove-consent` as part of deploying the updated site. This drops the column and its stored values. The site checks consent when validating the form.
+
+### 4.2. Run the website
+
+- For development, start Astro with `npm run dev -- --background` and open the URL printed by Astro.
+- For production, run `npm ci`, `npm run build`, then `npm start`. Supply Directus credentials at runtime through the process environment or an ignored `.env`. The Node adapter serves the static pages and handles the callback POST. Set the production `site` and `base` in Astro before building for a new domain or path.
+- On the VPS, run the Node process under a service manager behind an HTTPS reverse proxy. Forward the original host and HTTPS protocol and limit POSTs to the callback route per client IP. For example, on nginx use a `limit_req_zone` at 5 requests per minute, a short burst, and `limit_req_status 429` for the callback location. Set `client_max_body_size 32k` on that location.
+- GitHub Actions validates a CMS-free build. Host the production build on a server with Node to accept requests.
 
 ## 5. Rendering Strategy
 

@@ -1,6 +1,6 @@
 import { MessageSquareText } from "lucide-react";
 import type { ReactNode } from "react";
-import { CallbackForm } from "@/features/contacts";
+import { CallbackForm, type CallbackFormProps } from "@/features/contacts";
 import { Button, type ButtonProps } from "@/shared/ui/Button";
 import {
   Dialog,
@@ -21,7 +21,7 @@ type EstimateButtonProps = {
   rightIcon?: ButtonProps["rightIcon"];
   className?: string;
 } & (
-  | { contact: { phone: string; telegramUrl: string }; children?: never }
+  | { contact: { phone: string; telegramUrl: string; callbackForm: CallbackFormProps }; children?: never }
   | { contact?: never; children: ReactNode }
 );
 
@@ -55,7 +55,7 @@ function EstimateButton({
         </DialogHeader>
         {contact ? (
           <>
-            <CallbackForm />
+            <CallbackForm {...contact.callbackForm} />
             <div className="flex flex-wrap items-center justify-between gap-8px border-t border-border-default pt-16px">
               <a href={contact.telegramUrl} target="_blank" rel="noopener" className="ui-focus flex items-center gap-8px rounded-sm text-desktop-title-extra-small text-functional-telegram hover:underline">
                 <MessageSquareText aria-hidden="true" className="size-3 shrink-0" />

@@ -6,12 +6,13 @@ import { Field, FieldError, FieldLabel } from "@/shared/ui/Field";
 import { Input } from "@/shared/ui/Input";
 import { SelectField } from "@/shared/ui/SelectField";
 import { Textarea } from "@/shared/ui/Textarea";
-import { useCallbackForm } from "../hooks/UseCallbackForm";
-import { propertyTypes } from "../model/CallbackFormSchema";
+import { useCallbackSubmission } from "../hooks/useCallbackSubmission";
+import type { CallbackFormProps } from "../types/callbackForm";
 
-function CallbackForm() {
+function CallbackForm({ propertyTypes, submitUrl }: CallbackFormProps) {
   const id = useId();
-  const { control, register, errors, feedback, onSubmit } = useCallbackForm();
+  const { control, register, errors, feedback, isSubmitting, onSubmit } = useCallbackSubmission({ propertyTypes, submitUrl });
+  const unavailable = propertyTypes.length === 0;
   const nameErrorId = `${id}-name-error`;
   const phoneErrorId = `${id}-phone-error`;
   const messageErrorId = `${id}-message-error`;
@@ -20,6 +21,7 @@ function CallbackForm() {
     <form
       data-callback-form
       method="post"
+      action={submitUrl}
       noValidate
       onSubmit={onSubmit}
       aria-label="Заявка на замер и расчет сметы"
@@ -68,6 +70,9 @@ function CallbackForm() {
             id={`${id}-property`}
             label="ТИП ОБЪЕКТА"
             options={propertyTypes}
+            placeholder="Выберите тип объекта"
+            required
+            disabled={unavailable}
             name={field.name}
             value={field.value}
             onValueChange={field.onChange}
@@ -110,7 +115,7 @@ function CallbackForm() {
               onCheckedChange={(checked) => field.onChange(checked === true)}
               onBlur={field.onBlur}
               required
-              aria-invalid={fieldState.invalid || undefined}
+              aria-invalid={fieldState.invalid}
             />
             <FieldLabel
               htmlFor={`${id}-consent`}
@@ -124,13 +129,24 @@ function CallbackForm() {
 
       <Button
         type="submit"
+        disabled={unavailable || isSubmitting}
         leftIcon="send"
         rightIcon={false}
         className="h-auto min-h-ui-button-large w-full px-16px text-center whitespace-normal"
       >
-        ОБСУДИТЬ ПОХОЖИЙ ПРОЕКТ
+        {isSubmitting ? "ОТПРАВЛЯЕМ ЗАЯВКУ…" : "ОБСУДИТЬ ПОХОЖИЙ ПРОЕКТ"}
       </Button>
-      <output className="empty:sr-only text-desktop-body-medium text-error">{feedback}</output>
+      {unavailable && (
+        <p className="text-desktop-body-medium text-text-secondary">
+          Отправка через сайт пока недоступна. Позвоните нам или напишите в Telegram.
+        </p>
+      )}
+      <output
+        role="status"
+        className={`empty:sr-only text-desktop-body-medium ${feedback?.error ? "text-error" : "text-text-primary"}`}
+      >
+        {feedback?.message}
+      </output>
     </form>
   );
 }

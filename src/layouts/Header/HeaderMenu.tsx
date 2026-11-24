@@ -1,6 +1,7 @@
 import { ChevronRight, Menu, X } from "lucide-react";
 import { Popover } from "radix-ui";
 import { useRef } from "react";
+import type { CallbackFormProps } from "@/features/contacts";
 import { Button } from "@/shared/ui/Button";
 import { EstimateButton } from "./EstimateButton";
 
@@ -10,6 +11,7 @@ interface HeaderLink {
 }
 
 interface HeaderMenuProps {
+  callbackForm: CallbackFormProps;
   links: readonly HeaderLink[];
   phone: string;
   telegramUrl: string;
@@ -18,6 +20,7 @@ interface HeaderMenuProps {
 }
 
 function HeaderMenu({
+  callbackForm,
   links,
   phone,
   telegramUrl,
@@ -82,7 +85,7 @@ function HeaderMenu({
                 size="medium"
                 leftIcon={false}
                 rightIcon
-                contact={{ phone, telegramUrl }}
+                contact={{ phone, telegramUrl, callbackForm }}
                 className="min-h-48px w-full"
               />
               <div className="grid justify-items-center gap-4px">

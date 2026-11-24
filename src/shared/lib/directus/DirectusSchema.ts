@@ -16,7 +16,25 @@ interface DirectusHeroSlide {
   sort: number | null;
 }
 
+interface DirectusPropertyType {
+  id: string;
+  name: string;
+  sort: number;
+  is_active: boolean;
+}
+
+interface DirectusCallbackRequest {
+  id: string;
+  date_created: string;
+  name: string;
+  phone: string;
+  property: string | DirectusPropertyType;
+  message: string;
+}
+
 export interface DirectusSchema {
   directus_files: DirectusFile[];
   hero_slides: DirectusHeroSlide[];
+  property_types: DirectusPropertyType[];
+  callback_requests: DirectusCallbackRequest[];
 }
