@@ -24,9 +24,11 @@ const { author, initials, avatarColor, rating, quote, details } = Astro.props.re
     ]} aria-hidden="true">{initials}</span>
     <div class="min-w-0">
       <p class="text-tablet-title-small wrap-anywhere text-text-primary l:text-desktop-title-small l:text-background-inverse">{author}</p>
-      <p class="text-tablet-body-small wrap-anywhere text-text-tertiary l:font-golos-text l:text-xs/4.5">
-        {details}
-      </p>
+      {details && (
+        <p class="text-tablet-body-small wrap-anywhere text-text-tertiary l:font-golos-text l:text-xs/4.5">
+          {details}
+        </p>
+      )}
     </div>
   </div>
 
