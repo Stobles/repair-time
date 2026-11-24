@@ -142,6 +142,8 @@ Directus is the primary CMS and source of website content.
 
 Hero reads published slides at build time. Set both `DIRECTUS_URL` and the read-only `DIRECTUS_TOKEN` to enable CMS content. The build uses local slides when both values are empty and fails when only one is set or a configured read fails. The deployed site needs public HTTPS asset URLs for the Hero media folder. Run a new build to publish CMS edits.
 
+The home page reads FAQ entries at build time from `faq_items`, ordered by `sort` and `id`. Run `npm run directus:setup:faq` before building against a new Directus environment. The command uses the same `.env` credentials as callback setup and accepts an alternative env file as its first argument. It creates **Частые вопросы**, fills an empty collection with the six local entries, and grants the site's existing reader access. Edit the questions and answers in Directus Studio, drag rows to reorder them, and rebuild to publish changes. Builds without Directus use the local entries.
+
 The home page also reads active `property_types` at build time and passes the choices to the contact form and both callback dialogs. Rebuild to publish changes to the choices. With no configured Directus or no active choices, the site offers the existing phone and messenger contacts.
 
 The contact form POSTs to `api/callback-requests` under the site's base path. The on-demand Astro route validates the fields with Zod, checks the selected property type against current Directus data, and creates a record using the optional server-only `DIRECTUS_CALLBACK_TOKEN`. The browser receives a confirmation or error code. Collection access stays private.

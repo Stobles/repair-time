@@ -1,11 +1,7 @@
 ---
 import Container from "@/shared/components/Container.astro";
 import AccordionItem from "@/shared/ui/AccordionItem.astro";
-
-interface FaqEntry {
-  question: string;
-  answer: string;
-}
+import type { FaqEntry } from "@/features/faq";
 
 interface Props {
   id?: string;

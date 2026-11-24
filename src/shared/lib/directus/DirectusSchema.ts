@@ -23,6 +23,13 @@ interface DirectusPropertyType {
   is_active: boolean;
 }
 
+interface DirectusFaqItem {
+  id: string;
+  question: string;
+  answer: string;
+  sort: number | null;
+}
+
 interface DirectusCallbackRequest {
   id: string;
   date_created: string;
@@ -35,6 +42,7 @@ interface DirectusCallbackRequest {
 export interface DirectusSchema {
   directus_files: DirectusFile[];
   hero_slides: DirectusHeroSlide[];
+  faq_items: DirectusFaqItem[];
   property_types: DirectusPropertyType[];
   callback_requests: DirectusCallbackRequest[];
 }

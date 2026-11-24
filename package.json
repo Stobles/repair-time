@@ -10,6 +10,7 @@
     "build": "astro build",
     "start": "node --env-file-if-exists=.env dist/server/entry.mjs",
     "directus:setup:callbacks": "node scripts/setupCallbackRequests.mjs",
+    "directus:setup:faq": "node scripts/setupFaq.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },
