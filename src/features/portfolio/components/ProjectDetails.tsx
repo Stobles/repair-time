@@ -69,14 +69,6 @@ export function ProjectDetails({
         ))}
       </dl>
 
-      <p className="flex items-center gap-8px rounded-ui-control border border-border-default bg-background-subtle p-12px text-desktop-body-extra-small text-text-tertiary">
-        <ShieldCheck
-          aria-hidden="true"
-          className="size-4 shrink-0 text-text-accent"
-        />
-        Смета зафиксирована в договоре, гарантия 5 лет на все виды работ
-      </p>
-
       <div className="mt-auto grid gap-12px l:border-t l:border-background-inactive l:pt-16px">
         <Button
           href={contactHref}

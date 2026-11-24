@@ -1,6 +1,5 @@
 ---
-import { ChevronLeft, ChevronRight } from "lucide-astro";
-import { Button } from "@/shared/ui/Button";
+import CardSlider from "@/shared/ui/CardSlider.astro";
 import type { Review } from "../types/Review";
 import ReviewCard from "./ReviewCard.astro";
 
@@ -9,130 +8,21 @@ interface Props {
 }
 
 const { reviews } = Astro.props;
-const isCarousel = reviews.length > 1;
-const navigation = [
-  { direction: "previous", label: "Предыдущий отзыв", Icon: ChevronLeft },
-  { direction: "next", label: "Следующий отзыв", Icon: ChevronRight },
-];
 ---
 
-<div data-reviews-slider={isCarousel ? "" : undefined} class="min-w-0">
-  <div
-    data-reviews-viewport
-    tabindex={isCarousel ? -1 : undefined}
-    class="swiper group/reviews ui-focus min-w-0 [&.swiper-initialized]:touch-pan-y [&.swiper-initialized]:overflow-clip [&.swiper-initialized]:[overflow-clip-margin:4px]"
-  >
-    <ul
-      role="list"
-      class="swiper-wrapper relative grid gap-16px sm:max-l:grid-cols-2 sm:max-l:gap-12px l:grid-cols-3 l:gap-24px group-[.swiper-initialized]/reviews:flex group-[.swiper-initialized]/reviews:gap-0 group-[.swiper-initialized]/reviews:transition-transform"
-    >
-      {reviews.map((review) => (
-        <li class="swiper-slide grid min-w-0 shrink-0">
-          <ReviewCard {review} />
-        </li>
-      ))}
-    </ul>
-  </div>
-
-  {isCarousel && (
-    <>
-      <div data-reviews-controls hidden class="mt-16px flex items-center justify-end gap-8px [&[hidden]]:hidden">
-        {navigation.map(({ direction, label, Icon }) => (
-          <Button
-            data-reviews-nav={direction}
-            aria-label={label}
-            variant="outline"
-            size="small"
-            className="h-9! w-9 shrink-0 p-0! sm:max-l:h-10! sm:max-l:w-10 l:h-11! l:w-11"
-          >
-            <Icon class="size-4" aria-hidden="true" />
-          </Button>
-        ))}
-      </div>
-      <p data-reviews-status role="status" class="sr-only"></p>
-    </>
-  )}
-</div>
-
-<script>
-  import Swiper from "swiper";
-  import { A11y, Navigation } from "swiper/modules";
-
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const getSpeed = () => reducedMotion.matches ? 0 : 300;
-
-  for (const slider of document.querySelectorAll<HTMLElement>("[data-reviews-slider]")) {
-    const viewport = slider.querySelector<HTMLElement>("[data-reviews-viewport]");
-    const controls = slider.querySelector<HTMLElement>("[data-reviews-controls]");
-    const previousButton = slider.querySelector<HTMLButtonElement>('[data-reviews-nav="previous"]');
-    const nextButton = slider.querySelector<HTMLButtonElement>('[data-reviews-nav="next"]');
-    const status = slider.querySelector<HTMLElement>("[data-reviews-status]");
-    if (!viewport || !controls || !previousButton || !nextButton || !status) continue;
-
-    const updateControls = ({ isLocked }: Swiper) => {
-      if (isLocked && controls.contains(document.activeElement)) {
-        viewport.focus({ preventScroll: true });
-      }
-      controls.hidden = isLocked;
-    };
-
-    const swiper = new Swiper(viewport, {
-      modules: [A11y, Navigation],
-      speed: getSpeed(),
-      slidesPerView: 1,
-      spaceBetween: 16,
-      watchOverflow: true,
-      watchSlidesProgress: true,
-      breakpoints: {
-        640: { slidesPerView: 2, spaceBetween: 12 },
-        1024: { slidesPerView: 3, spaceBetween: 24 },
-      },
-      navigation: { prevEl: previousButton, nextEl: nextButton, addIcons: false },
-      a11y: {
-        notificationClass: "sr-only",
-        prevSlideMessage: previousButton.getAttribute("aria-label") ?? undefined,
-        nextSlideMessage: nextButton.getAttribute("aria-label") ?? undefined,
-        slideRole: "listitem",
-        itemRoleDescriptionMessage: "отзыв",
-        slideLabelMessage: "{{index}} из {{slidesLength}}",
-        wrapperLiveRegion: false,
-      },
-      onAny(event) {
-        if (event !== "toEdge") return;
-        const focused = document.activeElement;
-        if (!(focused instanceof HTMLButtonElement) || (focused !== previousButton && focused !== nextButton)) return;
-
-        const other = focused === previousButton ? nextButton : previousButton;
-        // Swiper disables the edge control after dispatching this event.
-        queueMicrotask(() => {
-          if (!controls.hidden && focused.disabled && !other.disabled &&
-            (document.activeElement === focused || document.activeElement === document.body)) {
-            other.focus({ preventScroll: true });
-          }
-        });
-      },
-      on: {
-        init: updateControls,
-        lock: updateControls,
-        unlock: updateControls,
-        slideChangeTransitionEnd(swiper) {
-          const first = swiper.visibleSlidesIndexes[0];
-          const last = swiper.visibleSlidesIndexes.at(-1);
-          if (swiper.isLocked || first === undefined || last === undefined) return;
-
-          status.textContent = first === last
-            ? `Отзыв ${first + 1} из ${swiper.slides.length}`
-            : `Отзывы ${first + 1}–${last + 1} из ${swiper.slides.length}`;
-        },
-      },
-    });
-
-    const updateSpeed = () => {
-      const speed = getSpeed();
-      swiper.params.speed = speed;
-      swiper.originalParams.speed = speed;
-    };
-    reducedMotion.addEventListener("change", updateSpeed);
-    swiper.on("destroy", () => reducedMotion.removeEventListener("change", updateSpeed));
-  }
-</script>
+<CardSlider
+  count={reviews.length}
+  labels={{
+    previous: "Предыдущий отзыв",
+    next: "Следующий отзыв",
+    item: "отзыв",
+    single: "Отзыв",
+    multiple: "Отзывы",
+  }}
+>
+  {reviews.map((review) => (
+    <li class="swiper-slide grid min-w-0 shrink-0">
+      <ReviewCard {review} />
+    </li>
+  ))}
+</CardSlider>

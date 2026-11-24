@@ -1,0 +1,89 @@
+[
+  {
+    "title": "Косметический ремонт",
+    "description": "Быстрое обновление интерьера перед переездом или арендой коммерческого помещения.",
+    "price_from": 8500,
+    "price_unit": "square_meter",
+    "is_featured": false,
+    "features": [
+      {
+        "label": "Демонтаж старых покрытий",
+        "unavailable": false
+      },
+      {
+        "label": "Шпаклевка и локальное выравнивание",
+        "unavailable": false
+      },
+      {
+        "label": "Покраска стен / поклейка обоев",
+        "unavailable": false
+      },
+      {
+        "label": "Укладка ламината, кварцвинила",
+        "unavailable": false
+      },
+      {
+        "label": "Замена труб и электрощитка",
+        "unavailable": true
+      }
+    ]
+  },
+  {
+    "title": "Капитальный ремонт",
+    "description": "Полный цикл реновации с заменой всех инженерных сетей и выравниванием геометрии 90°.",
+    "price_from": 14900,
+    "price_unit": "square_meter",
+    "is_featured": true,
+    "features": [
+      {
+        "label": "Полный демонтаж и возведение стен",
+        "unavailable": false
+      },
+      {
+        "label": "Стяжка пола и штукатурка по маякам",
+        "unavailable": false
+      },
+      {
+        "label": "Разводка сантехники Rehau и электромонтаж",
+        "unavailable": false
+      },
+      {
+        "label": "Укладка плитки и чистовые работы под ключ",
+        "unavailable": false
+      },
+      {
+        "label": "3-уровневый технадзор и акты скрытых работ",
+        "unavailable": false
+      }
+    ]
+  },
+  {
+    "title": "Дизайнерский Fit-Out",
+    "description": "Сложные архитектурные узлы, теневые профили, крупноформатный мрамор и индивидуальная интеграция.",
+    "price_from": 21000,
+    "price_unit": "square_meter",
+    "is_featured": false,
+    "features": [
+      {
+        "label": "Авторский надзор ведущего архитектора",
+        "unavailable": false
+      },
+      {
+        "label": "Теневые плинтусы и двери скрытого монтажа",
+        "unavailable": false
+      },
+      {
+        "label": "Приточно-вытяжная вентиляция и кондиционирование",
+        "unavailable": false
+      },
+      {
+        "label": "Умный дом и электрокарнизы",
+        "unavailable": false
+      },
+      {
+        "label": "Премиальный клининг перед сдачей",
+        "unavailable": false
+      }
+    ]
+  }
+]
