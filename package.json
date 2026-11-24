@@ -11,6 +11,7 @@
     "start": "node --env-file-if-exists=.env dist/server/entry.mjs",
     "directus:setup:callbacks": "node scripts/setupCallbackRequests.mjs",
     "directus:setup:faq": "node scripts/setupFaq.mjs",
+    "directus:setup:reviews": "node scripts/setupReviews.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },

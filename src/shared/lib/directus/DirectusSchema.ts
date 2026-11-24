@@ -30,6 +30,15 @@ interface DirectusFaqItem {
   sort: number | null;
 }
 
+interface DirectusReview {
+  id: string;
+  author: string;
+  quote: string;
+  rating: number;
+  details: string | null;
+  sort: number | null;
+}
+
 interface DirectusCallbackRequest {
   id: string;
   date_created: string;
@@ -43,6 +52,7 @@ export interface DirectusSchema {
   directus_files: DirectusFile[];
   hero_slides: DirectusHeroSlide[];
   faq_items: DirectusFaqItem[];
+  reviews: DirectusReview[];
   property_types: DirectusPropertyType[];
   callback_requests: DirectusCallbackRequest[];
 }

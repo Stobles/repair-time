@@ -146,6 +146,8 @@ The home page reads FAQ entries at build time from `faq_items`, ordered by `sort
 
 The home page also reads active `property_types` at build time and passes the choices to the contact form and both callback dialogs. Rebuild to publish changes to the choices. With no configured Directus or no active choices, the site offers the existing phone and messenger contacts.
 
+The home page reads **Отзывы** from `reviews` at build time, ordered by `sort` and `id`. Run `npm run directus:setup:reviews -- --seed` before the first build against a configured Directus environment to provision the collection, grant access to the existing read token, and import the three local reviews into an empty collection. The setup uses the same `.env` credentials as FAQ setup and accepts an alternative env file. Run without `--seed` for schema and access setup alone. Edit, delete, or reorder reviews in Studio and rebuild to publish the changes. An empty collection hides the section and its navigation links. Builds without Directus use the local reviews, and a configured read error stops the build.
+
 The contact form POSTs to `api/callback-requests` under the site's base path. The on-demand Astro route validates the fields with Zod, checks the selected property type against current Directus data, and creates a record using the optional server-only `DIRECTUS_CALLBACK_TOKEN`. The browser receives a confirmation or error code. Collection access stays private.
 
 ### 4.1. Set up callback requests in Directus

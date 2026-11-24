@@ -14,10 +14,12 @@ import Pricing from "@/sections/Pricing/Pricing.astro";
 import { portfolioProjects } from "@/features/portfolio";
 import { getPropertyTypes } from "@/features/contacts/server";
 import { getFaqEntries } from "@/features/faq";
+import { getReviews } from "@/features/reviews";
 import { baseHref } from "@/shared/lib/BasePath";
 
+const [propertyTypes, faqEntries, reviews] = await Promise.all([getPropertyTypes(), getFaqEntries(), getReviews()]);
 const callbackForm = {
-  propertyTypes: await getPropertyTypes(),
+  propertyTypes,
   submitUrl: `${baseHref}api/callback-requests`,
 };
 const companyName = "Время ремонта";
@@ -34,17 +36,19 @@ const phoneNumber = phone.replace(/[^+\d]/g, "");
 const whatsappUrl = `https://wa.me/${phoneNumber.replace(/\D/g, "")}`;
 const telegramUrl = `https://t.me/${phoneNumber}`;
 const email = "info@vremyaremonta.ru";
+const hasReviews = reviews.length > 0;
+const reviewLinks = hasReviews ? [{ id: "reviews", label: "Отзывы" }] : [];
 const sections = [
   { id: "portfolio", label: "Портфолио" },
   { id: "about", label: "О компании" },
-  { id: "reviews", label: "Отзывы" },
+  ...reviewLinks,
   { id: "faq", label: "FAQ" },
   { id: "contacts", label: "Контакты" },
 ];
 const footerSections = [
   { id: "portfolio", label: "Портфолио" },
   { id: "about", label: "О компании" },
-  { id: "reviews", label: "Отзывы" },
+  ...reviewLinks,
   { id: "faq", label: "Ответы на частые вопросы" },
   { id: "contacts", label: "Контакты" },
 ];
@@ -168,34 +172,6 @@ const pricingPlans = [
   },
 ] as const;
 
-const reviews = [
-  {
-    author: "Алексей Смирнов",
-    initials: "АС",
-    avatarColor: "dark",
-    rating: 5,
-    quote: "«Делали комплексный ремонт офиса площадью 320 м². Ключевым условием было успеть до заезда команды за 60 дней. Сдали на 4 дня раньше срока! В переговорных идеальная звукоизоляция, сотрудники в восторге от качества света».",
-    details: "Владелец IT-компании",
-  },
-  {
-    author: "Екатерина и Дмитрий Васильевы",
-    initials: "ЕВ",
-    avatarColor: "accent",
-    rating: 5,
-    quote: "«Капитальный ремонт квартиры площадью 112 м². Самое главное: смета не выросла ни на копейку относительно договора! Технадзор присылал видеоотчеты скрытых работ в WhatsApp дважды в неделю. Все ровно и аккуратно».",
-    details: "Квартира, 112 м²",
-  },
-  {
-    author: "Роман Казанцев",
-    initials: "РК",
-    avatarColor: "muted",
-    rating: 5,
-    quote: "«Ремонтировали ресторан площадью 190 м². По правилам дома все шумные работы строго регламентированы. Бригада «Время Ремонта» четко держала график, не было ни одной жалобы от жильцов. Заведение открыли ровно к сезону».",
-    details: "Управляющий рестораном",
-  },
-] as const;
-
-const faqEntries = await getFaqEntries();
 ---
 
 <Layout title={companyName} lang="ru">
@@ -227,12 +203,14 @@ const faqEntries = await getFaqEntries();
       steps={workSteps}
     />
     <Pricing plans={pricingPlans} contactHref="#contacts" />
-    <Reviews
-      eyebrow="РЕАЛЬНЫЙ ОПЫТ ЗАКАЗЧИКОВ"
-      title="Отзывы о строительной компании «ВРЕМЯ РЕМОНТА»"
-      description="Оценки нашей работы в Донецке и Мариуполе."
-      {reviews}
-    />
+    {hasReviews && (
+      <Reviews
+        eyebrow="РЕАЛЬНЫЙ ОПЫТ ЗАКАЗЧИКОВ"
+        title="Отзывы о строительной компании «ВРЕМЯ РЕМОНТА»"
+        description="Оценки нашей работы в Донецке и Мариуполе."
+        {reviews}
+      />
+    )}
     <Faq
       eyebrow="ОТВЕТЫ НА ВОПРОСЫ"
       title="Часто задаваемые вопросы"

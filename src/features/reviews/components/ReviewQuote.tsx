@@ -92,9 +92,11 @@ function ReviewQuote({ author, details, quote }: ReviewQuoteProps) {
             >
               {author}
             </DialogTitle>
-            <DialogDescription className="text-desktop-body-medium wrap-anywhere">
-              {details}
-            </DialogDescription>
+            {details && (
+              <DialogDescription className="text-desktop-body-medium wrap-anywhere">
+                {details}
+              </DialogDescription>
+            )}
           </DialogHeader>
 
           <blockquote className="rounded-e-lg border-s-2 border-border-accent bg-background-subtle p-16px text-desktop-body-regular text-text-secondary sm:p-24px sm:text-desktop-body-large">

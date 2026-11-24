@@ -1,5 +1,5 @@
 ---
-import { ReviewCard, type Review } from "@/features/reviews";
+import { ReviewsSlider, type Review } from "@/features/reviews";
 import Container from "@/shared/components/Container.astro";
 
 interface Props {
@@ -33,12 +33,6 @@ const titleId = `${id}-title`;
       </p>
     </header>
 
-    <ul role="list" class="grid gap-12px l:grid-cols-3 l:gap-24px">
-      {reviews.map((review) => (
-        <li class="grid min-w-0">
-          <ReviewCard review={review} />
-        </li>
-      ))}
-    </ul>
+    <ReviewsSlider {reviews} />
   </Container>
 </section>
