@@ -11,15 +11,15 @@ import Faq from "@/sections/Faq/Faq.astro";
 import Hero from "@/sections/Hero/Hero.astro";
 import Portfolio from "@/sections/Portfolio/Portfolio.astro";
 import Pricing from "@/sections/Pricing/Pricing.astro";
-import { portfolioProjects } from "@/features/portfolio";
+import { getPortfolioProjects } from "@/features/portfolio/server";
 import { getPropertyTypes } from "@/features/contacts/server";
 import { getFaqEntries } from "@/features/faq";
 import { getReviews } from "@/features/reviews";
 import { getPricingItems } from "@/features/pricing";
 import { baseHref } from "@/shared/lib/BasePath";
 
-const [propertyTypes, faqEntries, reviews, pricingItems] = await Promise.all([
-  getPropertyTypes(), getFaqEntries(), getReviews(), getPricingItems(),
+const [propertyTypes, faqEntries, reviews, pricingItems, portfolioProjects] = await Promise.all([
+  getPropertyTypes(), getFaqEntries(), getReviews(), getPricingItems(), getPortfolioProjects(),
 ]);
 const callbackForm = {
   propertyTypes,
@@ -41,15 +41,16 @@ const telegramUrl = `https://t.me/${phoneNumber}`;
 const email = "info@vremyaremonta.ru";
 const hasReviews = reviews.length > 0;
 const reviewLinks = hasReviews ? [{ id: "reviews", label: "Отзывы" }] : [];
+const portfolioLinks = portfolioProjects.length > 0 ? [{ id: "portfolio", label: "Портфолио" }] : [];
 const sections = [
-  { id: "portfolio", label: "Портфолио" },
+  ...portfolioLinks,
   { id: "about", label: "О компании" },
   ...reviewLinks,
   { id: "faq", label: "FAQ" },
   { id: "contacts", label: "Контакты" },
 ];
 const footerSections = [
-  { id: "portfolio", label: "Портфолио" },
+  ...portfolioLinks,
   { id: "about", label: "О компании" },
   ...reviewLinks,
   { id: "faq", label: "Ответы на частые вопросы" },

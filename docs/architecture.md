@@ -150,6 +150,12 @@ The home page reads **Отзывы** from `reviews` at build time, ordered by `s
 
 The home page reads **Стоимость работ** from `pricing_items`, ordered by `sort` and `id`. Run `npm run directus:setup:pricing -- --seed` before the first build against a configured Directus environment. This provisions the collection, grants read access to the existing site token, and imports the three local pricing cards into an empty collection. The setup uses the same `.env` credentials as FAQ setup and accepts an alternative env file. Edit prices, units, and the ordered **Список работ** in Studio, then rebuild to publish changes. An empty collection hides the section. Builds without Directus render the local cards, and a configured read or validation error stops the build. Each card requires a positive whole-ruble price, a unit, and at least one work item with a label.
 
+The home page reads published **Проекты портфолио** from `portfolio_projects` at build time. Run `npm run directus:setup:portfolio` before building against a configured Directus environment. The command uses the same `.env` credentials as FAQ setup, accepts an alternative env file as its first argument, and provisions the collections, public photo folder, and site-reader permissions. Rerunning preserves project records and existing public file rules.
+
+In Studio, fill in **Название** and **Описание**, add project images to **Портфолио (публичные фото)**, and write alt text in each file's **Описание**. Files in this folder can be downloaded publicly even while the project is a draft. Drag photos to reorder them. The first photo appears in the preview. Use **Текст превью** for a short detail such as the area or duration. **Характеристики** supports ordered name/value pairs and optional highlighting. Set the status to **Опубликован** and rebuild to update the site.
+
+When no projects are published, the section and its navigation links are hidden. Builds without Directus use local examples. Configured read errors or incomplete published records stop the build. Deployed pages need browser-accessible HTTPS asset URLs, as with Hero media.
+
 The contact form POSTs to `api/callback-requests` under the site's base path. The on-demand Astro route validates the fields with Zod, checks the selected property type against current Directus data, and creates a record using the optional server-only `DIRECTUS_CALLBACK_TOKEN`. The browser receives a confirmation or error code. Collection access stays private.
 
 ### 4.1. Set up callback requests in Directus

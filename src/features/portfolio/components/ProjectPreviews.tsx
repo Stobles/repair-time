@@ -39,9 +39,11 @@ export function ProjectPreviews({ projects, selectedId, showcaseId, onSelect }: 
                 <span className="flex min-h-10 items-center text-desktop-title-small l:max-w-40">
                   {project.previewTitle}
                 </span>
-                <span className="text-desktop-caption-medium text-text-tertiary">
-                  Площадь: {project.area}
-                </span>
+                {project.previewText && (
+                  <span className="text-desktop-caption-medium text-text-tertiary">
+                    {project.previewText}
+                  </span>
+                )}
               </span>
             </Button>
           </li>
