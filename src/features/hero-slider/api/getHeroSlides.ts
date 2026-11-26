@@ -23,6 +23,7 @@ export async function getHeroSlides(): Promise<readonly HeroSlide[]> {
       }),
     );
 
+    if (slides.length === 0) return heroSlides;
     return mapHeroSlides(slides, directus.url);
   } catch (error) {
     const cause =

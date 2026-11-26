@@ -1,17 +1,17 @@
 ---
 import Container from "@/shared/components/Container.astro";
 import AccordionItem from "@/shared/ui/AccordionItem.astro";
-import type { FaqEntry } from "@/features/faq";
+import { getFaqEntries } from "@/features/faq";
 
 interface Props {
   id?: string;
   eyebrow: string;
   title: string;
   description: string;
-  entries: readonly FaqEntry[];
 }
 
-const { id = "faq", eyebrow, title, description, entries } = Astro.props;
+const { id = "faq", eyebrow, title, description } = Astro.props;
+const entries = await getFaqEntries();
 const titleId = `${id}-title`;
 ---
 

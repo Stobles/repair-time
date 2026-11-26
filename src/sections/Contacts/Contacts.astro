@@ -5,7 +5,6 @@ import Container from "@/shared/components/Container.astro";
 import { Button } from "@/shared/ui/Button";
 
 interface Props {
-  showContactDetails: boolean;
   callbackForm: CallbackFormProps;
   phone: string;
   email: string;
@@ -15,7 +14,7 @@ interface Props {
   schedule: string;
 }
 
-const { showContactDetails, callbackForm, phone, email, whatsappUrl, telegramUrl, city, schedule } = Astro.props;
+const { callbackForm, phone, email, whatsappUrl, telegramUrl, city, schedule } = Astro.props;
 const phoneHref = `tel:${phone.replace(/[^+\d]/g, "")}`;
 const titleId = "contacts-title";
 const estimateDescription = "Специалист приедет с лазерным оборудованием, проведет аудит объекта и составит смету с точностью до";
@@ -26,7 +25,7 @@ const messengerClass = "gap-8px px-ui-inset sm:max-l:h-[38px] sm:max-l:flex-1 sm
 ---
 
 <section
-  id={showContactDetails ? "contacts" : "callback"}
+  id="contacts"
   aria-labelledby={titleId}
   class="bg-background-inverse py-5 text-text-inverse sm:max-l:py-24px l:py-20"
 >
@@ -35,7 +34,7 @@ const messengerClass = "gap-8px px-ui-inset sm:max-l:h-[38px] sm:max-l:flex-1 sm
       <p class="hidden items-center gap-8px text-tablet-title-extra-small text-text-accent sm:flex l:text-desktop-title-extra-small">
         <span class="size-8px shrink-0 rounded-full bg-background-accent" aria-hidden="true"></span>
         <span class="l:hidden">ОБРАТНАЯ СВЯЗЬ</span>
-        <span class="hidden l:inline">{showContactDetails ? "КОНТАКТЫ И ВЫЕЗД НА ОБЪЕКТ" : "ОБРАТНАЯ СВЯЗЬ"}</span>
+        <span class="hidden l:inline">КОНТАКТЫ И ВЫЕЗД НА ОБЪЕКТ</span>
       </p>
       <h2 id={titleId} class="text-mobile-h2 sm:max-l:text-tablet-h2 l:max-w-[386px] l:text-desktop-h2">
         Свяжитесь с нами для детального расчета сметы
@@ -60,52 +59,50 @@ const messengerClass = "gap-8px px-ui-inset sm:max-l:h-[38px] sm:max-l:flex-1 sm
       <CallbackForm client:visible={{ rootMargin: "200px" }} {...callbackForm} />
     </div>
 
-    {showContactDetails && (
-      <address class="grid min-w-0 grid-cols-[auto_1fr] items-center gap-x-8px gap-y-ui-inset pt-16px not-italic sm:grid-cols-1 sm:max-l:gap-12px sm:max-l:rounded-xl sm:max-l:border sm:max-l:border-text-secondary sm:max-l:p-16px l:col-span-5 l:col-start-1 l:row-start-2 l:self-start l:gap-16px l:pt-0">
-        <div class="col-span-full flex items-center gap-8px sm:items-start sm:max-l:gap-ui-inset l:gap-16px">
-          <span class={contactIconClass}>
-            <MapPin class="size-4 sm:max-l:mt-0.5 l:size-5" aria-hidden="true" />
-          </span>
-          <div class="min-w-0">
-            <p class="hidden text-tablet-title-small sm:block l:text-desktop-caption-medium l:text-text-muted">Город:</p>
-            <p class="text-tablet-body-small text-text-disabled sm:text-text-inverse sm:max-l:text-tablet-body-regular l:text-desktop-body-medium l:font-semibold">
-              {city}
-            </p>
-          </div>
+    <address class="grid min-w-0 grid-cols-[auto_1fr] items-center gap-x-8px gap-y-ui-inset pt-16px not-italic sm:grid-cols-1 sm:max-l:gap-12px sm:max-l:rounded-xl sm:max-l:border sm:max-l:border-text-secondary sm:max-l:p-16px l:col-span-5 l:col-start-1 l:row-start-2 l:self-start l:gap-16px l:pt-0">
+      <div class="col-span-full flex items-center gap-8px sm:items-start sm:max-l:gap-ui-inset l:gap-16px">
+        <span class={contactIconClass}>
+          <MapPin class="size-4 sm:max-l:mt-0.5 l:size-5" aria-hidden="true" />
+        </span>
+        <div class="min-w-0">
+          <p class="hidden text-tablet-title-small sm:block l:text-desktop-caption-medium l:text-text-muted">Город:</p>
+          <p class="text-tablet-body-small text-text-disabled sm:text-text-inverse sm:max-l:text-tablet-body-regular l:text-desktop-body-medium l:font-semibold">
+            {city}
+          </p>
         </div>
+      </div>
 
-        <div class="flex items-start sm:max-l:gap-ui-inset l:gap-16px">
-          <span class:list={[contactIconClass, "max-sm:hidden"]}>
-            <Phone class="size-4 sm:max-l:mt-0.5" aria-hidden="true" />
-          </span>
-          <div>
-            <p class="hidden text-desktop-caption-medium text-text-muted l:block">Телефон:</p>
-            <a href={phoneHref} class:list={[contactLinkClass, "inline-block whitespace-nowrap text-mobile-title-large sm:max-l:text-tablet-title-medium l:text-desktop-title-large"]}>{phone}</a>
-            <p class="hidden text-tablet-body-regular sm:block l:text-desktop-body-extra-small l:text-text-muted">{schedule}</p>
-          </div>
+      <div class="flex items-start sm:max-l:gap-ui-inset l:gap-16px">
+        <span class:list={[contactIconClass, "max-sm:hidden"]}>
+          <Phone class="size-4 sm:max-l:mt-0.5" aria-hidden="true" />
+        </span>
+        <div>
+          <p class="hidden text-desktop-caption-medium text-text-muted l:block">Телефон:</p>
+          <a href={phoneHref} class:list={[contactLinkClass, "inline-block whitespace-nowrap text-mobile-title-large sm:max-l:text-tablet-title-medium l:text-desktop-title-large"]}>{phone}</a>
+          <p class="hidden text-tablet-body-regular sm:block l:text-desktop-body-extra-small l:text-text-muted">{schedule}</p>
         </div>
+      </div>
 
-        <div class="hidden items-start gap-16px l:flex">
-          <span class={contactIconClass}>
-            <Mail class="size-5" aria-hidden="true" />
-          </span>
-          <div class="min-w-0">
-            <p class="text-desktop-caption-medium text-text-muted">Электронная почта:</p>
-            <a href={`mailto:${email}`} class:list={[contactLinkClass, "wrap-break-word text-desktop-body-medium font-medium"]}>{email}</a>
-          </div>
+      <div class="hidden items-start gap-16px l:flex">
+        <span class={contactIconClass}>
+          <Mail class="size-5" aria-hidden="true" />
+        </span>
+        <div class="min-w-0">
+          <p class="text-desktop-caption-medium text-text-muted">Электронная почта:</p>
+          <a href={`mailto:${email}`} class:list={[contactLinkClass, "wrap-break-word text-desktop-body-medium font-medium"]}>{email}</a>
         </div>
+      </div>
 
-        <div class="flex flex-wrap justify-end gap-8px sm:justify-start sm:max-l:pt-4px l:gap-12px l:pt-24px">
-          <Button href={whatsappUrl} target="_blank" rel="noopener" variant="primary" size="small" leftIcon={false} rightIcon={false} className={messengerClass}>
-            <MessageSquareText class="hidden size-4 shrink-0 sm:block l:size-3.5" aria-hidden="true" />
-            WhatsApp
-          </Button>
-          <Button href={telegramUrl} target="_blank" rel="noopener" variant="outline" size="small" leftIcon={false} rightIcon={false} className={messengerClass}>
-            <SendHorizontal class="hidden size-4 shrink-0 sm:block l:size-3.5" aria-hidden="true" />
-            Telegram
-          </Button>
-        </div>
-      </address>
-    )}
+      <div class="flex flex-wrap justify-end gap-8px sm:justify-start sm:max-l:pt-4px l:gap-12px l:pt-24px">
+        <Button href={whatsappUrl} target="_blank" rel="noopener" variant="primary" size="small" leftIcon={false} rightIcon={false} className={messengerClass}>
+          <MessageSquareText class="hidden size-4 shrink-0 sm:block l:size-3.5" aria-hidden="true" />
+          WhatsApp
+        </Button>
+        <Button href={telegramUrl} target="_blank" rel="noopener" variant="outline" size="small" leftIcon={false} rightIcon={false} className={messengerClass}>
+          <SendHorizontal class="hidden size-4 shrink-0 sm:block l:size-3.5" aria-hidden="true" />
+          Telegram
+        </Button>
+      </div>
+    </address>
   </Container>
 </section>

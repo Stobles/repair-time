@@ -4,7 +4,8 @@ import localPricingItems from "../model/localPricingItems.json";
 import { pricingItemSchema, type PricingItem } from "../model/PricingItem";
 
 export async function getPricingItems(): Promise<readonly PricingItem[]> {
-  if (!directus) return localPricingItems.map((item) => pricingItemSchema.parse(item));
+  const localItems = () => localPricingItems.map((item) => pricingItemSchema.parse(item));
+  if (!directus) return localItems();
 
   const items = await directus.request(readItems("pricing_items", {
     fields: ["id", "title", "description", "price_from", "price_unit", "is_featured", "features"],
@@ -14,6 +15,7 @@ export async function getPricingItems(): Promise<readonly PricingItem[]> {
     throw new Error("Failed to load pricing items from Directus. Check the collection and read permissions.", { cause });
   });
 
+  if (items.length === 0) return localItems();
   return items.map((item) => {
     const result = pricingItemSchema.safeParse(item);
     if (!result.success) {

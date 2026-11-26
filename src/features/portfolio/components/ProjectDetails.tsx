@@ -4,14 +4,12 @@ import type { PortfolioProject } from "../model/PortfolioProjects";
 interface ProjectDetailsProps {
   project: PortfolioProject;
   titleId: string;
-  contactHref: string;
   whatsappUrl: string;
 }
 
 export function ProjectDetails({
   project,
   titleId,
-  contactHref,
 }: ProjectDetailsProps) {
   const { badge, specifications } = project;
 
@@ -66,7 +64,7 @@ export function ProjectDetails({
 
       <div className="mt-auto grid gap-12px l:border-t l:border-background-inactive l:pt-16px">
         <Button
-          href={contactHref}
+          href="#contacts"
           leftIcon="phone"
           className="h-auto min-h-12 w-full px-12px py-12px text-center whitespace-normal l:min-h-ui-button-large"
         >

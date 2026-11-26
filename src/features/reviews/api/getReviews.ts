@@ -32,7 +32,7 @@ export async function getReviews(): Promise<readonly Review[]> {
       sort: ["sort", "id"],
       limit: -1,
     }));
-    return reviews.map(toReview);
+    return (reviews.length > 0 ? reviews : localReviews).map(toReview);
   } catch (cause) {
     throw new Error("Failed to load reviews from Directus. Check the reviews collection and read permissions.", { cause });
   }

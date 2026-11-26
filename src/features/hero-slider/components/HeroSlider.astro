@@ -6,10 +6,9 @@ import HeroSlide from "./HeroSlide.astro";
 
 interface Props {
   slides: readonly HeroSlideData[];
-  contactHref: string;
 }
 
-const { slides, contactHref } = Astro.props;
+const { slides } = Astro.props;
 const isCarousel = slides.length > 1;
 const controls = [
   { direction: "previous", label: "Предыдущий слайд", Icon: ChevronLeft },
@@ -51,7 +50,7 @@ const controls = [
 
   <div class="swiper-wrapper flex transition-transform">
     {slides.map((slide, index) => (
-      <HeroSlide {slide} {contactHref} initial={index === 0} />
+      <HeroSlide {slide} initial={index === 0} />
     ))}
   </div>
 </div>

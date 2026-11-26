@@ -1,15 +1,15 @@
 ---
 import { BadgeCheck } from "lucide-astro";
-import { ProjectShowcase, type PortfolioProject } from "@/features/portfolio";
+import { ProjectShowcase } from "@/features/portfolio";
+import { getPortfolioProjects } from "@/features/portfolio/server";
 import Container from "@/shared/components/Container.astro";
 
 interface Props {
-  projects: readonly PortfolioProject[];
-  contactHref: string;
   whatsappUrl: string;
 }
 
-const { projects, contactHref, whatsappUrl } = Astro.props;
+const { whatsappUrl } = Astro.props;
+const projects = await getPortfolioProjects();
 ---
 
 {projects.length > 0 && (
@@ -38,7 +38,7 @@ const { projects, contactHref, whatsappUrl } = Astro.props;
         </p>
       </header>
 
-      <ProjectShowcase client:load {projects} {contactHref} {whatsappUrl} />
+      <ProjectShowcase client:load {projects} {whatsappUrl} />
     </Container>
   </section>
 )}

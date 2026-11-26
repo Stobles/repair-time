@@ -4,12 +4,6 @@ import engineerDesktop from "@/assets/AboutCompany/EngineerDesktop.jpg";
 import Container from "@/shared/components/Container.astro";
 import { Button } from "@/shared/ui/Button";
 
-interface Props {
-  contactHref: string;
-}
-
-const { contactHref } = Astro.props;
-
 const competencies = [
   {
     icon: CircleCheck,
@@ -121,7 +115,7 @@ const competencies = [
         </ul>
 
         <div class="hidden l:flex l:h-[41px] l:items-center">
-          <Button href={contactHref} variant="primary" size="medium" rightIcon="arrow-right" className="[&_svg]:scale-150">
+          <Button href="#contacts" variant="primary" size="medium" rightIcon="arrow-right" className="[&_svg]:scale-150">
             ОБСУДИТЬ ЗАДАЧУ С ИНЖЕНЕРОМ
           </Button>
         </div>
