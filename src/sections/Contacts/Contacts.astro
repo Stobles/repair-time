@@ -7,15 +7,16 @@ import { Button } from "@/shared/ui/Button";
 interface Props {
   callbackForm: CallbackFormProps;
   phone: string;
+  phoneHref: string;
   email: string;
+  emailHref: string;
   whatsappUrl: string;
   telegramUrl: string;
   city: string;
   schedule: string;
 }
 
-const { callbackForm, phone, email, whatsappUrl, telegramUrl, city, schedule } = Astro.props;
-const phoneHref = `tel:${phone.replace(/[^+\d]/g, "")}`;
+const { callbackForm, phone, phoneHref, email, emailHref, whatsappUrl, telegramUrl, city, schedule } = Astro.props;
 const titleId = "contacts-title";
 const estimateDescription = "Специалист приедет с лазерным оборудованием, проведет аудит объекта и составит смету с точностью до";
 const contactIconClass =
@@ -89,7 +90,7 @@ const messengerClass = "gap-8px px-ui-inset sm:max-l:h-[38px] sm:max-l:flex-1 sm
         </span>
         <div class="min-w-0">
           <p class="text-desktop-caption-medium text-text-muted">Электронная почта:</p>
-          <a href={`mailto:${email}`} class:list={[contactLinkClass, "wrap-break-word text-desktop-body-medium font-medium"]}>{email}</a>
+          <a href={emailHref} class:list={[contactLinkClass, "wrap-break-word text-desktop-body-medium font-medium"]}>{email}</a>
         </div>
       </div>
 

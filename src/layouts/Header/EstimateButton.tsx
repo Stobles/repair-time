@@ -21,7 +21,7 @@ type EstimateButtonProps = {
   rightIcon?: ButtonProps["rightIcon"];
   className?: string;
 } & (
-  | { contact: { phone: string; telegramUrl: string; callbackForm: CallbackFormProps }; children?: never }
+  | { contact: { phone: string; phoneHref: string; telegramUrl: string; callbackForm: CallbackFormProps }; children?: never }
   | { contact?: never; children: ReactNode }
 );
 
@@ -61,7 +61,7 @@ function EstimateButton({
                 <MessageSquareText aria-hidden="true" className="size-3 shrink-0" />
                 Написать в Telegram
               </a>
-              <a href={`tel:${contact.phone.replace(/[^+\d]/g, "")}`} className="ui-focus rounded-sm text-desktop-title-small text-text-primary hover:text-text-accent-dark">
+              <a href={contact.phoneHref} className="ui-focus rounded-sm text-desktop-title-small text-text-primary hover:text-text-accent-dark">
                 {contact.phone}
               </a>
             </div>

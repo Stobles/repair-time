@@ -11,14 +11,14 @@ interface Props {
   callbackForm: CallbackFormProps;
   companyName: string;
   phone: string;
+  phoneHref: string;
   telegramUrl: string;
   schedule: string;
   license: string;
   links: readonly HeaderLink[];
 }
 
-const { callbackForm, companyName, phone, telegramUrl, schedule, license, links } = Astro.props;
-const phoneHref = `tel:${phone.replace(/[^+\d]/g, "")}`;
+const { callbackForm, companyName, phone, phoneHref, telegramUrl, schedule, license, links } = Astro.props;
 ---
 
 <header class="border-b border-border-default bg-background-base/95 shadow-xs backdrop-blur-md">
@@ -68,10 +68,10 @@ const phoneHref = `tel:${phone.replace(/[^+\d]/g, "")}`;
       <EstimateButton
         client:load
         label="ОБРАТНЫЙ ЗВОНОК"
-        contact={{ phone, telegramUrl, callbackForm }}
+        contact={{ phone, phoneHref, telegramUrl, callbackForm }}
         className="hidden sm:inline-flex sm:max-xl:min-h-9 sm:max-xl:rounded-md sm:max-xl:px-[14px] sm:max-xl:text-button-medium sm:max-xl:leading-4"
       />
-      <HeaderMenu client:load {callbackForm} {links} {phone} {telegramUrl} {schedule} {license} />
+      <HeaderMenu client:load {callbackForm} {links} {phone} {phoneHref} {telegramUrl} {schedule} {license} />
     </div>
   </Container>
 </header>

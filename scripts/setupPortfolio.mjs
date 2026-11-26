@@ -1,17 +1,14 @@
-import { isDeepStrictEqual } from "node:util";
 import {
-  createField, createFolder, createPermission, createRelation, readFieldsByCollection,
-  readFolders, readPermissions, readRelationByCollection, updatePermission,
+  createField, createFolder, createRelation, readFieldsByCollection,
+  readFolders, readRelationByCollection,
 } from "@directus/sdk";
-import { ensurePolicy, grantUserPolicy } from "./directusAccess.mjs";
+import { allowPublicFiles, ensurePolicy, grantUserPolicy } from "./directusAccess.mjs";
 import { ensureCollection, ensureDefaultLayout, translations, withContentAdmin } from "./directusContent.mjs";
 
 const projects = "portfolio_projects";
 const projectFiles = "portfolio_project_files";
 const files = "directus_files";
 const folderName = "Портфолио (публичные фото)";
-// Directus 11's built-in public policy ID is shared across instances.
-const publicPolicy = "abf8a154-5b1c-4a46-ac9c-7300570f4f17";
 const published = { status: { _eq: "published" } };
 
 const id = {
@@ -145,30 +142,6 @@ async function ensureGallery(admin, folder) {
   }
 }
 
-async function allowPublicPhotos(admin, folderFilter) {
-  const match = await admin.request(readPermissions({
-    filter: { policy: { _eq: publicPolicy }, collection: { _eq: files }, action: { _eq: "read" } },
-    limit: 2,
-  }));
-  if (match.length > 1) throw new Error("Expected at most one public files read permission.");
-  const [current] = match;
-  if (!current) {
-    await admin.request(createPermission({
-      policy: publicPolicy, collection: files, action: "read", fields: ["id", "type"], permissions: folderFilter,
-    }));
-    return;
-  }
-
-  if (!current.permissions || Object.keys(current.permissions).length === 0) {
-    throw new Error("Scope the existing public files read permission to public folders before setting up portfolio.");
-  }
-  const rules = Object.keys(current.permissions).length === 1 && Array.isArray(current.permissions._or)
-    ? current.permissions._or : [current.permissions];
-  if (!rules.some((rule) => isDeepStrictEqual(rule, folderFilter))) {
-    await admin.request(updatePermission(current.id, { permissions: { _or: [...rules, folderFilter] } }));
-  }
-}
-
 const [envFile] = process.argv.slice(2);
 await withContentAdmin({ envFile, name: "portfolio" }, async (admin, readerId) => {
   const folder = await ensureFolder(admin);
@@ -207,5 +180,5 @@ await withContentAdmin({ envFile, name: "portfolio" }, async (admin, readerId) =
     const policy = await ensurePolicy(admin, name, { ...permission, action: "read" });
     await grantUserPolicy(admin, readerId, policy);
   }
-  await allowPublicPhotos(admin, folderFilter);
+  await allowPublicFiles(admin, folderFilter);
 });

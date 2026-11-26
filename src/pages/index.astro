@@ -13,6 +13,7 @@ import Hero from "@/sections/Hero/Hero.astro";
 import Portfolio from "@/sections/Portfolio/Portfolio.astro";
 import Pricing from "@/sections/Pricing/Pricing.astro";
 import { getPropertyTypes } from "@/features/contacts/server";
+import { getCompanyDetails } from "@/features/company-details/server";
 import { getSectionVisibility } from "@/features/section-visibility/server";
 import sectionLabels, { type ToggleableSectionKey } from "@/shared/lib/directus/sectionLabels";
 import { baseHref } from "@/shared/lib/BasePath";
@@ -25,49 +26,11 @@ const callbackForm = {
 };
 const companyName = "Время ремонта";
 const companyCity = "г. Донецк";
-const companyRequisites = {
-  proprietorName: "Иванов Иван Иванович",
-  inn: "XXXXXXXXXXXX",
-  ogrnip: "XXXXXXXXXXXXXXX",
-  registrationAuthority: "Межрайонная ИФНС России № XX",
-  isExample: true,
-};
-const phone = "+7 (949) 811 94 21";
-const phoneNumber = phone.replace(/[^+\d]/g, "");
-const whatsappUrl = `https://wa.me/${phoneNumber.replace(/\D/g, "")}`;
-const telegramUrl = `https://t.me/${phoneNumber}`;
-const email = "info@vremyaremonta.ru";
+const { phone, phoneHref, email, emailHref, whatsappUrl, telegramUrl, requisites } = await getCompanyDetails();
 const navIds = ["portfolio", "about", "reviews", "faq", "contacts"] as const;
 const visibleNavIds = navIds.filter((id) => id === "contacts" || enabledSections.has(id));
 const navLabel = (id: (typeof navIds)[number]) => (sectionLabels[id]);
 const navLinks = visibleNavIds.map((id) => ({ id, label: navLabel(id) }));
-const advantages = [
-  {
-    icon: "warranty",
-    title: "Гарантия 5 лет по договору",
-    description: "Бесплатный оперативный выезд и устранение любых скрытых дефектов в течение 48 часов после обращения.",
-    caption: "ОФИЦИАЛЬНЫЙ ПУНКТ ДОГОВОРА",
-  },
-  {
-    icon: "schedule",
-    title: "Соблюдение сроков до 1 дня",
-    description: "Фиксированный календарный план-график. Выплачиваем финансовую неустойку за каждый день просрочки.",
-    caption: "ШТРАФ ЗА ДЕНЬ ЗАДЕРЖКИ",
-  },
-  {
-    icon: "estimate",
-    title: "Фиксированная смета",
-    description: "Никаких внезапных доплат и скрытых коэффициентов. Финальная сумма утверждается до начала ремонта.",
-    caption: "БЕЗ ДОПЛАТ ВО ВРЕМЯ РАБОТ",
-  },
-  {
-    icon: "supervision",
-    title: "Штатный технадзор",
-    description: "3-ступенчатый контроль качества каждого скрытого узла, составление актов скрытых работ по СНиП.",
-    caption: "ИНЖЕНЕРЫ С ДОПУСКОМ НРС",
-  },
-] as const;
-
 const workSteps = [
   {
     icon: "consultation",
@@ -110,14 +73,9 @@ const workSteps = [
 
 const sections = {
   hero: section(Hero, {}),
-  portfolio: section(Portfolio, { whatsappUrl }),
+  portfolio: section(Portfolio, {}),
   about: section(AboutCompany, {}),
-  why_choose_us: section(WhyChooseUs, {
-    title: "Почему нас выбирают",
-    eyebrow: "НАШИ СТАНДАРТЫ",
-    description: "Каждый пункт договора составлен в пользу клиента с прозрачной системой финансовой ответственности",
-    advantages,
-  }),
+  why_choose_us: section(WhyChooseUs, {}),
   work_process: section(WorkProcess, {
     eyebrow: "ПРОЗРАЧНЫЙ ПРОЦЕСС",
     title: "Поэтапный процесс реализации проектов",
@@ -147,6 +105,7 @@ const visibleSections = sectionOrder.filter((key) => enabledSections.has(key)).m
     {callbackForm}
     {companyName}
     {phone}
+    {phoneHref}
     {telegramUrl}
     schedule="Ежедневно с 9:00 до 21:00"
     license="Член СРО • Допуск № Г-0419"
@@ -159,7 +118,9 @@ const visibleSections = sectionOrder.filter((key) => enabledSections.has(key)).m
     <Contacts
       {callbackForm}
       {phone}
+      {phoneHref}
       {email}
+      {emailHref}
       {whatsappUrl}
       {telegramUrl}
       city={companyCity}
@@ -167,5 +128,5 @@ const visibleSections = sectionOrder.filter((key) => enabledSections.has(key)).m
     />
   </main>
 
-  <Footer {companyName} {phone} {email} city={companyCity} sections={navLinks} requisites={companyRequisites} />
+  <Footer {companyName} {phone} {phoneHref} {email} {emailHref} city={companyCity} sections={navLinks} {requisites} />
 </Layout>

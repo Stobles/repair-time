@@ -547,4 +547,41 @@
   html {
     @apply font-sans;
   }
+
+  @media (forced-colors: none) {
+    :root {
+      --scrollbar-thumb: var(--color-neutral-700);
+      --scrollbar-track: var(--color-background-base);
+    }
+
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    }
+
+    @supports selector(::-webkit-scrollbar) {
+      * {
+        scrollbar-width: auto;
+        scrollbar-color: auto;
+      }
+
+      ::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background-color: var(--scrollbar-thumb);
+        border-radius: 9999px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background-color: var(--scrollbar-track);
+      }
+
+      ::-webkit-scrollbar-button {
+        display: none;
+      }
+    }
+  }
 }

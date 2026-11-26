@@ -1,11 +1,31 @@
 import type { ToggleableSectionKey } from "./sectionLabels";
 
+type AdvantageSlot = 1 | 2 | 3 | 4;
+type DirectusAdvantages = {
+  id: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+} & Record<`card_${AdvantageSlot}_${"title" | "description" | "caption"}`, string>
+  & Record<`card_${AdvantageSlot}_icon`, string | null>;
+
 interface DirectusFile {
   id: string;
   description: string | null;
   type: string | null;
   width: number | null;
   height: number | null;
+}
+
+interface DirectusCompanyDetails {
+  id: string;
+  phone: string;
+  email: string;
+  telegram_phone: string;
+  whatsapp_phone: string;
+  proprietor_name: string | null;
+  inn: string | null;
+  ogrnip: string | null;
 }
 
 interface DirectusHeroSlide {
@@ -84,6 +104,8 @@ interface DirectusPortfolioProject {
 }
 
 export interface DirectusSchema {
+  company_details: DirectusCompanyDetails;
+  advantages_section: DirectusAdvantages;
   section_visibility: Record<ToggleableSectionKey, boolean> & { id: string };
   directus_files: DirectusFile[];
   hero_slides: DirectusHeroSlide[];

@@ -57,7 +57,7 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "fixed top-1/2 left-1/2 z-50 max-h-[calc(100dvh-var(--spacing-32px))] w-[calc(100%-var(--spacing-32px))] -translate-x-1/2 -translate-y-1/2 overflow-auto overscroll-contain rounded-2xl border border-background-inactive bg-background-base text-text-primary shadow-ui-dialog outline-none motion-safe:duration-200 motion-safe:data-[state=open]:animate-in motion-safe:data-[state=open]:fade-in-0 motion-safe:data-[state=open]:zoom-in-95 motion-safe:data-[state=closed]:animate-out motion-safe:data-[state=closed]:fade-out-0 motion-safe:data-[state=closed]:zoom-out-95",
+          "fixed top-1/2 left-1/2 z-50 flex max-h-[calc(100dvh-var(--spacing-32px))] w-[calc(100%-var(--spacing-32px))] -translate-x-1/2 -translate-y-1/2 flex-col overflow-clip rounded-2xl border border-background-inactive bg-background-base text-text-primary shadow-ui-dialog outline-none motion-safe:duration-200 motion-safe:data-[state=open]:animate-in motion-safe:data-[state=open]:fade-in-0 motion-safe:data-[state=open]:zoom-in-95 motion-safe:data-[state=closed]:animate-out motion-safe:data-[state=closed]:fade-out-0 motion-safe:data-[state=closed]:zoom-out-95",
           size === "wide" ? "max-w-6xl" : "max-w-ui-dialog",
           className,
         )}
@@ -65,11 +65,11 @@ function DialogContent({
       >
         <div
           aria-hidden="true"
-          className="h-8px bg-linear-to-r from-background-accent via-ui-dialog-accent-middle to-ui-dialog-accent-end"
+          className="h-8px shrink-0 bg-linear-to-r from-background-accent via-ui-dialog-accent-middle to-ui-dialog-accent-end"
         />
         <div
           className={cn(
-            "grid",
+            "grid min-h-0 overflow-auto overscroll-contain",
             size === "wide"
               ? "gap-12px p-12px sm:p-16px"
               : "gap-24px p-[clamp(1rem,7vw,var(--spacing-48px))]",

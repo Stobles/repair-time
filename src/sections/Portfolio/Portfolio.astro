@@ -4,11 +4,6 @@ import { ProjectShowcase } from "@/features/portfolio";
 import { getPortfolioProjects } from "@/features/portfolio/server";
 import Container from "@/shared/components/Container.astro";
 
-interface Props {
-  whatsappUrl: string;
-}
-
-const { whatsappUrl } = Astro.props;
 const projects = await getPortfolioProjects();
 ---
 
@@ -38,7 +33,7 @@ const projects = await getPortfolioProjects();
         </p>
       </header>
 
-      <ProjectShowcase client:load {projects} {whatsappUrl} />
+      <ProjectShowcase client:load {projects} />
     </Container>
   </section>
 )}

@@ -89,6 +89,6 @@ const categories = [
 </Tabs>
 ```
 
-Use `Field` with `FieldLabel` to label `Input`, `Textarea` and `Checkbox`. Match each label’s `htmlFor` to the control’s unique `id`. Pass a stable, non-empty value for each select option and tab. Hydrate standalone `Checkbox`, `SelectField`, `Tabs` and `EstimateButton` instances rendered from Astro. Set `contact={{ phone, telegramUrl }}` on `EstimateButton` to render the shared callback form in the dialog. Compose the shared `Dialog`, `DialogTrigger` and `DialogContent` inside the same React island. Set `leftIcon` or `rightIcon` to `false` to remove it or to an icon name to swap it. In React trees, `Button` also accepts a custom icon element and supports shadcn’s `asChild` with a React child.
+Use `Field` with `FieldLabel` to label `Input`, `Textarea` and `Checkbox`. Match each label’s `htmlFor` to the control’s unique `id`. Pass a stable, non-empty value for each select option and tab. Hydrate standalone `Checkbox`, `SelectField`, `Tabs` and `EstimateButton` instances rendered from Astro. Set `contact={{ phone, phoneHref, telegramUrl, callbackForm }}` on `EstimateButton` to render the shared callback form in the dialog. Compose the shared `Dialog`, `DialogTrigger` and `DialogContent` inside the same React island. Set `leftIcon` or `rightIcon` to `false` to remove it or to an icon name to swap it. In React trees, `Button` also accepts a custom icon element and supports shadcn’s `asChild` with a React child.
 
 The stylesheet loads all three design fonts locally through Fontsource, including Cyrillic subsets.

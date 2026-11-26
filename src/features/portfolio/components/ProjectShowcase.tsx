@@ -6,10 +6,9 @@ import { ProjectPreviews } from "./ProjectPreviews";
 
 interface ProjectShowcaseProps {
   projects: readonly PortfolioProject[];
-  whatsappUrl: string;
 }
 
-export function ProjectShowcase({ projects, whatsappUrl }: ProjectShowcaseProps) {
+export function ProjectShowcase({ projects }: ProjectShowcaseProps) {
   const [selectedId, setSelectedId] = useState(projects[0]?.id);
   const showcaseId = useId();
   const titleId = useId();
@@ -35,7 +34,6 @@ export function ProjectShowcase({ projects, whatsappUrl }: ProjectShowcaseProps)
         <ProjectDetails
           project={project}
           titleId={titleId}
-          whatsappUrl={whatsappUrl}
         />
       </article>
     </div>

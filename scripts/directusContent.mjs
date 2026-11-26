@@ -27,8 +27,8 @@ export async function ensureCollection(admin, collection, fields, meta) {
   for (const expected of fields) {
     const current = currentFields.find(({ field }) => field === expected.field);
     if (
-      current?.type !== expected.type || current.schema?.is_nullable !== expected.schema.is_nullable ||
-      Boolean(current.schema?.is_primary_key) !== Boolean(expected.schema.is_primary_key) ||
+      current?.type !== expected.type || current.schema?.is_nullable !== expected.schema?.is_nullable ||
+      Boolean(current.schema?.is_primary_key) !== Boolean(expected.schema?.is_primary_key) ||
       (expected.meta.required && !current.meta?.required) ||
       (expected.meta.validation && JSON.stringify(current.meta?.validation) !== JSON.stringify(expected.meta.validation))
     ) throw new Error(`Incompatible field ${collection}.${expected.field}.`);

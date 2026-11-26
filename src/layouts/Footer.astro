@@ -5,22 +5,22 @@ import Logo from "@/shared/ui/Logo.astro";
 interface Props {
   companyName: string;
   phone: string;
+  phoneHref: string;
   email: string;
+  emailHref: string;
   city: string;
   sections: readonly { label: string; id: string }[];
   requisites: {
     proprietorName: string;
     inn: string;
     ogrnip: string;
-    registrationAuthority: string;
     isExample: boolean;
   };
   privacyHref?: string;
 }
 
-const { companyName, phone, email, city, sections, requisites, privacyHref } = Astro.props;
+const { companyName, phone, phoneHref, email, emailHref, city, sections, requisites, privacyHref } = Astro.props;
 const year = new Date().getFullYear();
-const phoneHref = `tel:${phone.replace(/[^+\d]/g, "")}`;
 const policyHref = privacyHref?.trim();
 const linkClass = "ui-focus rounded-sm transition-colors hover:text-text-accent-dark";
 ---
@@ -72,7 +72,7 @@ const linkClass = "ui-focus rounded-sm transition-colors hover:text-text-accent-
           <address class="mt-8px grid justify-items-start gap-ui-gutter not-italic l:gap-ui-inset">
             <a href={phoneHref} class:list={[linkClass, "max-w-full text-tablet-title-medium text-text-primary l:text-desktop-title-medium"]}>{phone}</a>
             <p class="text-desktop-body-small text-text-tertiary">{city}</p>
-            <a href={`mailto:${email}`} class:list={[linkClass, "max-w-full text-desktop-body-small text-text-tertiary"]}>{email}</a>
+            <a href={emailHref} class:list={[linkClass, "max-w-full text-desktop-body-small text-text-tertiary"]}>{email}</a>
           </address>
         </div>
       </div>

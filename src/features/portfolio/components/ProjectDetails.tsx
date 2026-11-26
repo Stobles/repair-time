@@ -4,7 +4,6 @@ import type { PortfolioProject } from "../model/PortfolioProjects";
 interface ProjectDetailsProps {
   project: PortfolioProject;
   titleId: string;
-  whatsappUrl: string;
 }
 
 export function ProjectDetails({
