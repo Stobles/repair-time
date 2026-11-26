@@ -3,15 +3,10 @@ import { CircleHelp } from "lucide-astro";
 import Container from "@/shared/components/Container.astro";
 import { Button } from "@/shared/ui/Button";
 import CardSlider from "@/shared/ui/CardSlider.astro";
-import type { PricingItem } from "@/features/pricing";
+import { getPricingItems } from "@/features/pricing";
 import PricingCard from "./PricingCard.astro";
 
-interface Props {
-  items: readonly PricingItem[];
-  contactHref: string;
-}
-
-const { items, contactHref } = Astro.props;
+const items = await getPricingItems();
 ---
 
 <section
@@ -40,7 +35,7 @@ const { items, contactHref } = Astro.props;
     >
       {items.map((item, index) => (
         <li class="swiper-slide grid min-w-0 shrink-0">
-          <PricingCard {item} {contactHref} titleId={`pricing-item-${index + 1}`} />
+          <PricingCard {item} titleId={`pricing-item-${index + 1}`} />
         </li>
       ))}
     </CardSlider>
@@ -56,7 +51,7 @@ const { items, contactHref } = Astro.props;
         </p>
       </div>
       <Button
-        href={contactHref}
+        href="#contacts"
         variant="dark"
         size="medium"
         className="h-auto min-h-ui-button-medium w-full whitespace-normal text-center sm:w-auto"

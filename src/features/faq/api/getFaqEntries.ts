@@ -9,11 +9,12 @@ export async function getFaqEntries(): Promise<readonly FaqEntry[]> {
   if (!directus) return localFaqEntries;
 
   try {
-    return await directus.request(readItems("faq_items", {
+    const entries = await directus.request(readItems("faq_items", {
       fields: ["question", "answer"],
       sort: ["sort", "id"],
       limit: -1,
     }));
+    return entries.length > 0 ? entries : localFaqEntries;
   } catch (cause) {
     throw new Error("Failed to load FAQ items from Directus. Check the collection and read permissions.", { cause });
   }

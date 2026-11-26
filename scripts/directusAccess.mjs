@@ -1,8 +1,8 @@
 import {
-  createPermission, createPolicy, readPermissions, readPolicies, readUser, updateUser,
+  createPermission, createPolicy, readPermissions, readPolicies, readUser, updatePermission, updateUser,
 } from "@directus/sdk";
 
-export async function ensurePolicy(admin, name, permission) {
+export async function ensurePolicy(admin, name, permission, retiredFields = []) {
   const policies = await admin.request(readPolicies({ filter: { name: { _eq: name } } }));
   if (policies.length > 1 || policies[0]?.admin_access || policies[0]?.app_access) {
     throw new Error(`Incompatible policy ${name}.`);
@@ -13,12 +13,16 @@ export async function ensurePolicy(admin, name, permission) {
     await admin.request(createPermission({ policy: policy.id, ...permission }));
   } else {
     const [current] = permissions;
+    const activeFields = current.fields?.filter((field) => !retiredFields.includes(field));
     if (
       permissions.length !== 1 || current.collection !== permission.collection ||
-      current.action !== permission.action || current.fields?.length !== permission.fields.length ||
-      !permission.fields.every((name) => current.fields.includes(name)) ||
+      current.action !== permission.action || activeFields?.length !== permission.fields.length ||
+      !permission.fields.every((name) => activeFields.includes(name)) ||
       JSON.stringify(current.permissions ?? {}) !== JSON.stringify(permission.permissions ?? {})
     ) throw new Error(`Incompatible permission on policy ${name}.`);
+    if (current.fields.length !== activeFields.length) {
+      await admin.request(updatePermission(current.id, { fields: permission.fields }));
+    }
   }
   return policy.id;
 }

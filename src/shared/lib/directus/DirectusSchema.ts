@@ -1,4 +1,4 @@
-import type sectionLabels from "./sectionLabels.json";
+import type { ToggleableSectionKey } from "./sectionLabels";
 
 interface DirectusFile {
   id: string;
@@ -84,7 +84,7 @@ interface DirectusPortfolioProject {
 }
 
 export interface DirectusSchema {
-  section_visibility: Record<keyof typeof sectionLabels, boolean> & { id: string };
+  section_visibility: Record<ToggleableSectionKey, boolean> & { id: string };
   directus_files: DirectusFile[];
   hero_slides: DirectusHeroSlide[];
   faq_items: DirectusFaqItem[];

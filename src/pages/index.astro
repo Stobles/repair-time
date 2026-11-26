@@ -1,4 +1,5 @@
 ---
+import { section } from "@/shared/lib/utils/section";
 import AboutCompany from "@/sections/About/AboutCompany.astro";
 import Contacts from "@/sections/Contacts/Contacts.astro";
 import Layout from "@/layouts/Layout.astro";
@@ -11,22 +12,13 @@ import Faq from "@/sections/Faq/Faq.astro";
 import Hero from "@/sections/Hero/Hero.astro";
 import Portfolio from "@/sections/Portfolio/Portfolio.astro";
 import Pricing from "@/sections/Pricing/Pricing.astro";
-import { getPortfolioProjects } from "@/features/portfolio/server";
 import { getPropertyTypes } from "@/features/contacts/server";
-import { getFaqEntries } from "@/features/faq";
-import { getReviews } from "@/features/reviews";
-import { getPricingItems } from "@/features/pricing";
-import { getSectionVisibility, sectionLabels } from "@/features/section-visibility/server";
+import { getSectionVisibility } from "@/features/section-visibility/server";
+import sectionLabels, { type ToggleableSectionKey } from "@/shared/lib/directus/sectionLabels";
 import { baseHref } from "@/shared/lib/BasePath";
 
-const isEnabled = await getSectionVisibility();
-const [propertyTypes, faqEntries, reviews, pricingItems, portfolioProjects] = await Promise.all([
-  getPropertyTypes(),
-  isEnabled("faq") ? getFaqEntries() : [],
-  isEnabled("reviews") ? getReviews() : [],
-  isEnabled("pricing") ? getPricingItems() : [],
-  isEnabled("portfolio") ? getPortfolioProjects() : [],
-]);
+const enabledSections = new Set(await getSectionVisibility());
+const propertyTypes = await getPropertyTypes();
 const callbackForm = {
   propertyTypes,
   submitUrl: `${baseHref}api/callback-requests`,
@@ -45,22 +37,10 @@ const phoneNumber = phone.replace(/[^+\d]/g, "");
 const whatsappUrl = `https://wa.me/${phoneNumber.replace(/\D/g, "")}`;
 const telegramUrl = `https://t.me/${phoneNumber}`;
 const email = "info@vremyaremonta.ru";
-const visible = {
-  hero: isEnabled("hero"),
-  portfolio: portfolioProjects.length > 0,
-  about: isEnabled("about"),
-  whyChooseUs: isEnabled("why_choose_us"),
-  workProcess: isEnabled("work_process"),
-  pricing: pricingItems.length > 0,
-  reviews: reviews.length > 0,
-  faq: isEnabled("faq"),
-  contacts: isEnabled("contacts"),
-};
 const navIds = ["portfolio", "about", "reviews", "faq", "contacts"] as const;
-const visibleNavIds = navIds.filter((id) => visible[id]);
-const headerLinks = visibleNavIds.map((id) => ({ id, label: id === "faq" ? "FAQ" : sectionLabels[id] }));
-const footerLinks = visibleNavIds.map((id) => ({ id, label: id === "faq" ? "Ответы на частые вопросы" : sectionLabels[id] }));
-const contactHref = visible.contacts ? "#contacts" : "#callback";
+const visibleNavIds = navIds.filter((id) => id === "contacts" || enabledSections.has(id));
+const navLabel = (id: (typeof navIds)[number]) => (sectionLabels[id]);
+const navLinks = visibleNavIds.map((id) => ({ id, label: navLabel(id) }));
 const advantages = [
   {
     icon: "warranty",
@@ -128,6 +108,38 @@ const workSteps = [
   },
 ] as const;
 
+const sections = {
+  hero: section(Hero, {}),
+  portfolio: section(Portfolio, { whatsappUrl }),
+  about: section(AboutCompany, {}),
+  why_choose_us: section(WhyChooseUs, {
+    title: "Почему нас выбирают",
+    eyebrow: "НАШИ СТАНДАРТЫ",
+    description: "Каждый пункт договора составлен в пользу клиента с прозрачной системой финансовой ответственности",
+    advantages,
+  }),
+  work_process: section(WorkProcess, {
+    eyebrow: "ПРОЗРАЧНЫЙ ПРОЦЕСС",
+    title: "Поэтапный процесс реализации проектов",
+    description: "От первого звонка до подписания финального акта приёмки — понятный алгоритм без стресса для заказчика.",
+    oversight: "6 шагов под контролем главного инженера",
+    steps: workSteps,
+  }),
+  pricing: section(Pricing, {}),
+  reviews: section(Reviews, {
+    eyebrow: "РЕАЛЬНЫЙ ОПЫТ ЗАКАЗЧИКОВ",
+    title: "Отзывы о строительной компании «ВРЕМЯ РЕМОНТА»",
+    description: "Оценки нашей работы в Донецке и Мариуполе.",
+  }),
+  faq: section(Faq, {
+    eyebrow: "ОТВЕТЫ НА ВОПРОСЫ",
+    title: "Часто задаваемые вопросы",
+    description: "Собрали ключевые моменты по договору, оплате, срокам и контролю качества.",
+  }),
+} satisfies Record<ToggleableSectionKey, unknown>;
+
+const sectionOrder = ["hero", "portfolio", "about", "why_choose_us", "work_process", "pricing", "reviews", "faq"] as const;
+const visibleSections = sectionOrder.filter((key) => enabledSections.has(key)).map((key) => sections[key]);
 ---
 
 <Layout title={companyName} lang="ru">
@@ -138,50 +150,13 @@ const workSteps = [
     {telegramUrl}
     schedule="Ежедневно с 9:00 до 21:00"
     license="Член СРО • Допуск № Г-0419"
-    links={headerLinks}
+    links={navLinks}
   />
 
   <main class="flex flex-col w-full flex-1">
     <h1 id="hero-title" class="sr-only">Капитальный ремонт офисов и квартир</h1>
-    {visible.hero && <Hero {contactHref} />}
-    {visible.portfolio && <Portfolio projects={portfolioProjects} {contactHref} {whatsappUrl} />}
-    {visible.about && <AboutCompany {contactHref} />}
-    {visible.whyChooseUs && (
-      <WhyChooseUs
-        title="Почему нас выбирают"
-        eyebrow={"НАШИ СТАНДАРТЫ"}
-        description="Каждый пункт договора составлен в пользу клиента с прозрачной системой финансовой ответственности"
-        {advantages}
-      />
-    )}
-    {visible.workProcess && (
-      <WorkProcess
-        eyebrow="ПРОЗРАЧНЫЙ ПРОЦЕСС"
-        title="Поэтапный процесс реализации проектов"
-        description="От первого звонка до подписания финального акта приёмки — понятный алгоритм без стресса для заказчика."
-        oversight="6 шагов под контролем главного инженера"
-        steps={workSteps}
-      />
-    )}
-    {visible.pricing && <Pricing items={pricingItems} {contactHref} />}
-    {visible.reviews && (
-      <Reviews
-        eyebrow="РЕАЛЬНЫЙ ОПЫТ ЗАКАЗЧИКОВ"
-        title="Отзывы о строительной компании «ВРЕМЯ РЕМОНТА»"
-        description="Оценки нашей работы в Донецке и Мариуполе."
-        {reviews}
-      />
-    )}
-    {visible.faq && (
-      <Faq
-        eyebrow="ОТВЕТЫ НА ВОПРОСЫ"
-        title="Часто задаваемые вопросы"
-        description="Собрали ключевые моменты по договору, оплате, срокам и контролю качества."
-        entries={faqEntries}
-      />
-    )}
+    {visibleSections.map(({ Component, props }) => <Component {...props} />)}
     <Contacts
-      showContactDetails={visible.contacts}
       {callbackForm}
       {phone}
       {email}
@@ -192,5 +167,5 @@ const workSteps = [
     />
   </main>
 
-  <Footer {companyName} {phone} {email} city={companyCity} sections={footerLinks} requisites={companyRequisites} />
+  <Footer {companyName} {phone} {email} city={companyCity} sections={navLinks} requisites={companyRequisites} />
 </Layout>

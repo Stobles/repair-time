@@ -48,6 +48,7 @@ export async function getPortfolioProjects(): Promise<readonly PortfolioProject[
     throw new Error("Failed to load portfolio projects from Directus. Check the schema and read permissions.", { cause });
   });
 
+  if (items.length === 0) return portfolioProjects;
   return items.map((item) => {
     const result = projectSchema.safeParse(item);
     if (!result.success) {

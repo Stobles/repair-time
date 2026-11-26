@@ -7,10 +7,9 @@ import type { PricingItem } from "@/features/pricing";
 interface Props {
   item: PricingItem;
   titleId: string;
-  contactHref: string;
 }
 
-const { item, titleId, contactHref } = Astro.props;
+const { item, titleId } = Astro.props;
 const unitLabels = {
   square_meter: "за м²",
   item: "за штуку",
@@ -66,7 +65,7 @@ const price = new Intl.NumberFormat("ru-RU").format(item.priceFrom);
   </ul>
 
   <Button
-    href={contactHref}
+    href="#contacts"
     aria-describedby={titleId}
     variant={item.isFeatured ? "primary" : "outline"}
     size="medium"
