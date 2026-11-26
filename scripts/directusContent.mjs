@@ -18,7 +18,8 @@ export async function ensureCollection(admin, collection, fields, meta) {
     return;
   }
 
-  if (!existing.schema || existing.meta?.singleton || (existing.meta?.sort_field ?? null) !== (meta.sort_field ?? null)) {
+  if (!existing.schema || Boolean(existing.meta?.singleton) !== Boolean(meta.singleton) ||
+    (existing.meta?.sort_field ?? null) !== (meta.sort_field ?? null)) {
     throw new Error(`Incompatible collection ${collection}.`);
   }
 

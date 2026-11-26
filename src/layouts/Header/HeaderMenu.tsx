@@ -56,29 +56,30 @@ function HeaderMenu({
           }}
           className="z-40 max-h-full w-dvw max-w-(--radix-popover-content-available-width) overflow-auto border-t border-border-default bg-background-subtle shadow-xs l:hidden"
         >
-          <nav
-            aria-label="Разделы сайта"
-            className="mx-auto max-w-content-tablet px-gutter-mobile sm:px-gutter-tablet"
-          >
-            <ul className="pt-8px">
-              {links.map(({ id, label }, index) => (
-                <li key={id} className="border-b border-border-default">
-                  <Popover.Close asChild>
-                    <a
-                      ref={index === 0 ? firstLink : undefined}
-                      href={`#${id}`}
-                      className="ui-focus flex min-h-48px items-center justify-between gap-8px rounded-sm py-12px text-tablet-title-large text-text-primary hover:text-text-accent-dark"
-                    >
-                      {label}
-                      <ChevronRight
-                        aria-hidden="true"
-                        className="size-3 shrink-0 text-text-tertiary"
-                      />
-                    </a>
-                  </Popover.Close>
-                </li>
-              ))}
-            </ul>
+          <div className="mx-auto max-w-content-tablet px-gutter-mobile sm:px-gutter-tablet">
+            {links.length > 0 && (
+              <nav aria-label="Разделы сайта">
+              <ul className="pt-8px">
+                {links.map(({ id, label }, index) => (
+                  <li key={id} className="border-b border-border-default">
+                    <Popover.Close asChild>
+                      <a
+                        ref={index === 0 ? firstLink : undefined}
+                        href={`#${id}`}
+                        className="ui-focus flex min-h-48px items-center justify-between gap-8px rounded-sm py-12px text-tablet-title-large text-text-primary hover:text-text-accent-dark"
+                      >
+                        {label}
+                        <ChevronRight
+                          aria-hidden="true"
+                          className="size-3 shrink-0 text-text-tertiary"
+                        />
+                      </a>
+                    </Popover.Close>
+                  </li>
+                ))}
+              </ul>
+              </nav>
+            )}
             <div className="grid gap-16px pt-32px pb-24px">
               <EstimateButton
                 label="Рассчитать стоимость"
@@ -114,7 +115,7 @@ function HeaderMenu({
                 Написать в Telegram
               </Button>
             </div>
-          </nav>
+          </div>
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>

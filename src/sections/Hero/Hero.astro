@@ -3,10 +3,13 @@ import { HeroSlider } from "@/features/hero-slider";
 import { getHeroSlides } from "@/features/hero-slider/api/getHeroSlides";
 import Container from "@/shared/components/Container.astro";
 
+interface Props {
+  contactHref: string;
+}
+
+const { contactHref } = Astro.props;
 const slides = await getHeroSlides();
 ---
-
-<h1 id="hero-title" class="sr-only">Капитальный ремонт офисов и квартир</h1>
 
 {slides.length > 0 && (
   <section
@@ -14,7 +17,7 @@ const slides = await getHeroSlides();
     class="bg-background-subtle pt-5 pb-32px max-sm:inset-ring-1 max-sm:inset-ring-border-default sm:pt-24px sm:max-l:border-b sm:max-l:border-border-default sm:max-l:pb-24px l:pb-48px"
   >
     <Container>
-      <HeroSlider {slides} />
+      <HeroSlider {slides} {contactHref} />
     </Container>
   </section>
 )}

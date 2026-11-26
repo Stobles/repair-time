@@ -1,3 +1,5 @@
+import type sectionLabels from "./sectionLabels.json";
+
 interface DirectusFile {
   id: string;
   description: string | null;
@@ -82,6 +84,7 @@ interface DirectusPortfolioProject {
 }
 
 export interface DirectusSchema {
+  section_visibility: Record<keyof typeof sectionLabels, boolean> & { id: string };
   directus_files: DirectusFile[];
   hero_slides: DirectusHeroSlide[];
   faq_items: DirectusFaqItem[];

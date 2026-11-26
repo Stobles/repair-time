@@ -46,17 +46,19 @@ const phoneHref = `tel:${phone.replace(/[^+\d]/g, "")}`;
       <Logo {companyName} />
     </a>
 
-    <nav aria-label="Разделы сайта" class="hidden h-32px shrink-0 items-center border-s border-border-default ps-32px l:flex l:max-xl:ps-16px">
-      <ul class="flex items-center gap-24px l:max-xl:gap-8px">
-        {links.map(({ id, label }) => (
-          <li>
-            <a href={`#${id}`} class="ui-focus inline-flex rounded-sm py-8px text-desktop-navigation whitespace-nowrap text-text-secondary uppercase transition-colors hover:text-text-accent-dark">
-              {label}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
+    {links.length > 0 && (
+      <nav aria-label="Разделы сайта" class="hidden h-32px shrink-0 items-center border-s border-border-default ps-32px l:flex l:max-xl:ps-16px">
+        <ul class="flex items-center gap-24px l:max-xl:gap-8px">
+          {links.map(({ id, label }) => (
+            <li>
+              <a href={`#${id}`} class="ui-focus inline-flex rounded-sm py-8px text-desktop-navigation whitespace-nowrap text-text-secondary uppercase transition-colors hover:text-text-accent-dark">
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )}
 
     <div class="flex shrink-0 items-center gap-4px sm:gap-12px l:ms-auto l:gap-24px">
       <a href={phoneHref} aria-label={`Позвонить по номеру ${phone}`} class="ui-focus grid size-11 place-items-center rounded-sm whitespace-nowrap text-text-primary transition-colors hover:text-text-accent-dark sm:size-auto">
