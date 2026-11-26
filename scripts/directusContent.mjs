@@ -10,7 +10,7 @@ export function translations(translation) {
   return ["ru-RU", "en-US"].map((language) => ({ language, translation }));
 }
 
-async function ensureCollection(admin, collection, fields, meta) {
+export async function ensureCollection(admin, collection, fields, meta) {
   const collections = await admin.request(readCollections());
   const existing = collections.find((entry) => entry.collection === collection);
   if (!existing) {
@@ -18,7 +18,7 @@ async function ensureCollection(admin, collection, fields, meta) {
     return;
   }
 
-  if (!existing.schema || existing.meta?.singleton || existing.meta?.sort_field !== meta.sort_field) {
+  if (!existing.schema || existing.meta?.singleton || (existing.meta?.sort_field ?? null) !== (meta.sort_field ?? null)) {
     throw new Error(`Incompatible collection ${collection}.`);
   }
 
@@ -34,7 +34,7 @@ async function ensureCollection(admin, collection, fields, meta) {
   }
 }
 
-async function ensureDefaultLayout(admin, collection, fields, sortField) {
+export async function ensureDefaultLayout(admin, collection, fields, sortField) {
   const presets = await admin.request(readPresets({ filter: {
     collection: { _eq: collection }, bookmark: { _null: true },
     user: { _null: true }, role: { _null: true },
@@ -48,9 +48,7 @@ async function ensureDefaultLayout(admin, collection, fields, sortField) {
   }
 }
 
-export async function setupContentCollection({
-  envFile = ".env", collection, name, fields, meta, listFields, seedEntries,
-}) {
+export async function withContentAdmin({ envFile = ".env", name }, configure) {
   try {
     const config = parseEnv(await readFile(envFile, "utf8"));
     const { ADMIN_EMAIL, ADMIN_PASSWORD } = config;
@@ -65,16 +63,7 @@ export async function setupContentCollection({
     const admin = createDirectus(url).with(authentication("json")).with(rest());
     await admin.login({ email: ADMIN_EMAIL, password: ADMIN_PASSWORD });
     try {
-      await ensureCollection(admin, collection, fields, meta);
-      if (seedEntries) {
-        const existing = await admin.request(readItems(collection, { fields: ["id"], limit: 1 }));
-        if (existing.length === 0) await admin.request(createItems(collection, seedEntries));
-      }
-      await ensureDefaultLayout(admin, collection, listFields, meta.sort_field);
-      const policy = await ensurePolicy(admin, `Website ${name} reader`, {
-        collection, action: "read", fields: fields.map(({ field }) => field),
-      });
-      await grantUserPolicy(admin, readerId, policy);
+      await configure(admin, readerId);
     } finally {
       await admin.logout();
     }
@@ -86,4 +75,21 @@ export async function setupContentCollection({
     console.error(`Directus ${name} setup failed. ${message}`);
     process.exitCode = 1;
   }
+}
+
+export async function setupContentCollection({
+  envFile, collection, name, fields, meta, listFields, seedEntries,
+}) {
+  await withContentAdmin({ envFile, name }, async (admin, readerId) => {
+    await ensureCollection(admin, collection, fields, meta);
+    if (seedEntries) {
+      const existing = await admin.request(readItems(collection, { fields: ["id"], limit: 1 }));
+      if (existing.length === 0) await admin.request(createItems(collection, seedEntries));
+    }
+    await ensureDefaultLayout(admin, collection, listFields, meta.sort_field);
+    const policy = await ensurePolicy(admin, `Website ${name} reader`, {
+      collection, action: "read", fields: fields.map(({ field }) => field),
+    });
+    await grantUserPolicy(admin, readerId, policy);
+  });
 }

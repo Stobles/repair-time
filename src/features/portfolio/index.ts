@@ -1,2 +1,2 @@
 export { ProjectShowcase } from "./components/ProjectShowcase";
-export { portfolioProjects, type PortfolioProject } from "./model/PortfolioProjects";
+export type { PortfolioProject } from "./model/PortfolioProjects";

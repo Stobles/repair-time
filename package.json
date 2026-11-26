@@ -13,6 +13,7 @@
     "directus:setup:faq": "node scripts/setupFaq.mjs",
     "directus:setup:reviews": "node scripts/setupReviews.mjs",
     "directus:setup:pricing": "node scripts/setupPricing.mjs",
+    "directus:setup:portfolio": "node scripts/setupPortfolio.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },

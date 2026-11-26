@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, House } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useId, useRef, useState } from "react";
 import type { SwiperClass } from "swiper/react";
 import { Button } from "@/shared/ui/Button";
@@ -12,7 +12,6 @@ interface ProjectGalleryProps {
 
 const thumbnailsPerRow = 4;
 const formatPhotoNumber = (number: number) => String(number).padStart(2, "0");
-const overlayBadgeClass = "inline-flex min-h-6 items-center gap-ui-gutter rounded-ui-control px-2.5 py-1 text-tablet-caption-semi-bold uppercase! l:min-h-7 l:px-3.5 l:text-button-small l:tracking-wide";
 const arrowClass = "size-9! shrink-0 p-0! text-text-secondary shadow-xs";
 
 export function ProjectGallery({ project }: ProjectGalleryProps) {
@@ -20,8 +19,12 @@ export function ProjectGallery({ project }: ProjectGalleryProps) {
   const swiperRef = useRef<SwiperClass>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const photoCount = project.photos.length;
-  const firstThumbnail = Math.floor(activeIndex / thumbnailsPerRow) * thumbnailsPerRow;
-  const thumbnails = project.photos.slice(firstThumbnail, firstThumbnail + thumbnailsPerRow);
+  const firstThumbnail =
+    Math.floor(activeIndex / thumbnailsPerRow) * thumbnailsPerRow;
+  const thumbnails = project.photos.slice(
+    firstThumbnail,
+    firstThumbnail + thumbnailsPerRow,
+  );
   const selectPhoto = (index: number) => swiperRef.current?.slideTo(index);
 
   return (
@@ -35,23 +38,13 @@ export function ProjectGallery({ project }: ProjectGalleryProps) {
           id={galleryId}
           photos={project.photos}
           activeIndex={activeIndex}
-          onSwiper={(swiper) => { swiperRef.current = swiper; }}
+          onSwiper={(swiper) => {
+            swiperRef.current = swiper;
+          }}
           onIndexChange={setActiveIndex}
         />
 
         <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-background-inverse/70 via-transparent to-black/20" />
-        <div className="pointer-events-none absolute inset-x-12px top-12px flex flex-wrap gap-8px l:inset-x-16px l:top-16px">
-          <span className={`${overlayBadgeClass} bg-background-base/95 text-background-inverse shadow-xs backdrop-blur-md`}>
-            <House aria-hidden="true" className="size-3 shrink-0 text-text-accent" />
-            {project.propertyType} • {project.renovationType}
-          </span>
-          <span className={`${overlayBadgeClass} bg-background-inverse/85 text-text-inverse backdrop-blur-md`}>
-            Срок: {project.duration}
-          </span>
-          <span className={`${overlayBadgeClass} bg-background-accent text-text-inverse`}>
-            {project.year} год
-          </span>
-        </div>
       </div>
 
       <div className="contents l:flex l:flex-wrap l:items-center l:justify-between l:gap-12px l:pt-12px">
@@ -116,11 +109,25 @@ export function ProjectGallery({ project }: ProjectGalleryProps) {
               role="status"
               className="pl-12px text-desktop-caption-semi-bold tabular-nums l:order-1 l:rounded-ui-control l:border l:border-border-default l:bg-background-base l:px-3 l:py-ui-gutter l:text-text-primary l:shadow-xs"
             >
-              <span className="sr-only">Фото {activeIndex + 1} из {photoCount}</span>
-              <span aria-hidden="true">{formatPhotoNumber(activeIndex + 1)} / {formatPhotoNumber(photoCount)}</span>
+              <span className="sr-only">
+                Фото {activeIndex + 1} из {photoCount}
+              </span>
+              <span aria-hidden="true">
+                {formatPhotoNumber(activeIndex + 1)} /{" "}
+                {formatPhotoNumber(photoCount)}
+              </span>
             </span>
-            <span aria-hidden="true" className="pl-ui-gutter text-desktop-caption-semi-bold l:hidden">•</span>
-            <ProjectGalleryDialog project={project} activeIndex={activeIndex} onSelectPhoto={selectPhoto} />
+            <span
+              aria-hidden="true"
+              className="pl-ui-gutter text-desktop-caption-semi-bold l:hidden"
+            >
+              •
+            </span>
+            <ProjectGalleryDialog
+              project={project}
+              activeIndex={activeIndex}
+              onSelectPhoto={selectPhoto}
+            />
           </div>
         </div>
       </div>

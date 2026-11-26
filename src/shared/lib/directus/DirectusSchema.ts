@@ -1,5 +1,7 @@
 interface DirectusFile {
   id: string;
+  description: string | null;
+  type: string | null;
   width: number | null;
   height: number | null;
 }
@@ -59,12 +61,34 @@ interface DirectusPricingItem {
   features: unknown;
 }
 
+interface DirectusPortfolioProjectFile {
+  id: string;
+  project_id: string | DirectusPortfolioProject;
+  file_id: string | DirectusFile;
+  sort: number | null;
+}
+
+interface DirectusPortfolioProject {
+  id: string;
+  title: string;
+  description: string;
+  preview_title: string | null;
+  preview_text: string | null;
+  badge: string | null;
+  specifications: unknown;
+  photos: string[] | DirectusPortfolioProjectFile[];
+  status: "draft" | "published" | "archived";
+  sort: number | null;
+}
+
 export interface DirectusSchema {
   directus_files: DirectusFile[];
   hero_slides: DirectusHeroSlide[];
   faq_items: DirectusFaqItem[];
   reviews: DirectusReview[];
   pricing_items: DirectusPricingItem[];
+  portfolio_projects: DirectusPortfolioProject[];
+  portfolio_project_files: DirectusPortfolioProjectFile[];
   property_types: DirectusPropertyType[];
   callback_requests: DirectusCallbackRequest[];
 }
