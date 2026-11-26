@@ -14,6 +14,7 @@
     "directus:setup:reviews": "node scripts/setupReviews.mjs",
     "directus:setup:pricing": "node scripts/setupPricing.mjs",
     "directus:setup:portfolio": "node scripts/setupPortfolio.mjs",
+    "directus:setup:section-visibility": "node scripts/setupSectionVisibility.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },

@@ -54,16 +54,18 @@ const linkClass = "ui-focus rounded-sm transition-colors hover:text-text-accent-
       </div>
 
       <div class="grid min-w-0 content-start gap-24px l:contents">
-        <nav aria-labelledby="footer-sections" class="min-w-0">
-          <h2 id="footer-sections" class="text-desktop-title-small text-text-primary">Разделы</h2>
-          <ul class="mt-8px grid gap-ui-gutter text-desktop-body-small text-text-tertiary l:text-text-secondary">
-            {sections.map(({ label, id }) => (
-              <li class="min-h-[17px]">
-                <a href={`#${id}`} class:list={[linkClass]}>{label}</a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        {sections.length > 0 && (
+          <nav aria-labelledby="footer-sections" class="min-w-0">
+            <h2 id="footer-sections" class="text-desktop-title-small text-text-primary">Разделы</h2>
+            <ul class="mt-8px grid gap-ui-gutter text-desktop-body-small text-text-tertiary l:text-text-secondary">
+              {sections.map(({ label, id }) => (
+                <li class="min-h-[17px]">
+                  <a href={`#${id}`} class:list={[linkClass]}>{label}</a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
 
         <div class="min-w-0">
           <h2 class="text-desktop-title-small text-text-primary">Контакты</h2>

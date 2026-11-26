@@ -158,6 +158,10 @@ When no projects are published, the section and its navigation links are hidden.
 
 The contact form POSTs to `api/callback-requests` under the site's base path. The on-demand Astro route validates the fields with Zod, checks the selected property type against current Directus data, and creates a record using the optional server-only `DIRECTUS_CALLBACK_TOKEN`. The browser receives a confirmation or error code. Collection access stays private.
 
+Run `npm run directus:setup:section-visibility` before building with a configured CMS. The script uses the same credentials and optional env-file argument as FAQ setup. It creates the **Видимость секций** singleton, enables all sections on first setup, and grants the site's token read access. Rerunning preserves editor settings. Staff who manage visibility need read access to the singleton and update access to its toggle fields.
+
+In Directus Studio, open **Видимость секций**, change the switches, and save. Rebuild and deploy the site to publish the changes. A disabled section is omitted from the home page and its navigation. **Контакты** controls the contact details in the page section and its navigation link. The callback form stays available, and existing estimate buttons link to it. With no configured Directus, all sections are enabled by default. A failed settings request stops a configured build.
+
 ### 4.1. Set up callback requests in Directus
 
 1. Run `docker compose up -d` for the local CMS. Set `DIRECTUS_URL`, `DIRECTUS_TOKEN`, and the existing `ADMIN_EMAIL` and `ADMIN_PASSWORD` in the ignored `.env`.
